@@ -4,34 +4,34 @@
         <div class="overallInfo">
           <div class="resultTitle">
             <div class="pdfTitle">pdf title</div>
-            <div class="pdfName">TITLE</div>
+            <div class="pdfName">{{ result.doclist.docs[0].title }}</div>
           </div>
           <div class="resultInfo">Time</div>
           <div class="timeTitle" />
           <div class="resultDate">
-            Rapport from approx <span>{this.transformDate(this.result.doclist.docs["0"].ctime)} </span>
-            years ago ({this.deliverTimeBetween(this.result.doclist.docs["0"].ctime)})
+            Rapport from approx <span>{{this.transformDate(result.doclist.docs[0].ctime)}} </span>
+            years ago, {{this.deliverTimeBetween(result.doclist.docs[0].ctime)}}
             <hr class="report-divider" align="left" />
             Rapport content from time period between
-            <span title={this.returnACorDC(contentPeriodBeginning)}>&nbsp; 
-            {this.deliverTimePeriodStamp(contentPeriodBeginning)}</span> and 
-            <span title={this.returnACorDC(contentPeriodEnding)}>&nbsp;
-            {this.deliverTimePeriodStamp(contentPeriodEnding)}</span>
+            <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_from_i)">&nbsp; 
+            {{this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i)}}</span> and 
+            <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_to_i)">&nbsp;
+            {{this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_to_i)}}</span>
           </div>
           <div class="placeTitle">Place</div>
-          <div class="resultPlace">{this.result.doclist.docs["0"].place_name}</div>
+          <div class="resultPlace">{{this.returnAddresses(result.doclist.docs[0].place_name)}}</div>
           <div class="authorContainer">
             <div class="authorTitle">Authors:&nbsp;</div>
-            <div class="authorName">FORFATTER</div>;
+            <div class="authorName">{{this.returnAuthors(result.doclist.docs[0].author)}}</div>
           </div>
         </div>
-        <!--<div class="mapContainer">
-          <ResultMap
-            id={this.result.doclist.docs["0"].id}
-            coordinateSet={this.result.doclist.docs["0"].place_coordinates || "Unknown"}
+        <div class="mapContainer">
+          <result-map
+            :id="result.doclist.docs[0].id"
+            :coordinateSet="this.result.doclist.docs[0].place_coordinates || 'Unknown'"
           />
-        </div>
-      </div>
+        </div> 
+     <!--</div>
       {this.queryString.includes("&pt=") != true && (
         <div class="matches">
           <span class="numbersFound">{this.result.doclist.numFound}</span>
@@ -84,11 +84,14 @@
 <script>
   //import HighlightedChapter from "../components/HighlightedChapter";
   //import HighlightedContent from "../components/HighlightedContent";
-  //import ResultMap from "../components/ResultMap";
+  import ResultMap from "./ResultMap.vue";
+  
   export default {
     name: "SearchResult",
     data: () => ({ showingAllSnippets: false }),
-
+    components: {
+      ResultMap
+    },
     props: {
       result: {
         type: Object,
@@ -134,7 +137,12 @@
           ? time.toString().slice(1) + " before Christ"
           : time.toString() + " bfter Christ";
       },
-
+      returnAddresses(addresses) {
+        return addresses ? addresses.join(', ') : "Ingen lokation(er) opgivet.";
+      },
+      returnAuthors(authors) {
+        return authors ? authors.join(', ') : "Ingen forfatter(e) opgivet.";
+      },
       toggleMoreSnippetsVisibility() {
         this.showingAllSnippets = !this.showingAllSnippets;
       }
