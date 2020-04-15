@@ -30,9 +30,8 @@
 </template>
 
 <script> 
-
   export default {
     name: 'AboutContainer',
     }
-  </script>
+</script>
   
