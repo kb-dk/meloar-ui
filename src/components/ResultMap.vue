@@ -33,6 +33,8 @@ export default {
         let coordinates = coordinateSet.split(",").reverse();
         let mapNode = require("leaflet");
         let DefaultIcon = mapNode.icon({
+          iconSize: [25, 41],
+          iconAnchor: [12.5, 25],
           iconUrl: icon,
           shadowUrl: iconShadow
         });

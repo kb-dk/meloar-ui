@@ -11,8 +11,11 @@ const state = {
 
 const actions = {
   updateQueryDisplay ( {commit}, param ) {
-    console.log("here!");
     commit('updateQueryDisplaySuccess', param)
+  },
+
+  updateQuery ( {commit}, param ) {
+    commit('updateQuerySuccess', param)
   },
 
   doSearch ({ commit }, params) {
@@ -31,8 +34,10 @@ const actions = {
 
 const mutations = {
   updateQueryDisplaySuccess(state, param) {
-    console.log("here? :S")
     state.queryDisplay = param
+  },
+  updateQuerySuccess(state, param) {
+    state.query = param
   },
   doSearchSuccess(state, users) {
     state.results = users;

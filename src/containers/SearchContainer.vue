@@ -20,7 +20,6 @@ export default {
     SearchResults,
   },
   data: () => ({
-    searchResult: [],
     facets: {},
     hits: "",
     searchError: false
@@ -40,9 +39,6 @@ export default {
       doSearch: 'doSearch',
       structureSearchResult: 'structureSearchResult'
     }),
-    setSearchResult(searchResult) {
-      this.searchResult = searchResult;
-    },
     setFacets(facets) {
       this.facets = facets;
     },
@@ -65,6 +61,9 @@ export default {
       if (query === "") {
         console.log(to);
       }
+    },
+    checkForSearchChange(to, from) {
+      return to.params.query !== from.params.query;
     }
   },
 
@@ -80,28 +79,14 @@ export default {
         })
   },
 
- // beforeRouteUpdate(to, from, next) {
-    /*if (checkForSearchChange(to, from)) {
-      searchService
-        .search(to.params.query)
-        .then(searchResult => {
-          searchState.query = to.params.query;
-          this.setSearchResult(searchService.structureSearchResult(searchResult));
-          this.setFacets(this.getFacets(searchResult));
-          this.setHits(this.getHits(searchResult));
-          next();
-        })
-        .catch(reason => {
-          this.searchError = true;
-        });
-    } else {
+ beforeRouteUpdate(to, from, next) {
+   console.log("before route update!")
+    const query = to.params.query;
+    if(this.checkForSearchChange(to, from)) {
+      console.log("Yap, query changed!")
+      this.doSearch(query)
       next();
-    } */ 
-  //} 
-//};
-
-//function checkForSearchChange(to, from) {
-//  return "yayz"
-  //return to.params.query !== from.params.query;
+    }
+  },
 }
 </script>

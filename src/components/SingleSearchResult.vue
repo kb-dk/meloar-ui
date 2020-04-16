@@ -9,49 +9,42 @@
           <div class="resultInfo">Time</div>
           <div class="timeTitle" />
           <div class="resultDate">
-            Rapport from approx <span>{{this.transformDate(result.doclist.docs[0].ctime)}} </span>
-            years ago, {{this.deliverTimeBetween(result.doclist.docs[0].ctime)}}
+            Rapport from approx <span>{{ this.transformDate(result.doclist.docs[0].ctime) }} </span>
+            years ago, {{ this.deliverTimeBetween(result.doclist.docs[0].ctime) }}
             <hr class="report-divider" align="left" />
             Rapport content from time period between
             <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_from_i)">&nbsp; 
-            {{this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i)}}</span> and 
+            {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i) }}</span> and 
             <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_to_i)">&nbsp;
-            {{this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_to_i)}}</span>
+            {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_to_i) }}</span>
           </div>
           <div class="placeTitle">Place</div>
-          <div class="resultPlace">{{this.returnAddresses(result.doclist.docs[0].place_name)}}</div>
+          <div class="resultPlace">{{ this.returnAddresses(result.doclist.docs[0].place_name) }}</div>
           <div class="authorContainer">
             <div class="authorTitle">Authors:&nbsp;</div>
-            <div class="authorName">{{this.returnAuthors(result.doclist.docs[0].author)}}</div>
+            <div class="authorName">{{ this.returnAuthors(result.doclist.docs[0].author) }}</div>
           </div>
         </div>
         <div class="mapContainer">
           <result-map
             :id="result.doclist.docs[0].id"
-            :coordinateSet="this.result.doclist.docs[0].place_coordinates || 'Unknown'"
+            :coordinateSet="result.doclist.docs[0].place_coordinates || 'Unknown'"
           />
         </div> 
-     <!--</div>
-      {this.queryString.includes("&pt=") != true && (
-        <div class="matches">
-          <span class="numbersFound">{this.result.doclist.numFound}</span>
-          {this.result.doclist.numFound > 1 ? <span> matches </span> : <span> match </span>}
+     </div>
+        <!--<div :v-if="!this.queryString.includes('&pt=')" class="matches">
+          <span class="numbersFound">{{ result.doclist.numFound }}</span>
+          <span v-if="this.result.doclist.numFound > 1"> matches </span>
+          <span v-if="this.result.doclist.numFound === 1"> match </span>
           <span>found in pdf. Displaying </span>
-          {this.result.doclist.docs.length < defaultVisibleSnippets ? (
-            <span class="numbersFound">{this.result.doclist.docs.length}</span>
-          ) : (
-            <span class="numbersFound">{defaultVisibleSnippets}</span>
-          )}
-          .
-          {this.result.doclist.docs.length > defaultVisibleSnippets && (
-            <span class="seeAllSnippets" onClick={e => this.toggleMoreSnippetsVisibility()}>
-              {this.showingAllSnippets ? <span>See less hits</span> : <span>See more hits</span>}
-            </span>
-          )}
-        </div>
-      )}
-
-      {this.queryString.includes("&pt=") != true &&
+          <span v-if="result.doclist.docs.length <= this.defaultVisibleSnippets" class="numbersFound">{{ this.result.doclist.docs.length }}</span>
+          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="numbersFound">{{ defaultVisibleSnippets }}</span>.
+          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" :v-click="this.toggleMoreSnippetsVisibility()">
+          <span v-if="this.showingAllSnippets === true">See less hits</span>
+          <span v-if="this.showingAllSnippets === false">See more hits</span>
+          </span>
+        </div>-->
+        <!--{this.queryString.includes("&pt=") != true &&
         this.result.doclist.docs.map((snippets, index) => (
           <div
             class="snippet"
@@ -76,8 +69,8 @@
         <div class="seeAllSnippetsBottomContainer">
           <span class="seeAllSnippets" onClick={e => this.toggleMoreSnippetsVisibility()}>
             {this.showingAllSnippets ? <span>See less hits</span> : <span>See more hits</span>}
-          </span>-->
-        </div> 
+          </span>
+        </div> -->
     </div>
 </template>
 
@@ -85,10 +78,10 @@
   //import HighlightedChapter from "../components/HighlightedChapter";
   //import HighlightedContent from "../components/HighlightedContent";
   import ResultMap from "./ResultMap.vue";
-  
+
   export default {
     name: "SearchResult",
-    data: () => ({ showingAllSnippets: false }),
+    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
     components: {
       ResultMap
     },
