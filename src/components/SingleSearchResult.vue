@@ -39,7 +39,7 @@
           <span>found in pdf. Displaying </span>
           <span v-if="result.doclist.docs.length <= this.defaultVisibleSnippets" class="numbersFound">{{ this.result.doclist.docs.length }}</span>
           <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="numbersFound">{{ defaultVisibleSnippets }}</span>.
-          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" v-on:click="this.toggleMoreSnippetsVisibility()">
+          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" v-on:click="toggleMoreSnippetsVisibility()">
           <span v-if="this.showingAllSnippets === true">See less hits</span>
           <span v-if="this.showingAllSnippets === false">See more hits</span>
           </span>
@@ -61,16 +61,15 @@
               <span>⮊</span> Go to hit
             </router-link>
           </div>
-        ))}
-      <router-link class="entirePdfLink" to={this.getRecordLink(this.result.doclist.docs["0"].id, false)}>
+        ))} -->
+      <router-link class="entirePdfLink" to="this.getRecordLink(this.result.doclist.docs[0].id, false)">
         See entire pdf
       </router-link>
-      {this.showingAllSnippets && (
         <div class="seeAllSnippetsBottomContainer">
-          <span class="seeAllSnippets" onClick={e => this.toggleMoreSnippetsVisibility()}>
-            {this.showingAllSnippets ? <span>See less hits</span> : <span>See more hits</span>}
-          </span>
-        </div> -->
+            <span v-if="this.showingAllSnippets" class="seeAllSnippets" v-on:click="toggleMoreSnippetsVisibility()">
+                <span>See less hits</span>
+            </span>
+        </div>
     </div>
 </template>
 
