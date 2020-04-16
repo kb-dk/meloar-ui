@@ -61,11 +61,10 @@
         }
       },
       returnToStart() {
-        //this.searchState.query = "";
-        //this.searchState.queryDisplay = "";
+        this.updateQueryDisplay("")
         console.log(this.$router.history.current.name, "where are we?");
         this.$router.history.current.name === "Home"
-          ? this.updateQueryDisplay("")
+          ? null
           : this.$router.push({ name: "Home" });
       }
     }
