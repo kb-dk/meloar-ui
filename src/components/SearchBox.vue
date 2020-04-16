@@ -28,6 +28,11 @@
       this.searchQuery = this.queryDisplay;
       console.log("HELLLO!", this.queryDisplay);
     },
+    watch: {
+      queryDisplay: function(newValue) {
+      this.searchQuery = newValue
+    }
+  },
     methods: {
       ...mapActions("searchStore", {
         updateQueryDisplay: "updateQueryDisplay"

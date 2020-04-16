@@ -30,10 +30,6 @@ export default {
       results: state => state.searchStore.results
     })
   },
-  created() {
-    console.log("HELLsaaLO!")
-  },
-
   methods: {
     ...mapActions('searchStore', {
       doSearch: 'doSearch',
@@ -68,22 +64,16 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    console.log("to:",to, "from:", from,"next:", next)
     const query = to.params.query;
         next(vm => {
           vm.doSearch(query);
           console.log(vm, query);
-          //vm.setSearchResult(this.structureSearchResult(searchResult));
-          //vm.setFacets(vm.getFacets(searchResult));
-          //vm.setHits(vm.getHits(searchResult));
         })
   },
 
  beforeRouteUpdate(to, from, next) {
-   console.log("before route update!")
     const query = to.params.query;
     if(this.checkForSearchChange(to, from)) {
-      console.log("Yap, query changed!")
       this.doSearch(query)
       next();
     }

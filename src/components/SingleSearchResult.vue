@@ -32,18 +32,18 @@
           />
         </div> 
      </div>
-        <!--<div :v-if="!this.queryString.includes('&pt=')" class="matches">
+        <div :v-if="!this.queryString.includes('&pt=')" class="matches">
           <span class="numbersFound">{{ result.doclist.numFound }}</span>
           <span v-if="this.result.doclist.numFound > 1"> matches </span>
           <span v-if="this.result.doclist.numFound === 1"> match </span>
           <span>found in pdf. Displaying </span>
           <span v-if="result.doclist.docs.length <= this.defaultVisibleSnippets" class="numbersFound">{{ this.result.doclist.docs.length }}</span>
           <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="numbersFound">{{ defaultVisibleSnippets }}</span>.
-          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" :v-click="this.toggleMoreSnippetsVisibility()">
+          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" v-on:click="this.toggleMoreSnippetsVisibility()">
           <span v-if="this.showingAllSnippets === true">See less hits</span>
           <span v-if="this.showingAllSnippets === false">See more hits</span>
           </span>
-        </div>-->
+        </div>
         <!--{this.queryString.includes("&pt=") != true &&
         this.result.doclist.docs.map((snippets, index) => (
           <div

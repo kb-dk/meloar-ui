@@ -27,7 +27,7 @@
 import SingleSearchResult from "./SingleSearchResult.vue";
 //import router from "../router/index.js";
 //import AppliedFilters from "./AppliedFilters.js";
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   name: "SearchResults",
@@ -42,6 +42,7 @@ export default {
   watch: {
     results: function(newValue) {
       if(typeof newValue === 'object' && newValue !== null ) {
+      this.queryDisplay === "" ? this.updateQueryDisplay(this.results.responseHeader.params.q) : null
       this.resultHits = this.results.grouped.loar_id.matches
       this.resultMatches = this.results.grouped.loar_id.groups.length 
       }
@@ -54,6 +55,9 @@ export default {
     })
   },
   methods: {
+    ...mapActions("searchStore", {
+        updateQueryDisplay: "updateQueryDisplay"
+      }),
     checkForResults(results) {
       console.log("doing check", results)
       if (results === undefined) {
