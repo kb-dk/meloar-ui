@@ -23,7 +23,7 @@ function fireSearch(query) {
       .then(response => {
         console.log("testlol")
         //storeSearchResult(response.data);
-        return response.data;
+        return structureSearchResult(response.data);
       })
       .catch(error => {
         return Promise.reject(error);
