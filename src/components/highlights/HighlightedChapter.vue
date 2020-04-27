@@ -1,5 +1,5 @@
 <template>
-    <div class="chapterName" :domPropsInnerHTML="this.highlightString(this.chapterString, this.query"/>
+    <div class="chapterName" v-html="this.highlightString(this.chapterString, this.query)"></div>
 </template>
 <script>
 export default {

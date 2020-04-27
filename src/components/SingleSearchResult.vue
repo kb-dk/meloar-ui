@@ -1,5 +1,5 @@
 <template>
-    <div class="searchResult" id="{this.result.doclist.docs['0'].loar_id.replace(/:|\s|\//g, '-')}">
+    <div class="searchResult" :id="fixIdForSearchResultContainer(result.groupValue)">
       <div class="generalInfo">
         <div class="overallInfo">
           <div class="resultTitle">
@@ -32,37 +32,35 @@
           />
         </div> 
      </div>
-        <div :v-if="!this.queryString.includes('&pt=')" class="matches">
+        <div :v-if="!queryString.includes('&pt=')" class="matches">
           <span class="numbersFound">{{ result.doclist.numFound }}</span>
-          <span v-if="this.result.doclist.numFound > 1"> matches </span>
-          <span v-if="this.result.doclist.numFound === 1"> match </span>
+          <span v-if="result.doclist.numFound > 1"> matches </span>
+          <span v-if="result.doclist.numFound === 1"> match </span>
           <span>found in pdf. Displaying </span>
-          <span v-if="result.doclist.docs.length <= this.defaultVisibleSnippets" class="numbersFound">{{ this.result.doclist.docs.length }}</span>
-          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="numbersFound">{{ defaultVisibleSnippets }}</span>.
-          <span v-if="result.doclist.docs.length > this.defaultVisibleSnippets" class="seeAllSnippets" v-on:click="toggleMoreSnippetsVisibility()">
-          <span v-if="this.showingAllSnippets === true">See less hits</span>
-          <span v-if="this.showingAllSnippets === false">See more hits</span>
+          <span v-if="result.doclist.docs.length <= defaultVisibleSnippets" class="numbersFound">{{ this.result.doclist.docs.length }}</span>
+          <span v-if="result.doclist.docs.length > defaultVisibleSnippets" class="numbersFound">{{ defaultVisibleSnippets }}</span>.
+          <span v-if="result.doclist.docs.length > defaultVisibleSnippets" class="seeAllSnippets" v-on:click="toggleMoreSnippetsVisibility()">
+          <span v-if="showingAllSnippets === true">See less hits</span>
+          <span v-if="showingAllSnippets === false">See more hits</span>
           </span>
         </div>
-        <!--{this.queryString.includes("&pt=") != true &&
-        this.result.doclist.docs.map((snippets, index) => (
-          <div
+        <div v-if="this.queryString.includes('&pt=') != true">
+          <div v-for="(snippets, index) in result.doclist.docs"
             class="snippet"
-            style={index > defaultVisibleSnippets - 1 && !this.showingAllSnippets ? "display:none" : "display:block"}
-          >
+            v-bind:key="index"
+            :style="index > defaultVisibleSnippets - 1 && !showingAllSnippets ? 'display:none' : 'display:block'">
             <div class="chapterTitle">chapter </div>
-            <HighlightedChapter chapterString={snippets.chapter} query={this.result.query} />
+            <highlighted-chapter :chapterString="snippets.chapter" :query="queryString" />
             <div class="pageTitle">page </div>
-            {snippets.page == 0 ? <div class="pageNumber">1</div> : <div class="pageNumber">{snippets.page - 1}</div>}
+            <div class="pageNumber">{{snippets.page == 0 ? 1 : snippets.page - 1}}</div>
             <ul>
-              <HighlightedContent contentArray={snippets.highLightSnippets} query={this.result.query} />
+            <highlighted-content :contentArray="snippets.highLightSnippets" :query="queryString" />
             </ul>
-            <router-link to={this.getRecordLink(snippets.id, true)}>
+            <router-link :to="getRecordLink(snippets.id, true, snippets.loar_id)">
               <span>⮊</span> Go to hit
             </router-link>
-          </div>
-        ))} -->
-      <router-link class="entirePdfLink" to="this.getRecordLink(this.result.doclist.docs[0].id, false)">
+        </div>
+      <router-link class="entirePdfLink" to="this.getRecordLink(this.result.doclist.docs[0].id, false, snippets.loar_id)">
         See entire pdf
       </router-link>
         <div class="seeAllSnippetsBottomContainer">
@@ -71,18 +69,21 @@
             </span>
         </div>
     </div>
+  </div>
 </template>
 
 <script>
-  //import HighlightedChapter from "../components/HighlightedChapter";
-  //import HighlightedContent from "../components/HighlightedContent";
+  import HighlightedChapter from "./highlights/HighlightedChapter";
+  import HighlightedContent from "./highlights/HighlightedContent";
   import ResultMap from "./ResultMap.vue";
 
   export default {
     name: "SearchResult",
     data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
     components: {
-      ResultMap
+      ResultMap,
+      HighlightedChapter,
+      HighlightedContent
     },
     props: {
       result: {
@@ -95,16 +96,16 @@
       }
     },
     created() {
-      console.log("hello", this)
+      console.log("helloFixit!", this)
     },
     methods: {
-      getRecordLink(id, page) {
+      getRecordLink(id, page, loarId) {
         return page
           ? {
               path: "/record/",
-              query: { page: true, id: encodeURIComponent(id), query: this.queryString }
+              query: { page: true, id: encodeURIComponent(id), query: this.queryString, loarId: loarId }
             }
-          : { path: "/record/", query: { id: encodeURIComponent(id), query: this.queryString } };
+          : { path: "/record/", query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId } };
       },
       transformDate(date) {
         const convertedDate = new Date(date);
@@ -112,13 +113,15 @@
         const diffYears = currentDate.getFullYear() - convertedDate.getFullYear();
         return diffYears;
       },
+      fixIdForSearchResultContainer(id) {
+        return id.replace(/:|\s|\//g, '-')
+      },
       deliverTimeBetween(date) {
         const convertedDate = new Date(date);
         return convertedDate.getFullYear();
       },
       deliverTimePeriodStamp(time) {
         let returnphase;
-        console.log(time.toString());
         time.toString().charAt(0) === "-"
           ? (returnphase = time.toString().slice(1) + " BC")
           : (returnphase = time + " AC");

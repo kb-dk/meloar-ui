@@ -1,7 +1,7 @@
 <template>
-    <div :v-if="isArrayEmpty(this.contentArray)" class="renderedSnippet">
+    <div v-if="isArrayEmpty(this.contentArray)" class="renderedSnippet">
           <ul>
-            <li class="string" :domPropsInnerHTML="this.highlightStrings(this.contentArray, this.query)" />
+            <li class="string" v-html="this.highlightStrings(this.contentArray, this.query)" />
           </ul>
           <div class="empty" />
       </div>
