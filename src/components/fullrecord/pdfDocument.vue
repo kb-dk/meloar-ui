@@ -3,16 +3,21 @@
     <router-link :to="this.createSearchLink()" class="backToSearch">
       back to searching.
     </router-link>
-    <div class="iframe-container">
+    <!--div class="iframe-container">
+       
       <iframe :src="this.iframeUrl" />
-    </div>
+    </div-->
+     <WebViewer :path="`${publicPath}lib`" :url="getUrl2()" :query="query"/>
   </div>
 </template>
 
 <script>
-
+import WebViewer from '../WebViewer.vue'
 export default {
     name: "PdfDocument",
+    components: {
+    WebViewer
+  },
 
     data: () => ({
       iframeUrl:'',
@@ -44,6 +49,15 @@ export default {
           : "";
         return viewerURL + proxyURL + pageParams;
       },
+
+      getUrl2() {
+        const proxyURL = encodeURIComponent(
+          "/api/meloar/pdf?url=" + this.record.external_resource[0]
+        );
+        console.log(proxyURL)
+        return "/api/meloar/pdf?url=" + this.record.external_resource[0]
+      },
+
 
       createSearchLink() {
         return "/search/" + this.query;
