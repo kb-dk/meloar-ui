@@ -15,7 +15,8 @@ export default {
     name: "PdfDocument",
 
     data: () => ({
-      iframeUrl:''
+      iframeUrl:'',
+      publicPath: process.env.BASE_URL
     }),
 
     created() {
@@ -34,11 +35,10 @@ export default {
 
     methods: {
       getUrl() {
-        console.log(this.record,"PDF DOCUMENT RECORD")
         const proxyURL = encodeURIComponent(
           "/api/meloar/pdf?url=" + this.record.external_resource[0]
         );
-        const viewerURL = "static/pdfviewer/web/viewer.html?file=";
+        const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage
           ? "#search=" + this.query + "&page=" + this.getSinglePageNumber()
           : "";
