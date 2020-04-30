@@ -6,8 +6,7 @@
       <span>Fund & fortidsminder v2</span>
     </div>
     <search-box />
-    <!--<TimeSlider min={-3000} max={2000} values={[-1000,0]} />
-    <SearchMap />-->
+    <search-map />
     <div class="simpleNavigation">
       <router-link class="menuLink" to="/About">
         About this
@@ -21,13 +20,14 @@
 </template>
 <script>
 import SearchBox from "../components/SearchBox.vue";
-//import SearchMap from "../components/SearchMap";
+import SearchMap from "../components/SearchMap.vue";
 //import TimeSlider from "../components/TimeSlider";
 
 export default {
   name:'HomeContainer',
   components: {
     SearchBox,
+    SearchMap
   }
 }
 </script>

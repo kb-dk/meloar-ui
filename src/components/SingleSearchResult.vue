@@ -44,7 +44,7 @@
           <span v-if="showingAllSnippets === false">See more hits</span>
           </span>
         </div>
-        <div v-if="this.queryString.includes('&pt=') != true">
+        <div v-if="this.queryString.includes('&pt=') !== true">
           <div v-for="(snippets, index) in result.doclist.docs"
             class="snippet"
             v-bind:key="index"
@@ -96,7 +96,6 @@
       }
     },
     created() {
-      console.log("helloFixit!", this)
     },
     methods: {
       getRecordLink(id, page, loarId) {

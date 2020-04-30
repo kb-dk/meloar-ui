@@ -9,7 +9,6 @@ export const searchService = {
 }
 
 function fireSearch(query) {
-  console.log("FIRESEARCHLOLZ")
     if (query != undefined && query.includes("&d=")) {
       //searchStore.queryDisplay = query.substring(0, query.indexOf("&d="));
     } else if (query != undefined && query.includes("&fq=")) {
@@ -21,7 +20,6 @@ function fireSearch(query) {
     return axios
       .get(searchUrl)
       .then(response => {
-        console.log("testlol")
         //storeSearchResult(response.data);
         return structureSearchResult(response.data);
       })
@@ -31,6 +29,7 @@ function fireSearch(query) {
   }
 
   function structureSearchResult(searchResults) {
+    let result = {};
     let highLights = [];
     let results = [];
     for (let i = 0; i < searchResults.grouped.loar_id.groups.length; i++) {
@@ -46,6 +45,7 @@ function fireSearch(query) {
       }
       results.push(searchResults.grouped.loar_id.groups[i]);
     }
-    console.log("RESULTS", results);
-    return results; 
+    result.results = results
+    result.facets = searchResults.facet_counts
+    return result; 
   }

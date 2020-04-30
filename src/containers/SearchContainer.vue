@@ -17,7 +17,7 @@ export default {
   name: "SearchContainer",
   components: {
     SearchBox,
-    SearchResults,
+    SearchResults
   },
   data: () => ({
     facets: {},
@@ -27,6 +27,7 @@ export default {
   computed: {
     ...mapState({
       queryDisplay: state => state.searchStore.queryDisplay,
+      query: state => state.searchStore.query,
       results: state => state.searchStore.results
     })
   },
