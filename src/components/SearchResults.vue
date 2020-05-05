@@ -1,10 +1,12 @@
 <template>
     <div class="searchResultContainer">
-         <div class="searchResults">
-           <applied-filters
+      <applied-filters
              :queryString="query || ''"
              :route="this.$router.history.current.path"
            />
+      <div v-if="results && resultHits === 0" class="noResults">We weren't able to find any results for you.<br>
+         <span class="emojiComponent">😥</span></div>
+         <div v-if="loading === false && results" class="searchResults">
            <div class="headline">Filter by:</div>
            <div v-if="this.facets" class="facets">
                   <div v-bind:key="index" v-for="(item, index) in this.facets.facet_fields" class="facet">                    
@@ -44,17 +46,17 @@ export default {
   watch: {
     results: function(newValue) {
       if(typeof newValue === 'object' && newValue !== null ) {
-        console.log(Object.keys(this.results).length, "LEEEENGTH")
+        //console.log(Object.keys(this.results).length, "LEEEENGTH")
         if(Object.keys(this.results).length >= 1) {
           this.queryDisplay === "" ? this.updateQueryDisplay(this.results[0].query) : null
           this.resultHits = this.results[0].allHits
           this.resultMatches = this.results.length
-          this.setLoadingStatus(false)
         }
         else {
           this.resultHits = 0
           this.resultMatches = 0
         }
+        this.setLoadingStatus(false)
       }
     }
   },
@@ -63,7 +65,8 @@ export default {
       query: state => state.searchStore.query,
       queryDisplay: state => state.searchStore.queryDisplay,
       results: state => state.searchStore.results,
-      facets: state => state.searchStore.facets
+      facets: state => state.searchStore.facets,
+      loading: state => state.searchStore.loading
 
     })
   },
@@ -84,13 +87,15 @@ export default {
       }
     },
     filterFromFacets(filter, value) {
+      console.log("filter search", filter, value)
       var getQuery = this.query;
       if (getQuery === "") {
         getQuery = this.$router.history.current.params.query;
       }
+      this.updateQuery(getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"')
       this.$router.push({
         name: "Search",
-        params: { query: getQuery + "&fq=" + filter + ':"' + encodeURIComponent(value) + '"' }
+        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"' }
       })
     }
   },

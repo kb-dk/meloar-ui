@@ -45,7 +45,7 @@ const mutations = {
     state.query = param
   },
   doSearchSuccess(state, result) {
-    console.log("we got results",result)
+    //console.log("we got results",result)
     state.results = result.results
     state.facets = result.facets
   },

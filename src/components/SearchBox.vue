@@ -41,7 +41,6 @@
       ...mapActions("searchStore", {
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
-        setLoadingStatus: "setLoadingStatus"
       }),
       search(e) {
         if (this.searchQuery !== this.queryDisplay) {

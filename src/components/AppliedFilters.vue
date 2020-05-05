@@ -14,6 +14,8 @@
 </template>
 
 <script>
+import { mapActions } from 'vuex'
+
 export default {
   name: "AppliedFilters",
 
@@ -31,7 +33,11 @@ export default {
   data: () => ({ filters: [], orgQuery: "" }),
 
   methods: {
+    ...mapActions("searchStore", {
+        updateQuery: "updateQuery",
+    }),  
     findFilters(query) {
+      console.log("New filters!", query)
       if (query === "") {
         query = this.$route.params.query;
       }
@@ -75,7 +81,8 @@ export default {
           mergedQuery = mergedQuery + "&fq=";
         }
       }
-      mergedQuery = mergedQuery + this.filters.join("&fq=");
+      mergedQuery = mergedQuery + this.filters.join("&fq=")
+      this.updateQuery(mergedQuery)
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",

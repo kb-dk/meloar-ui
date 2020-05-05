@@ -46,7 +46,7 @@ export default {
       },
 
       createSearchLink() {
-        return "/search/" + this.query;
+        return "/Search/" + this.query;
       },
 
       getSinglePageNumber() {

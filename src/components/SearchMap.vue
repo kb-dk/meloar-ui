@@ -36,7 +36,6 @@ export default {
     ...mapActions("searchStore", {
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
-        setLoadingStatus: "setLoadingStatus"
       }),
     initiateMap() {
       var _this = this;
@@ -69,7 +68,7 @@ export default {
       let selectAreaCenter;
       //let marker = L.marker(coordinates).addTo(resultmap);
       resultmap.on("mousedown", function(e) {
-        console.log(selectedArea);
+        //console.log(selectedArea);
         if (selectedArea != undefined) {
           resultmap.removeLayer(selectedArea);
         }
@@ -86,7 +85,7 @@ export default {
             return false;
           };
           selectedArea.setRadius(_this.getDistance(selectAreaCenter, [e.latlng.lat, e.latlng.lng]));
-          console.log(selectedArea._mRadius);
+          //console.log(selectedArea._mRadius);
         });
       });
       resultmap.on("mouseup", function(e) {

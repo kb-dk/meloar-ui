@@ -3,14 +3,14 @@
       <div>
         <record-metadata :record="recordData" />
       </div>
-   <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="queryDisplay" />
+   <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="query" />
   </div>
 </template>
 
 <script>
 import RecordMetadata from "../components/fullrecord/recordMetadata.vue";
 import PdfDocument from "../components/fullrecord/pdfDocument.vue";
-import { mapState } from 'vuex';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "FullRecordContainer",
@@ -24,9 +24,20 @@ export default {
 
   computed: {
     ...mapState({
-      queryDisplay: state => state.searchStore.queryDisplay,
+      query: state => state.searchStore.query,
       results: state => state.searchStore.results
     })
+  },
+  watch: {
+    results: function(newValue) {
+      if(typeof newValue === 'object' && newValue !== null ) {
+        if(Object.keys(this.results).length >= 1) {
+          this.setRecordData(this.results[0].doclist.docs[0]);
+          this.scrollToTop();
+          this.setLoadingStatus(false)
+        }
+      }
+    }
   },
 
   created() {
@@ -35,7 +46,13 @@ export default {
     //console.log(this.results)
   },
 
+
   methods: {
+    ...mapActions('searchStore', {
+      doSearch: 'doSearch',
+      setLoadingStatus: 'setLoadingStatus',
+      updateQuery:'updateQuery'
+    }),
     setRecordData(rd) {
       this.recordData = rd;
     },
@@ -63,23 +80,6 @@ export default {
       window.scrollTo(0, 0);
     }
   },
-  /*beforeRouteEnter(to,from, next) {
-    console.log(to, from, next, "we entered")
-    next(vm => {
-      if(vm.results.length > 0) {
-        console.log(vm.results[to.query.id])
-        vm.setRecordData(vm.results[to.query.id]);
-      if (to.query.query && to.query.page) {
-        vm.setPageRenderMode(true);
-      }
-      vm.setId(to.query.id);
-      vm.scrollToTop();
-      }
-      else {
-        console.log("we need the data plx!")
-      }
-    })
-  }*/
 
 beforeRouteEnter(to, from, next) {
   //console.log("------ before we enter ------")
@@ -105,23 +105,19 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    console.log("NO ID MATCH")
-   /*searchService
-      .doSearch("id:" + to.query.id)
-      .then(searchResult => {
-        next(vm => {
-          vm.setQuery(to.query.query);
-          vm.setRecordData({ doc: results[0].doclist.docs[0] });
-          if (to.query && to.query.page) {
-            vm.setPageRenderMode(true);
-          }
-          vm.setId(to.query.id);
-          vm.scrollToTop();
-        });
-      })
+    //console.log("NO ID MATCH")
+    vm.doSearch("id:" + to.query.id)
+    .then(() => {
+      vm.updateQuery(to.query.query)
+      vm.setId(to.query.id)
+      vm.setQuery(to.query.query)
+      if (to.query.query && to.query.page) {
+        vm.setPageRenderMode(true);
+      }
+    })
       .catch(reason => {
         console.log("Search error", reason);
-      });*/
+      });
   }});
 }
 };

@@ -26,7 +26,6 @@ export default {
   }),
   computed: {
     ...mapState({
-      queryDisplay: state => state.searchStore.queryDisplay,
       query: state => state.searchStore.query,
       results: state => state.searchStore.results
     })
@@ -53,12 +52,9 @@ export default {
     setErrorStatus() {
       this.searchError = true;
     },
-    getQuery(to) {
-      let query = this.queryDisplay;
-      if (query === "") {
-        console.log(to);
-      }
-    },
+    /*getQuery(to) {
+      let query = to.query.query;
+    },*/
     checkForSearchChange(to, from) {
       return to.params.query !== from.params.query;
     }
@@ -68,7 +64,7 @@ export default {
     const query = to.params.query;
         next(vm => {
           vm.doSearch(query);
-          console.log(vm, query);
+          //console.log(vm, query);
         })
   },
 
