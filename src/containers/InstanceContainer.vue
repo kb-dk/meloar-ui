@@ -1,5 +1,5 @@
 <template>
-  <div class="homeContainer">
+  <div :class="'instanceContainer ' + instance">
     <div class="titleContainer">
       <h2>Meloar</h2>
       <hr style="width:300px" />
@@ -21,13 +21,29 @@
 <script>
 import SearchBox from "../components/SearchBox.vue";
 import SearchMap from "../components/SearchMap.vue";
+import { mapState, mapActions } from 'vuex'
 //import TimeSlider from "../components/TimeSlider";
 
 export default {
-  name:'HomeContainer',
+  name:'InstanceContainer',
   components: {
     SearchBox,
     SearchMap
+  },
+  computed: {
+    ...mapState({
+      instance: state => state.searchStore.instance,
+    })
+  },
+  created() {
+    console.log(this.$route)
+    this.updateInstance(this.$route.params.location)
+  },
+  methods: {
+    ...mapActions("searchStore", {
+        updateInstance: "updateInstance",
+      }),
+
   }
 }
 </script>

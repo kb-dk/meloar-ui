@@ -60,7 +60,7 @@
               <span>⮊</span> Go to hit
             </router-link>
         </div>
-      <router-link class="entirePdfLink" to="this.getRecordLink(this.result.doclist.docs[0].id, false, snippets.loar_id)">
+      <router-link class="entirePdfLink" :to="this.getRecordLink(this.result.doclist.docs[0].id, false, this.result.doclist.docs[0].loar_id)">
         See entire pdf
       </router-link>
         <div class="seeAllSnippetsBottomContainer">
@@ -76,6 +76,8 @@
   import HighlightedChapter from "./highlights/HighlightedChapter";
   import HighlightedContent from "./highlights/HighlightedContent";
   import ResultMap from "./ResultMap.vue";
+  import { mapState } from "vuex";
+
 
   export default {
     name: "SearchResult",
@@ -95,16 +97,25 @@
         requred: true
       }
     },
+    computed: {
+    ...mapState({
+      instance: state => state.searchStore.instance
+    })
+  },
     created() {
     },
     methods: {
       getRecordLink(id, page, loarId) {
         return page
           ? {
-              path: "/record/",
-              query: { page: true, id: encodeURIComponent(id), query: this.queryString, loarId: loarId }
+              name: "Record",
+              query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId, page: true },
+              params: {location: this.instance }
             }
-          : { path: "/record/", query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId } };
+          : { name: "Record", 
+              query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId },
+              params: {location: this.instance } 
+            };
       },
       transformDate(date) {
         const convertedDate = new Date(date);

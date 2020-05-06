@@ -11,6 +11,8 @@
 
 <script>
 
+import { mapState, mapActions } from "vuex";
+
 export default {
     name: "PdfDocument",
 
@@ -18,8 +20,14 @@ export default {
       iframeUrl:'',
       publicPath: process.env.BASE_URL
     }),
-
+    computed: {
+      ...mapState({
+        instance: state => state.searchStore.instance
+      }),
+    },
     created() {
+      console.log(this.instance)
+      this.instance === '' ? this.updateInstance(this.$route.params.location) : null
     },
 
     props: {
@@ -34,6 +42,9 @@ export default {
     },
 
     methods: {
+      ...mapActions("searchStore", {
+        updateInstance: "updateInstance"
+      }),
       getUrl() {
         const proxyURL = encodeURIComponent(
           "/api/meloar/pdf?url=" + this.record.external_resource[0]
@@ -46,7 +57,7 @@ export default {
       },
 
       createSearchLink() {
-        return "/Search/" + this.query;
+        return { name: "Search", params: { location: this.instance, query:this.query } }
       },
 
       getSinglePageNumber() {

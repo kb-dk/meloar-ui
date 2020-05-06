@@ -8,6 +8,7 @@ const state = {
   results: {},
   facets: {},
   error: "",
+  instance:"",
   loading:false
 }
 
@@ -15,7 +16,9 @@ const actions = {
   updateQueryDisplay ( {commit}, param ) {
     commit('updateQueryDisplaySuccess', param)
   },
-
+  updateInstance ( {commit}, param ) {
+    commit('updateInstance', param)
+  },
   setLoadingStatus( {commit}, param) {
     commit('setLoadingStatus', param)
   },
@@ -43,6 +46,9 @@ const mutations = {
   },
   updateQuerySuccess(state, param) {
     state.query = param
+  },
+  updateInstance(state, param) {
+    state.instance = param
   },
   doSearchSuccess(state, result) {
     //console.log("we got results",result)

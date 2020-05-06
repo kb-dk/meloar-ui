@@ -66,17 +66,20 @@ export default {
       queryDisplay: state => state.searchStore.queryDisplay,
       results: state => state.searchStore.results,
       facets: state => state.searchStore.facets,
-      loading: state => state.searchStore.loading
+      loading: state => state.searchStore.loading,
+      instance: state => state.searchStore.instance
 
     })
   },
   created() {
+    this.instance === '' ? this.updateInstance(this.$route.params.location) : null
   },
   methods: {
     ...mapActions("searchStore", {
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
-        setLoadingStatus:"setLoadingStatus"
+        setLoadingStatus:"setLoadingStatus",
+        updateInstance: "updateInstance"
       }),
     checkForResults(results) {
       if (results === undefined) {

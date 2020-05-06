@@ -26,7 +26,9 @@
       ...mapState({
         queryDisplay: state => state.searchStore.queryDisplay,
         query: state => state.searchStore.query,
-        loading: state => state.searchStore.loading
+        loading: state => state.searchStore.loading,
+        instance: state => state.searchStore.instance
+
       })
     },
     created() {
@@ -58,16 +60,16 @@
           }
           this.updateQuery(this.searchQuery + fixedFilters)
           //console.log(filters);
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, location: this.instance } });
           e.preventDefault();
         }
       },
       returnToStart() {
         this.updateQueryDisplay("")
         this.updateQuery("")
-        this.$router.history.current.name === "Home"
+        this.$router.history.current.name === "Instance"
           ? null
-          : this.$router.push({ name: "Home" });
+          : this.$router.push({ name: "Instance", params: {location: this.instance} });
       }
     }
   };

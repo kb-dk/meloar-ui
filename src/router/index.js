@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeContainer from "../containers/HomeContainer.vue";
+import MeloarContainer from "../containers/MeloarContainer.vue";
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,12 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeContainer
+    component: MeloarContainer
+  },
+  {
+    path: '/:location',
+    name: 'Instance',
+    component: () => import(/* webpackChunkName: "instance" */ '../containers/InstanceContainer.vue')
   },
   {
     path: '/about',
@@ -19,7 +24,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../containers/AboutContainer.vue')
   },
   {
-    path: "/search/:query",
+    path: "/:location/search/:query",
     name: "Search",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -27,7 +32,7 @@ const routes = [
     component: () => import(/* webpackChunkName: "search" */ '../containers/SearchContainer.vue')
   },
   {
-    path: "/record/",
+    path: "/:location/record/",
     name: "Record",
     component: () => import(/* webpackChunkName: "fullrecord" */ '../containers/FullRecordContainer.vue'),
     props: (route) => ({ id: route.query.id, page: route.query.page, query: route.query.query, loarId: route.query.loarId })
