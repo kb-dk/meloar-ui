@@ -43,7 +43,7 @@ export default {
     this.updateInstance(this.$route.params.location)
     this.MeloarInstances.instances.filter(item => {
       console.log(item.key, "and", item['name'])
-      item.key === this.instance ? this.updateInstance(item) : null
+      item.key === this.instance ? this.updateInstance(item.key) : null
     })
   },
   methods: {
