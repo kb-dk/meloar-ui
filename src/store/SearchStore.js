@@ -30,7 +30,7 @@ const actions = {
   doSearch ({ commit }, params) {
     commit('setLoadingStatus',true)
     searchService
-      .fireSearch(params)
+      .fireSearch(params.query, params.instance)
       .then(result => commit('doSearchSuccess', result), error =>
         commit('doSearchError', error))
   },

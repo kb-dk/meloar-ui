@@ -3,10 +3,10 @@
       <div class="titleContainer">
         <h2>Meloar</h2>
         <hr style="width:300px" />
-        <span>Meloar baby!</span>
+        <span>Tilgængelige MeLOAR instanser:</span>
       </div>
       <div class="simpleNavigation">
-        <router-link class="menuLink" :to="{name: 'Instance', params: { location: 'fof' }}">Fof</router-link>
+        <router-link v-bind:key="index" v-for="(item, index) in instances" class="menuLink instanceLink" :to="{name: 'Instance', params: { location: item.key }}">{{ item.name }}</router-link>
         <br>
         <br>
         <router-link class="menuLink" to="/About">
@@ -21,10 +21,17 @@
   <script>
   //import TimeSlider from "../components/TimeSlider";
   
+  import MeloarInstances from "../instances/instances";
+
   export default {
     name:'MeloarContainer',
     components: {
-    }
+    },
+    computed: {
+      instances () {
+        return MeloarInstances.instances
+      }
+    },
   }
   </script>
   

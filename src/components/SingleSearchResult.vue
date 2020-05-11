@@ -12,11 +12,13 @@
             Rapport from approx <span>{{ this.transformDate(result.doclist.docs[0].ctime) }} </span>
             years ago, {{ this.deliverTimeBetween(result.doclist.docs[0].ctime) }}
             <hr class="report-divider" align="left" />
-            Rapport content from time period between
-            <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_from_i)">&nbsp; 
-            {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i) }}</span> and 
-            <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_to_i)">&nbsp;
-            {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_to_i) }}</span>
+            <div v-if="result.doclist.docs[0].ff_primaryobject_year_from_i && result.doclist.docs[0].ff_primaryobject_year_from_i">
+              Rapport content from time period between
+              <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_from_i)">&nbsp; 
+              {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i) }}</span> and 
+              <span :title="this.returnACorDC(result.doclist.docs[0].ff_primaryobject_year_to_i)">&nbsp;
+              {{ this.deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_to_i) }}</span>
+            </div>
           </div>
           <div class="placeTitle">Place</div>
           <div class="resultPlace">{{ this.returnAddresses(result.doclist.docs[0].place_name) }}</div>

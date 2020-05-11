@@ -1,9 +1,9 @@
 <template>
   <div :class="'instanceContainer ' + instance">
     <div class="titleContainer">
-      <h2>Meloar</h2>
+      <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
       <hr style="width:300px" />
-      <span>Fund & fortidsminder v2</span>
+      <span>{{ instance.name || 'Ukendt instans' }} v2</span>
     </div>
     <search-box />
     <search-map />
@@ -21,6 +21,7 @@
 <script>
 import SearchBox from "../components/SearchBox.vue";
 import SearchMap from "../components/SearchMap.vue";
+import MeloarInstances from '../instances/instances';
 import { mapState, mapActions } from 'vuex'
 //import TimeSlider from "../components/TimeSlider";
 
@@ -28,16 +29,22 @@ export default {
   name:'InstanceContainer',
   components: {
     SearchBox,
-    SearchMap
+    SearchMap,
   },
+  data: () => ({
+    MeloarInstances:MeloarInstances,
+  }),
   computed: {
     ...mapState({
       instance: state => state.searchStore.instance,
     })
   },
   created() {
-    console.log(this.$route)
     this.updateInstance(this.$route.params.location)
+    this.MeloarInstances.instances.filter(item => {
+      console.log(item.key, "and", item['name'])
+      item.key === this.instance ? this.updateInstance(item) : null
+    })
   },
   methods: {
     ...mapActions("searchStore", {

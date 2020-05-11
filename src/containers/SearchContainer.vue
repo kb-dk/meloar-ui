@@ -27,7 +27,8 @@ export default {
   computed: {
     ...mapState({
       query: state => state.searchStore.query,
-      results: state => state.searchStore.results
+      results: state => state.searchStore.results,
+      instance: state => state.searchStore.instance
     })
   },
   methods: {
@@ -63,7 +64,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     const query = to.params.query;
         next(vm => {
-          vm.doSearch(query);
+          vm.doSearch({query:query, instance:vm.instance});
           //console.log(vm, query);
         })
   },
@@ -71,7 +72,7 @@ export default {
  beforeRouteUpdate(to, from, next) {
     const query = to.params.query;
     if(this.checkForSearchChange(to, from)) {
-      this.doSearch(query)
+      this.doSearch({query:query, instance:to.params.location})
       next();
     }
   },

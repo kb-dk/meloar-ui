@@ -5,7 +5,7 @@
         </div>
         <div id="searchMapContainer" class="searchMapContainer hidden">
           <div v-on:click="toggleMap" class="mapClose" />
-          <div v-on:click="fireSearch" class="mapSearch">
+          <div v-on:click="doAreaSearch" class="mapSearch">
             Search
           </div>
           <div class="searchMap" id="searchMap" />
@@ -29,6 +29,7 @@ export default {
   computed: {
       ...mapState({
         queryDisplay: state => state.searchStore.queryDisplay,
+        instance: state => state.searchStore.instance
       })
     },
 
@@ -118,13 +119,14 @@ export default {
     toRadian(degree) {
       return (degree * Math.PI) / 180;
     },
-    fireSearch() {
+    doAreaSearch() {
       this.updateQueryDisplay("*.*");
       this.updateQuery("*.*&d=" + this.searchRadius / 1000 + "&pt=" + this.searchPosition[1] + "," + this.searchPosition[0]);
       this.$router.push({
         name: "Search",
         params: {
-          query: "*.*&d=" + this.searchRadius / 1000 + "&pt=" + this.searchPosition[1] + "," + this.searchPosition[0]
+          query: "*.*&d=" + this.searchRadius / 1000 + "&pt=" + this.searchPosition[1] + "," + this.searchPosition[0],
+          location:this.instance
         }
       });
       console.log();

@@ -12,6 +12,8 @@
 <script>
 
 import { mapState, mapActions } from "vuex";
+import { apiHelper } from '../../helpFunctions/apiHelper'
+
 
 export default {
     name: "PdfDocument",
@@ -25,11 +27,6 @@ export default {
         instance: state => state.searchStore.instance
       }),
     },
-    created() {
-      console.log(this.instance)
-      this.instance === '' ? this.updateInstance(this.$route.params.location) : null
-    },
-
     props: {
       record: Object,
       singlePage: Boolean,
@@ -47,7 +44,7 @@ export default {
       }),
       getUrl() {
         const proxyURL = encodeURIComponent(
-          "/api/meloar/pdf?url=" + this.record.external_resource[0]
+          apiHelper.getApiString(this.instance, "pdfApi") + "?url=" + this.record.external_resource[0]
         );
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage

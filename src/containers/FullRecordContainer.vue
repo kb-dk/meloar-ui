@@ -25,7 +25,8 @@ export default {
   computed: {
     ...mapState({
       query: state => state.searchStore.query,
-      results: state => state.searchStore.results
+      results: state => state.searchStore.results,
+      instance: state => state.searchStore.instance,
     })
   },
   watch: {
@@ -51,7 +52,8 @@ export default {
     ...mapActions('searchStore', {
       doSearch: 'doSearch',
       setLoadingStatus: 'setLoadingStatus',
-      updateQuery:'updateQuery'
+      updateQuery:'updateQuery',
+      updateInstance:'updateInstance'
     }),
     setRecordData(rd) {
       this.recordData = rd;
@@ -106,8 +108,9 @@ beforeRouteEnter(to, from, next) {
     }
     else {
     //console.log("NO ID MATCH")
-    vm.doSearch("id:" + to.query.id)
+    vm.doSearch({query:to.query.loarId, instance:to.params.location})
     .then(() => {
+      vm.updateInstance(to.params.location)
       vm.updateQuery(to.query.query)
       vm.setId(to.query.id)
       vm.setQuery(to.query.query)

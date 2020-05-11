@@ -168,7 +168,6 @@ body {
 
 .simpleNavigation a {
   text-decoration: none;
-  border-bottom: 1px solid rgba(30, 30, 30, 0.5);
   color: rgba(30, 30, 30, 0.5);
 }
 
@@ -289,4 +288,12 @@ body {
   border-top: 1px solid rgba(30, 30, 30, 0.3);
 	border-bottom: 0px solid transparent;
   width:50px;
+}
+
+.menuLink {
+  display:block;
+}
+
+.instanceLink {
+  margin-bottom:10px;
 }

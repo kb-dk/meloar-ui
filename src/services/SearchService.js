@@ -1,14 +1,15 @@
 //import { storeSearchResult } from "../store/cacheStoreHelper.js";
 import axios from "axios";
-import { config } from '../config'
+import { apiHelper } from '../helpFunctions/apiHelper'
+
 
 // Calls to search service
 export const searchService = {
   fireSearch,
-  structureSearchResult
+  structureSearchResult,
 }
 
-function fireSearch(query) {
+function fireSearch(query, instance) {
     if (query != undefined && query.includes("&d=")) {
       //searchStore.queryDisplay = query.substring(0, query.indexOf("&d="));
     } else if (query != undefined && query.includes("&fq=")) {
@@ -16,7 +17,7 @@ function fireSearch(query) {
     } else {
       //searchStore.queryDisplay = query;
     }
-    const searchUrl = `${config.searchApi}` + "?group.field=loar_id&group.limit=50&group=true&q=" + query;
+    const searchUrl = apiHelper.getApiString(instance, "searchApi") + "?group.field=loar_id&group.limit=50&group=true&q=" + query;
     return axios
       .get(searchUrl)
       .then(response => {
