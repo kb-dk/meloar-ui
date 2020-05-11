@@ -3,7 +3,7 @@
     <div class="titleContainer">
       <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
       <hr style="width:300px" />
-      <span>{{ instance.name || 'Ukendt instans' }} v2</span>
+      <span>{{ instanceName || 'Ukendt instans' }} v2</span>
     </div>
     <search-box />
     <search-map />
@@ -33,6 +33,7 @@ export default {
   },
   data: () => ({
     MeloarInstances:MeloarInstances,
+    instanceName:''
   }),
   computed: {
     ...mapState({
@@ -43,7 +44,7 @@ export default {
     this.updateInstance(this.$route.params.location)
     this.MeloarInstances.instances.filter(item => {
       console.log(item.key, "and", item['name'])
-      item.key === this.instance ? this.updateInstance(item.key) : null
+      item.key === this.instance ? (this.updateInstance(item.key), this.instanceName = item.name) : null
     })
   },
   methods: {
