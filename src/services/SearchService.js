@@ -17,7 +17,8 @@ function fireSearch(query, instance) {
     } else {
       //searchStore.queryDisplay = query;
     }
-    const searchUrl = apiHelper.getApiString(instance, "searchApi") + "?group.field=loar_id&group.limit=50&group=true&q=" + query;
+    query === undefined ? query = '' : query = "&q=" + query;
+    const searchUrl = apiHelper.getApiString(instance, "searchApi") + "?group.field=loar_id&group.limit=50&group=true" + query;
     return axios
       .get(searchUrl)
       .then(response => {
