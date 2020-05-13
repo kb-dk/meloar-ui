@@ -72,7 +72,7 @@ export default {
     })
   },
   created() {
-    this.instance === '' ? this.updateInstance(this.$route.params.location) : null
+    this.instance === '' ? this.updateInstance(this.$route.params.instance) : null
   },
   methods: {
     ...mapActions("searchStore", {

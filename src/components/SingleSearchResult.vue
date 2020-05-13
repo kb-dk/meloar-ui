@@ -112,11 +112,11 @@
           ? {
               name: "Record",
               query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId, page: true },
-              params: {location: this.instance }
+              params: {instance: this.instance }
             }
           : { name: "Record", 
               query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId },
-              params: {location: this.instance } 
+              params: {instance: this.instance } 
             };
       },
       transformDate(date) {

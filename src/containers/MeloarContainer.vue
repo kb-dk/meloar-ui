@@ -6,7 +6,7 @@
         <span>Tilgængelige MeLOAR instanser:</span>
       </div>
       <div class="simpleNavigation">
-        <router-link v-bind:key="index" v-for="(item, index) in instances" class="menuLink instanceLink" :to="{name: 'Instance', params: { location: item.key }}">{{ item.name }}</router-link>
+        <router-link v-bind:key="index" v-for="(item, index) in instances" class="menuLink instanceLink" :to="{name: 'Instance', params: { instance: item.key }}">{{ item.name }}</router-link>
         <br>
         <br>
         <router-link class="menuLink" to="/About">

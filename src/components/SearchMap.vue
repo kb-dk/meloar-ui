@@ -126,7 +126,7 @@ export default {
         name: "Search",
         params: {
           query: "*.*&d=" + this.searchRadius / 1000 + "&pt=" + this.searchPosition[1] + "," + this.searchPosition[0],
-          location:this.instance
+          instance:this.instance
         }
       });
       console.log();

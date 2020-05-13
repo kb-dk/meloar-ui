@@ -1,8 +1,9 @@
 <template>
   <div class="searchbox">
-      <transition name="loading-overlay">
+    <div v-if="this.$route.name !== 'Instance'" class="instanceHeadline">{{ instanceName }}</div>
+      <!--<transition name="loading-overlay">
          <div v-if="loading === true"></div>
-      </transition>
+      </transition>-->
     <form @submit.prevent="search">
       <input v-model="searchQuery" size="16" type="text" placeholder="Type to search." />
       <button class="submitButton" title="Search" type="submit"></button>
@@ -14,12 +15,15 @@
 <script>
   //import "../assets/styles/search.scss";
   import { mapState, mapActions } from "vuex";
+  import MeloarInstances from '../instances/instances';
 
   export default {
     name: "SearchBox",
     data() {
       return {
-        searchQuery: ""
+        searchQuery: "",
+        instanceName: "",
+        MeloarInstances:MeloarInstances,
       };
     },
     computed: {
@@ -33,6 +37,9 @@
     },
     created() {
       this.searchQuery = this.queryDisplay;
+      this.MeloarInstances.instances.filter(item => {
+        item.key === this.instance || item.key === this.$route.params.instance ? (this.instanceName = item.name,console.log("found it!", item.name)) : null
+      })
     },
     watch: {
       queryDisplay: function(newValue) {
@@ -60,7 +67,7 @@
           }
           this.updateQuery(this.searchQuery + fixedFilters)
           //console.log(filters);
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, location: this.instance } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, instance: this.instance } });
           e.preventDefault();
         }
       },
@@ -69,7 +76,7 @@
         this.updateQuery("")
         this.$router.history.current.name === "Instance"
           ? null
-          : this.$router.push({ name: "Instance", params: {location: this.instance} });
+          : this.$router.push({ name: "Instance", params: {instance: this.instance} });
       }
     }
   };
