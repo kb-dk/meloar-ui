@@ -28,7 +28,8 @@
 </template>
 
 <script>
-import SingleSearchResult from "./SingleSearchResult.vue";
+// import SingleSearchResult from "./SingleSearchResult.vue";
+import SingleSearchResult from "./searchresult/SingleSearchResult_default";
 import AppliedFilters from "./AppliedFilters.vue";
 import { mapState, mapActions } from 'vuex'
 
