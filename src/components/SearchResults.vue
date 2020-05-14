@@ -79,7 +79,7 @@ export default {
     }),
      searchResultComponentName() {
           //Remember to handle default instance
-          return 'SingleSearchResult_' + this.instance
+         return this.instance ? 'SingleSearchResult_' + this.instance : 'SingleSearchResult_default'
         }
   },
   created() {
