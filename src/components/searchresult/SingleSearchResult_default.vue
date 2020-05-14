@@ -1,5 +1,5 @@
 <template>
-    <div class="searchResult" :id="fixIdForSearchResultContainer(result.groupValue)">
+    <div class="searchResult" :id="$_fixIdForSearchResultContainer(result.groupValue)">
       <div class="generalInfo">
         <div class="overallInfo">
           <single-search-result-info-base :result="result"  />
@@ -12,19 +12,17 @@
 </template>
 
 <script>
-   import PDFSearchResult from "./PDFSearchResult";
-   import SingleSearchResultInfoBase from "./SingleSearchResultInfoBase"
-  //import ResultMap from "./ResultMap.vue";
-  import { mapState } from "vuex";
-
-
+  import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
+  import PDFSearchResult from "./common/PDFSearchResult"
+   import SearchResultUtils from "../../mixins/SearchResultUtils"
+ 
   export default {
-    name: "SearchResult",
-    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
+    name: "SingleSearchResult_default",
     components: {
      PDFSearchResult,
      SingleSearchResultInfoBase
     },
+     mixins: [SearchResultUtils],
     props: {
       result: {
         type: Object,
@@ -35,17 +33,5 @@
         requred: true
       }
     },
-    computed: {
-    ...mapState({
-      instance: state => state.searchStore.instance
-    })
-  },
-    created() {
-    },
-    methods: {
-      fixIdForSearchResultContainer(id) {
-        return id.replace(/:|\s|\//g, '-')
-      },
-    }
-  };
+   };
 </script>

@@ -1,7 +1,8 @@
 <template>
-    <div class="searchResult" :id="$_fixIdForSearchResultContainer(result.groupValue)">
+    <div class="searchResult" :id="this.$_fixIdForSearchResultContainer(result.groupValue)">
       <div class="generalInfo">
         <div class="overallInfo">
+         
          
              <single-search-result-info-base :result="result"  />
          
@@ -37,22 +38,23 @@
 
 <script>
   
-   import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
+  import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
   import PDFSearchResult from "./common/PDFSearchResult"
   import ResultMap from "./addons/ResultMap.vue";
   import SearchResultUtils from "../../mixins/SearchResultUtils"
-  
+  import { mapState } from "vuex";
 
 
   export default {
-    name: "SingleSearchResult_fof",
+    name: "SingleSearchResult_kirk",
+    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
     components: {
       ResultMap,
       SingleSearchResultInfoBase,
       PDFSearchResult
     
     },
-      mixins: [SearchResultUtils],
+     mixins: [SearchResultUtils],
     props: {
       result: {
         type: Object,
@@ -62,6 +64,17 @@
         type: String,
         requred: true
       }
+    },
+    computed: {
+    ...mapState({
+      instance: state => state.searchStore.instance
+    })
+  },
+    created() {
+    },
+    methods: {
+     
+     
     }
   };
 </script>
