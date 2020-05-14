@@ -2,9 +2,7 @@
     <div class="searchResult" :id="$_fixIdForSearchResultContainer(result.groupValue)">
       <div class="generalInfo">
         <div class="overallInfo">
-         
              <single-search-result-info-base :result="result"  />
-         
           <div class="resultInfo">Time</div>
           <div class="timeTitle" />
           <div class="resultDate">

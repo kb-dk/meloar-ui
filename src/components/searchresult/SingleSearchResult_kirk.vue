@@ -2,10 +2,7 @@
     <div class="searchResult" :id="this.$_fixIdForSearchResultContainer(result.groupValue)">
       <div class="generalInfo">
         <div class="overallInfo">
-         
-         
              <single-search-result-info-base :result="result"  />
-         
           <div class="resultInfo">Time</div>
           <div class="timeTitle" />
           <div class="resultDate">
@@ -42,8 +39,7 @@
   import PDFSearchResult from "./common/PDFSearchResult"
   import ResultMap from "./addons/ResultMap.vue";
   import SearchResultUtils from "../../mixins/SearchResultUtils"
-  import { mapState } from "vuex";
-
+  
 
   export default {
     name: "SingleSearchResult_kirk",
@@ -64,17 +60,6 @@
         type: String,
         requred: true
       }
-    },
-    computed: {
-    ...mapState({
-      instance: state => state.searchStore.instance
-    })
-  },
-    created() {
-    },
-    methods: {
-     
-     
     }
   };
 </script>
