@@ -6,7 +6,7 @@
       <span>{{ instanceName || 'Ukendt instans' }} v2</span>
     </div>
     <search-box />
-    <search-map />
+    <search-map v-if="searchOptions.map === true"/>
     <div class="simpleNavigation">
       <router-link class="menuLink" to="/About">
         About this
@@ -33,7 +33,7 @@ export default {
   },
   data: () => ({
     MeloarInstances:MeloarInstances,
-    instanceName:''
+    instanceName:'',
   }),
   computed: {
     ...mapState({
@@ -42,9 +42,14 @@ export default {
   },
   created() {
     this.updateInstance(this.$route.params.location)
+    //Run through the instances and match - when we match, set instance, instance name and the search options for the instance.
     this.MeloarInstances.instances.filter(item => {
       console.log(item.key, "and", item['name'])
-      item.key === this.instance ? (this.updateInstance(item.key), this.instanceName = item.name) : null
+      item.key === this.instance ? 
+      (this.updateInstance(item.key), 
+      this.instanceName = item.name, 
+      this.searchOptions = item.searchOptions) 
+      : null
     })
   },
   methods: {

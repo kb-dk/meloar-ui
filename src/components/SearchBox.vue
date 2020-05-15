@@ -8,31 +8,43 @@
       <button class="submitButton" title="Search" type="submit"></button>
       <button class="resetButton" v-on:click="returnToStart()" title="Reset" type="reset"></button>
     </form>
+    <time-slider :min="searchOptions.timeOptions.min"
+                 :max="searchOptions.timeOptions.max" 
+                 :interval="searchOptions.timeOptions.interval" 
+                 :values="[searchOptions.timeOptions.startVal,searchOptions.timeOptions.endVal]"
+                 @search-box-update="searchBoxUpdate" />
   </div>
 </template>
 
 <script>
   //import "../assets/styles/search.scss";
   import { mapState, mapActions } from "vuex";
+  import TimeSlider from "../components/TimeSlider";
+  import MeloarInstances from '../instances/instances';
 
   export default {
     name: "SearchBox",
-    data() {
-      return {
-        searchQuery: ""
-      };
+    components: {
+    TimeSlider,
     },
+    data: () => ({
+        MeloarInstances:MeloarInstances,
+        searchQuery: "",
+        timeTo:'',
+        timeFrom:'',
+        searchOptions:{}
+    }),
     computed: {
       ...mapState({
         queryDisplay: state => state.searchStore.queryDisplay,
         query: state => state.searchStore.query,
         loading: state => state.searchStore.loading,
         instance: state => state.searchStore.instance
-
       })
     },
     created() {
       this.searchQuery = this.queryDisplay;
+      this.MeloarInstances.instances.filter(item => {item.key === this.instance ? this.searchOptions = item.searchOptions: null})
     },
     watch: {
       queryDisplay: function(newValue) {
@@ -44,6 +56,9 @@
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
       }),
+      searchBoxUpdate(variable) {
+        console.log(variable)
+       },
       search(e) {
         if (this.searchQuery !== this.queryDisplay) {
           this.updateQueryDisplay(this.searchQuery);
