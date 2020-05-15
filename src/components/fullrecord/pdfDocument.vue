@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="iframeUrl !== ''">
     <router-link :to="this.createSearchLink()" class="backToSearch">
       back to searching.
     </router-link>
@@ -54,7 +54,7 @@ export default {
       },
 
       createSearchLink() {
-        return { name: "Search", params: { location: this.instance, query:this.query } }
+        return { name: "Search", params: { query:this.query, instance: this.instance } }
       },
 
       getSinglePageNumber() {

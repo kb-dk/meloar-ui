@@ -22,20 +22,27 @@
                <span v-if="resultHits > 1 || resultHits === null || resultHits === 0"> pdfs</span>
                <span v-if="resultHits === 1"> pdf</span>
            </div>
-             <single-search-result v-for="(item, index) in this.results" :result="item" :queryString="queryDisplay" :key="index" />
+           
+
+              <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :queryString="queryDisplay" :key="index"  ></component>
         </div>
      </div>
 </template>
 
 <script>
-import SingleSearchResult from "./SingleSearchResult.vue";
+// import SingleSearchResult from "./SingleSearchResult.vue";
+import SingleSearchResult_default from "./searchresult/SingleSearchResult_default";
+import SingleSearchResult_fof from "./searchresult/SingleSearchResult_fof";
+import SingleSearchResult_kirk from "./searchresult/SingleSearchResult_kirk";
 import AppliedFilters from "./AppliedFilters.vue";
 import { mapState, mapActions } from 'vuex'
 
 export default {
   name: "SearchResults",
   components: {
-    SingleSearchResult,
+    SingleSearchResult_default,
+    SingleSearchResult_fof,
+    SingleSearchResult_kirk,
     AppliedFilters
   },
   data: () => ({
@@ -69,10 +76,14 @@ export default {
       loading: state => state.searchStore.loading,
       instance: state => state.searchStore.instance
 
-    })
+    }),
+     searchResultComponentName() {
+          //Remember to handle default instance
+         return this.instance ? 'SingleSearchResult_' + this.instance : 'SingleSearchResult_default'
+        }
   },
   created() {
-    this.instance === '' ? this.updateInstance(this.$route.params.location) : null
+    this.instance === '' ? this.updateInstance(this.$route.params.instance) : null
   },
   methods: {
     ...mapActions("searchStore", {

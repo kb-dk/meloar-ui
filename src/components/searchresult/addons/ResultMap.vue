@@ -5,9 +5,9 @@
         )}
       </div>
 </template>
-<script>import "../../node_modules/leaflet/dist/leaflet.css";
-import icon from "../../node_modules/leaflet/dist/images/marker-icon.png";
-import iconShadow from "../../node_modules/leaflet/dist/images/marker-shadow.png";
+<script>import "../../../../node_modules/leaflet/dist/leaflet.css";
+import icon from "../../../../node_modules/leaflet/dist/images/marker-icon.png";
+import iconShadow from "../../../../node_modules/leaflet/dist/images/marker-shadow.png";
 
 export default {
   name: "ResultMap",

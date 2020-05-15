@@ -72,7 +72,7 @@ export default {
  beforeRouteUpdate(to, from, next) {
     const query = to.params.query;
     if(this.checkForSearchChange(to, from)) {
-      this.doSearch({query:query, instance:to.params.location})
+      this.doSearch({query:query, instance:to.params.instance})
       next();
     }
   },

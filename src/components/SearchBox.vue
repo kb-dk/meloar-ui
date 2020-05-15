@@ -1,8 +1,9 @@
 <template>
   <div class="searchbox">
-      <transition name="loading-overlay">
+    <div v-if="this.$route.name !== 'Instance'" class="instanceHeadline">{{ instanceName }}</div>
+      <!--<transition name="loading-overlay">
          <div v-if="loading === true"></div>
-      </transition>
+      </transition>-->
     <form @submit.prevent="search">
       <input v-model="searchQuery" size="16" type="text" placeholder="Type to search." />
       <button class="submitButton" title="Search" type="submit"></button>
@@ -31,6 +32,7 @@
         MeloarInstances:MeloarInstances,
         searchQuery: "",
         timeTo:'',
+        instanceName: "",
         timeFrom:'',
         searchOptions:{}
     }),
@@ -44,7 +46,10 @@
     },
     created() {
       this.searchQuery = this.queryDisplay;
-      this.MeloarInstances.instances.filter(item => {item.key === this.instance ? this.searchOptions = item.searchOptions: null})
+
+      this.MeloarInstances.instances.filter(item => {
+        item.key === this.instance || item.key === this.$route.params.instance ? (this.instanceName = item.name, this.searchOptions = item.searchOptions) : null
+      })
     },
     watch: {
       queryDisplay: function(newValue) {
@@ -75,7 +80,7 @@
           }
           this.updateQuery(this.searchQuery + fixedFilters)
           //console.log(filters);
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, location: this.instance } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, instance: this.instance } });
           e.preventDefault();
         }
       },
@@ -84,7 +89,7 @@
         this.updateQuery("")
         this.$router.history.current.name === "Instance"
           ? null
-          : this.$router.push({ name: "Instance", params: {location: this.instance} });
+          : this.$router.push({ name: "Instance", params: {instance: this.instance} });
       }
     }
   };

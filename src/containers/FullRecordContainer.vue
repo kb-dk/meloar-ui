@@ -1,26 +1,28 @@
 <template>
   <div>
-      <div>
-        <record-metadata :record="recordData" />
-      </div>
-   <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="query" />
+    <div v-if="foundData !== false">
+      <record-metadata :record="recordData" />
+      <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="query" />
+    </div>
+    <not-found v-if="foundData === false"></not-found>
   </div>
 </template>
 
 <script>
 import RecordMetadata from "../components/fullrecord/recordMetadata.vue";
 import PdfDocument from "../components/fullrecord/pdfDocument.vue";
+import NotFound from "../components/NotFound.vue";
 import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "FullRecordContainer",
-
   components: {
     RecordMetadata,
-    PdfDocument
+    PdfDocument,
+    NotFound
   },
 
-  data: () => ({ recordData: null, pdfUrl: "", startPage: 0, id: "", singlePage: false }),
+  data: () => ({ recordData: null, pdfUrl: "", startPage: 0, id: "", singlePage: false, foundData:null }),
 
   computed: {
     ...mapState({
@@ -36,6 +38,10 @@ export default {
           this.setRecordData(this.results[0].doclist.docs[0]);
           this.scrollToTop();
           this.setLoadingStatus(false)
+        }
+        else {
+          this.foundData = false
+          console.log("oh snap, we got no result!")
         }
       }
     }
@@ -74,9 +80,6 @@ export default {
         this.singlePage = true;
       }
     },
-    setQuery(query) {
-      console.log(query)
-    },
 
     scrollToTop() {
       window.scrollTo(0, 0);
@@ -108,12 +111,11 @@ beforeRouteEnter(to, from, next) {
     }
     else {
     //console.log("NO ID MATCH")
-    vm.doSearch({query:to.query.loarId, instance:to.params.location})
+    vm.doSearch({query:to.query.loarId, instance:to.params.instance})
     .then(() => {
-      vm.updateInstance(to.params.location)
+      vm.updateInstance(to.params.instance)
       vm.updateQuery(to.query.query)
       vm.setId(to.query.id)
-      vm.setQuery(to.query.query)
       if (to.query.query && to.query.page) {
         vm.setPageRenderMode(true);
       }
