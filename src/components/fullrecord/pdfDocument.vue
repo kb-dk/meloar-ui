@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div v-if="iframeUrl !== ''">
     <router-link :to="this.createSearchLink()" class="backToSearch">
       back to searching.
     </router-link>
@@ -13,6 +13,11 @@
 
 <script>
 import WebViewer from '../WebViewer.vue'
+
+import { mapState, mapActions } from "vuex";
+import { apiHelper } from '../../helpFunctions/apiHelper'
+
+
 export default {
     name: "PdfDocument",
     components: {
@@ -23,10 +28,11 @@ export default {
       iframeUrl:'',
       publicPath: process.env.BASE_URL
     }),
-
-    created() {
+    computed: {
+      ...mapState({
+        instance: state => state.searchStore.instance
+      }),
     },
-
     props: {
       record: Object,
       singlePage: Boolean,
@@ -39,9 +45,12 @@ export default {
     },
 
     methods: {
+      ...mapActions("searchStore", {
+        updateInstance: "updateInstance"
+      }),
       getUrl() {
         const proxyURL = encodeURIComponent(
-          "/api/meloar/pdf?url=" + this.record.external_resource[0]
+          apiHelper.getApiString(this.instance, "pdfApi") + "?url=" + this.record.external_resource[0]
         );
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage
@@ -60,7 +69,7 @@ export default {
 
 
       createSearchLink() {
-        return "/search/" + this.query;
+        return { name: "Search", params: { query:this.query, instance: this.instance } }
       },
 
       getSinglePageNumber() {

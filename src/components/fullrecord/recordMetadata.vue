@@ -1,5 +1,5 @@
 <template>
-  <div id="pdfInformationTab">
+  <div v-if="this.getId() !== ''" id="pdfInformationTab">
     <div class="pdfMetadata">
       <div class="information">information</div>
       <div class="pdfSpecs">

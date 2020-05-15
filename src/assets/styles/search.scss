@@ -4,7 +4,7 @@
   margin-right: auto;
   max-width: 500px;
   min-width: 200px;
-  padding-top: 59px;
+  padding-top: 30px;
   -webkit-transition: all 500ms ease-out 0s;
   -moz-transition: all 500ms ease-out 0s;
   -o-transition: all 500ms ease-out 0s;
@@ -195,6 +195,11 @@
   max-width: 500px;
   min-width: 200px;
   padding-top: 100px;
+}
+
+.titleContainer a {
+  text-decoration: none;
+	color: black;
 }
 
 .titleContainer h2 {
@@ -780,6 +785,26 @@
   margin-bottom: 1em;
 }
 
+.appliedFilters {
+  display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1200px;
+}
+
+.noResults {
+  display: block;
+	margin-left: auto;
+	margin-right: auto;
+	max-width: 1200px;
+	text-align: center;
+}
+
+.emojiComponent {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 135%;
+}
+
 .backToSearch {
   text-transform: uppercase;
   font-size: 80%;
@@ -801,4 +826,27 @@
 	max-width: 500px;
   min-width: 200px;
   margin-top:15px;
+}
+
+.loading-overlay-enter-active {
+  width: 100vw;
+	height: 100vh;
+	top: 0px;
+	position: fixed;
+	background-color: rgba(30,30,30,0.8);
+	left: 0px;
+	z-index: 1000000;
+  transition: all .1s ease;
+}
+.loading-overlay-leave-active {
+  transition: all .1s ease;
+}
+.loading-overlay-enter, .loading-overlay-leave-to
+/* .slide-fade-leave-active below version 2.1.8 */ {
+  opacity: 0;
+}
+
+.instanceHeadline {
+  text-align: center;
+	margin-bottom: 30px;
 }

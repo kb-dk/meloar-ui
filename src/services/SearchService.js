@@ -1,15 +1,15 @@
 //import { storeSearchResult } from "../store/cacheStoreHelper.js";
 import axios from "axios";
-import { config } from '../config'
+import { apiHelper } from '../helpFunctions/apiHelper'
+
 
 // Calls to search service
 export const searchService = {
   fireSearch,
-  structureSearchResult
+  structureSearchResult,
 }
 
-function fireSearch(query) {
-  console.log("FIRESEARCHLOLZ")
+function fireSearch(query, instance) {
     if (query != undefined && query.includes("&d=")) {
       //searchStore.queryDisplay = query.substring(0, query.indexOf("&d="));
     } else if (query != undefined && query.includes("&fq=")) {
@@ -17,11 +17,11 @@ function fireSearch(query) {
     } else {
       //searchStore.queryDisplay = query;
     }
-    const searchUrl = `${config.searchApi}` + "?group.field=loar_id&group.limit=50&group=true&q=" + query;
+    query === undefined ? query = '' : query = "&q=" + query;
+    const searchUrl = apiHelper.getApiString(instance, "searchApi") + "?group.field=loar_id&group.limit=50&group=true" + query;
     return axios
       .get(searchUrl)
       .then(response => {
-        console.log("testlol")
         //storeSearchResult(response.data);
         return structureSearchResult(response.data);
       })
@@ -31,6 +31,7 @@ function fireSearch(query) {
   }
 
   function structureSearchResult(searchResults) {
+    let result = {};
     let highLights = [];
     let results = [];
     for (let i = 0; i < searchResults.grouped.loar_id.groups.length; i++) {
@@ -46,6 +47,7 @@ function fireSearch(query) {
       }
       results.push(searchResults.grouped.loar_id.groups[i]);
     }
-    console.log("RESULTS", results);
-    return results; 
+    result.results = results
+    result.facets = searchResults.facet_counts
+    return result; 
   }

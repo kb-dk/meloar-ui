@@ -6,12 +6,21 @@ const state = {
   query: "",
   queryDisplay: "",
   results: {},
+  facets: {},
   error: "",
+  instance:"",
+  loading:false
 }
 
 const actions = {
   updateQueryDisplay ( {commit}, param ) {
     commit('updateQueryDisplaySuccess', param)
+  },
+  updateInstance ( {commit}, param ) {
+    commit('updateInstance', param)
+  },
+  setLoadingStatus( {commit}, param) {
+    commit('setLoadingStatus', param)
   },
 
   updateQuery ( {commit}, param ) {
@@ -19,11 +28,10 @@ const actions = {
   },
 
   doSearch ({ commit }, params) {
-    console.log("WE DO SEARCH PLXPLX!")
-    commit('doSearchSuccess')
+    commit('setLoadingStatus',true)
     searchService
-      .fireSearch(params)
-      .then(users => commit('doSearchSuccess', users), error =>
+      .fireSearch(params.query, params.instance)
+      .then(result => commit('doSearchSuccess', result), error =>
         commit('doSearchError', error))
   },
 
@@ -39,11 +47,22 @@ const mutations = {
   updateQuerySuccess(state, param) {
     state.query = param
   },
-  doSearchSuccess(state, users) {
-    state.results = users;
+  updateInstance(state, param) {
+    state.instance = param
+  },
+  doSearchSuccess(state, result) {
+    //console.log("we got results",result)
+    state.results = result.results
+    state.facets = result.facets
+  },
+  removeFacets(state) {
+    state.facets = null
   },
   doSearchError(state, message) {
     state.error = message;
+  },
+  setLoadingStatus(state, status) {
+    state.loading = status
   }
 
 }

@@ -138,12 +138,12 @@ body {
   background-attachment: fixed;
 }
 
-.homeContainer {
+.instanceContainer {
   width: 100%;
   height: 100vh;
 }
 
-.homeContainer::after {
+.instanceContainer.fof::after {
   content:'';
   width: 100%;
   height: 100vh;
@@ -168,7 +168,6 @@ body {
 
 .simpleNavigation a {
   text-decoration: none;
-  border-bottom: 1px solid rgba(30, 30, 30, 0.5);
   color: rgba(30, 30, 30, 0.5);
 }
 
@@ -289,4 +288,53 @@ body {
   border-top: 1px solid rgba(30, 30, 30, 0.3);
 	border-bottom: 0px solid transparent;
   width:50px;
+}
+
+.menuLink {
+  display:block;
+}
+
+.instanceLink {
+  margin-bottom:10px;
+}
+
+.notfoundContainer {
+  width: 100vw;
+	height: 100vh;
+	overflow: hidden;
+}
+
+.notfound {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+  height: 350px;
+  top: calc(50vh - 175px);
+  min-width: 200px;
+  max-width:400px;
+	-webkit-transform: rotate(-17deg);
+	transform: rotate(-17deg);
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	position: relative;
+	background-color: #e9e9e9;
+	-webkit-box-shadow: 0 20px 22px 5px rgba(0, 0, 0, 0.2);
+	box-shadow: 0 20px 22px 5px rgba(0, 0, 0, 0.2);
+}
+
+.notfound span {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  display:block;
+}
+
+.notfound a {
+  text-decoration: none;
+}
+
+.notfound .error {
+  font-size: 1000%;
+  font-weight: bold;
+  animation-duration: 4s;
+  animation-iteration-count: infinite;
 }

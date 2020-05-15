@@ -17,7 +17,7 @@ export default {
   name: "SearchContainer",
   components: {
     SearchBox,
-    SearchResults,
+    SearchResults
   },
   data: () => ({
     facets: {},
@@ -26,8 +26,9 @@ export default {
   }),
   computed: {
     ...mapState({
-      queryDisplay: state => state.searchStore.queryDisplay,
-      results: state => state.searchStore.results
+      query: state => state.searchStore.query,
+      results: state => state.searchStore.results,
+      instance: state => state.searchStore.instance
     })
   },
   methods: {
@@ -52,12 +53,9 @@ export default {
     setErrorStatus() {
       this.searchError = true;
     },
-    getQuery(to) {
-      let query = this.queryDisplay;
-      if (query === "") {
-        console.log(to);
-      }
-    },
+    /*getQuery(to) {
+      let query = to.query.query;
+    },*/
     checkForSearchChange(to, from) {
       return to.params.query !== from.params.query;
     }
@@ -66,15 +64,15 @@ export default {
   beforeRouteEnter(to, from, next) {
     const query = to.params.query;
         next(vm => {
-          vm.doSearch(query);
-          console.log(vm, query);
+          vm.doSearch({query:query, instance:vm.instance});
+          //console.log(vm, query);
         })
   },
 
  beforeRouteUpdate(to, from, next) {
     const query = to.params.query;
     if(this.checkForSearchChange(to, from)) {
-      this.doSearch(query)
+      this.doSearch({query:query, instance:to.params.instance})
       next();
     }
   },

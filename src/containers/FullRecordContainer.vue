@@ -1,32 +1,50 @@
 <template>
   <div>
-      <div>
-        <record-metadata :record="recordData" />
-      </div>
-   <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="queryDisplay" />
+    <div v-if="foundData !== false">
+      <record-metadata :record="recordData" />
+      <pdf-document class="pdf-document" :record="recordData" :singlePage="singlePage" :query="query" />
+    </div>
+    <not-found v-if="foundData === false"></not-found>
   </div>
 </template>
 
 <script>
 import RecordMetadata from "../components/fullrecord/recordMetadata.vue";
 import PdfDocument from "../components/fullrecord/pdfDocument.vue";
-import { mapState } from 'vuex';
+import NotFound from "../components/NotFound.vue";
+import { mapState, mapActions } from 'vuex';
 
 export default {
   name: "FullRecordContainer",
-
   components: {
     RecordMetadata,
-    PdfDocument
+    PdfDocument,
+    NotFound
   },
 
-  data: () => ({ recordData: null, pdfUrl: "", startPage: 0, id: "", singlePage: false }),
+  data: () => ({ recordData: null, pdfUrl: "", startPage: 0, id: "", singlePage: false, foundData:null }),
 
   computed: {
     ...mapState({
-      queryDisplay: state => state.searchStore.queryDisplay,
-      results: state => state.searchStore.results
+      query: state => state.searchStore.query,
+      results: state => state.searchStore.results,
+      instance: state => state.searchStore.instance,
     })
+  },
+  watch: {
+    results: function(newValue) {
+      if(typeof newValue === 'object' && newValue !== null ) {
+        if(Object.keys(this.results).length >= 1) {
+          this.setRecordData(this.results[0].doclist.docs[0]);
+          this.scrollToTop();
+          this.setLoadingStatus(false)
+        }
+        else {
+          this.foundData = false
+          console.log("oh snap, we got no result!")
+        }
+      }
+    }
   },
 
   created() {
@@ -35,7 +53,14 @@ export default {
     //console.log(this.results)
   },
 
+
   methods: {
+    ...mapActions('searchStore', {
+      doSearch: 'doSearch',
+      setLoadingStatus: 'setLoadingStatus',
+      updateQuery:'updateQuery',
+      updateInstance:'updateInstance'
+    }),
     setRecordData(rd) {
       this.recordData = rd;
     },
@@ -55,31 +80,11 @@ export default {
         this.singlePage = true;
       }
     },
-    setQuery(query) {
-      console.log(query)
-    },
 
     scrollToTop() {
       window.scrollTo(0, 0);
     }
   },
-  /*beforeRouteEnter(to,from, next) {
-    console.log(to, from, next, "we entered")
-    next(vm => {
-      if(vm.results.length > 0) {
-        console.log(vm.results[to.query.id])
-        vm.setRecordData(vm.results[to.query.id]);
-      if (to.query.query && to.query.page) {
-        vm.setPageRenderMode(true);
-      }
-      vm.setId(to.query.id);
-      vm.scrollToTop();
-      }
-      else {
-        console.log("we need the data plx!")
-      }
-    })
-  }*/
 
 beforeRouteEnter(to, from, next) {
   //console.log("------ before we enter ------")
@@ -105,23 +110,19 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    console.log("NO ID MATCH")
-   /*searchService
-      .doSearch("id:" + to.query.id)
-      .then(searchResult => {
-        next(vm => {
-          vm.setQuery(to.query.query);
-          vm.setRecordData({ doc: results[0].doclist.docs[0] });
-          if (to.query && to.query.page) {
-            vm.setPageRenderMode(true);
-          }
-          vm.setId(to.query.id);
-          vm.scrollToTop();
-        });
-      })
+    //console.log("NO ID MATCH")
+    vm.doSearch({query:to.query.loarId, instance:to.params.instance})
+    .then(() => {
+      vm.updateInstance(to.params.instance)
+      vm.updateQuery(to.query.query)
+      vm.setId(to.query.id)
+      if (to.query.query && to.query.page) {
+        vm.setPageRenderMode(true);
+      }
+    })
       .catch(reason => {
         console.log("Search error", reason);
-      });*/
+      });
   }});
 }
 };

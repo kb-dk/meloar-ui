@@ -1,5 +1,9 @@
 <template>
   <div class="searchbox">
+    <div v-if="this.$route.name !== 'Instance'" class="instanceHeadline">{{ instanceName }}</div>
+      <!--<transition name="loading-overlay">
+         <div v-if="loading === true"></div>
+      </transition>-->
     <form @submit.prevent="search">
       <input v-model="searchQuery" size="16" type="text" placeholder="Type to search." />
       <button class="submitButton" title="Search" type="submit"></button>
@@ -11,22 +15,31 @@
 <script>
   //import "../assets/styles/search.scss";
   import { mapState, mapActions } from "vuex";
+  import MeloarInstances from '../instances/instances';
 
   export default {
     name: "SearchBox",
     data() {
       return {
-        searchQuery: ""
+        searchQuery: "",
+        instanceName: "",
+        MeloarInstances:MeloarInstances,
       };
     },
     computed: {
       ...mapState({
-        queryDisplay: state => state.searchStore.queryDisplay
+        queryDisplay: state => state.searchStore.queryDisplay,
+        query: state => state.searchStore.query,
+        loading: state => state.searchStore.loading,
+        instance: state => state.searchStore.instance
+
       })
     },
     created() {
       this.searchQuery = this.queryDisplay;
-      console.log("HELLLO!", this.queryDisplay);
+      this.MeloarInstances.instances.filter(item => {
+        item.key === this.instance || item.key === this.$route.params.instance ? (this.instanceName = item.name,console.log("found it!", item.name)) : null
+      })
     },
     watch: {
       queryDisplay: function(newValue) {
@@ -35,13 +48,12 @@
   },
     methods: {
       ...mapActions("searchStore", {
-        updateQueryDisplay: "updateQueryDisplay"
+        updateQueryDisplay: "updateQueryDisplay",
+        updateQuery: "updateQuery",
       }),
       search(e) {
         if (this.searchQuery !== this.queryDisplay) {
           this.updateQueryDisplay(this.searchQuery);
-          console.log("WE SEARCH", this.$router);
-          //console.log(this.$router.history.current.params.query);
           let filters = this.$router.history.current.params.query;
           let fixedFilters = "";
           if (filters != undefined) {
@@ -52,20 +64,19 @@
                 fixedFilters = "&fq=" + filters.split("&fq=").pop();
               }
             }
-            console.log(fixedFilters);
           }
+          this.updateQuery(this.searchQuery + fixedFilters)
           //console.log(filters);
-          console.log("pushing new route!", this.$router);
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + fixedFilters, instance: this.instance } });
           e.preventDefault();
         }
       },
       returnToStart() {
         this.updateQueryDisplay("")
-        console.log(this.$router.history.current.name, "where are we?");
-        this.$router.history.current.name === "Home"
+        this.updateQuery("")
+        this.$router.history.current.name === "Instance"
           ? null
-          : this.$router.push({ name: "Home" });
+          : this.$router.push({ name: "Instance", params: {instance: this.instance} });
       }
     }
   };

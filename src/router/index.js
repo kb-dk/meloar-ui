@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import HomeContainer from "../containers/HomeContainer.vue";
+import MeloarContainer from "../containers/MeloarContainer.vue";
 
 Vue.use(VueRouter)
 
@@ -8,7 +8,7 @@ const routes = [
   {
     path: '/',
     name: 'Home',
-    component: HomeContainer
+    component: MeloarContainer
   },
   {
     path: '/about',
@@ -19,7 +19,12 @@ const routes = [
     component: () => import(/* webpackChunkName: "about" */ '../containers/AboutContainer.vue')
   },
   {
-    path: "/search/:query",
+    path: '/:instance',
+    name: 'Instance',
+    component: () => import(/* webpackChunkName: "instance" */ '../containers/InstanceContainer.vue')
+  },
+  {
+    path: "/:instance/search/:query",
     name: "Search",
     // route level code-splitting
     // this generates a separate chunk (about.[hash].js) for this route
@@ -27,10 +32,15 @@ const routes = [
     component: () => import(/* webpackChunkName: "search" */ '../containers/SearchContainer.vue')
   },
   {
-    path: "/record/",
+    path: "/:instance/record/",
     name: "Record",
     component: () => import(/* webpackChunkName: "fullrecord" */ '../containers/FullRecordContainer.vue'),
     props: (route) => ({ id: route.query.id, page: route.query.page, query: route.query.query, loarId: route.query.loarId })
+  },
+  {
+    path: '*',
+    name: "404",
+    component: () => import(/* webpackChunkName: "404 Not found" */ '../components/NotFound.vue'),
   }
 ]
 
