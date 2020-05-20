@@ -133,10 +133,12 @@
             // Check if the first filter is a normal filter or a location filter.
             let isLocationSet = filters.indexOf("&d=") > -1;
             // split the filter up accordingly - if location, we split on &d= first, then on &fq=.
-            isLocationSet ? filterArray = filters.split("&d=")[1].split("&fq=") : filterArray = filters.split("&fq=").shift();
-            //console.log(filterArray)
-            //Run through the array, and inset the new updated filters.
-            if(filterArray.length > 0) {
+            isLocationSet ? filterArray = filters.split("&d=")[1].split("&fq=") : filterArray = filters.split("&fq=");
+            // If location is not set, we hae to remove the first entry, as it's the query.
+            // If location is true, then we've alread done it with the [1] in the filter.split above.
+            isLocationSet ? null : filterArray.shift();
+            //Run through the array, and inset the new updated filters - but make sure we actually have an array to run through.
+            if(filterArray.length > 0 && Array.isArray(filterArray)) {
                 filterArray.forEach((item, index) => {
                 //If it's the first - we check if location is set, and add that prefix - otherwise the fq prefix.
                 //We check if the items are timeSlider items - if not, we just return them and place them. Otherwise we alter the timeSlider filters.
