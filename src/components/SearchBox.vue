@@ -23,7 +23,7 @@
              :queryString="this.query || ''"
              :route="this.$router.history.current.path"
              v-if="this.$route.name === 'Search'"
-             @timeSliderUpdate="timeSliderItemChecked"
+             @timeSliderUpdate="timeSliderValuesUpdated"
              />
 </div>
 </template>
@@ -112,7 +112,7 @@
       },
       //check the item that is removed from te fliters
       //if it's a time filter, set the time on the appropriate variable to the max or min limit, depending on which filter.
-      timeSliderItemChecked(item) {
+      timeSliderValuesUpdated(item) {
         item.includes("ff_primaryobject_year_from_i") ? this.timeFrom = this.searchOptions.timeOptions.min : null
         item.includes("ff_primaryobject_year_to_i") ? this.timeTo = this.searchOptions.timeOptions.max : null
       },
