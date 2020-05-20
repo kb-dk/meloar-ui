@@ -9,6 +9,5 @@ function getApiString(loc, endPoint) {
   MeloarInstances.instances.filter(item => {
     item.key === loc ? (apiString = item[endPoint]) : null;
   });
-  console.log(apiString)
   return apiString;
 }

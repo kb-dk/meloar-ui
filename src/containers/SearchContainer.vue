@@ -1,7 +1,7 @@
 <template>
     <div class="searchContainer">
         <!--<div class="searchError">Something went terribly wrong with your search. Please try again.</div>-->
-        <search-box />
+        <search-box :time="time"/>
         <div class="labsContainer">
           <a href="http://labs.kb.dk/">Back to labs.kb.dk</a>
         </div>
@@ -10,6 +10,7 @@
 </template>
 <script>
 import SearchResults from "../components/SearchResults.vue";
+import MeloarInstances from '../instances/instances';
 import SearchBox from "../components/SearchBox.vue";
 import { mapState, mapActions } from 'vuex'
 
@@ -20,9 +21,11 @@ export default {
     SearchResults
   },
   data: () => ({
+    MeloarInstances:MeloarInstances,
     facets: {},
     hits: "",
-    searchError: false
+    searchError: false,
+    time: false,
   }),
   computed: {
     ...mapState({
@@ -30,6 +33,11 @@ export default {
       results: state => state.searchStore.results,
       instance: state => state.searchStore.instance
     })
+  },
+  created() {
+    this.MeloarInstances.instances.filter(item => {
+        item.key === this.instance || item.key === this.$route.params.instance ? this.time = item.searchOptions.time : null
+      })
   },
   methods: {
     ...mapActions('searchStore', {

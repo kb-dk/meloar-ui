@@ -11,8 +11,6 @@ export default {
       timeOptions: {
         min:-3000,
         max:2100,
-        startVal:-1000,
-        endVal:0,
         interval:100
       },
      }
