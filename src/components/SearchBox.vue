@@ -98,6 +98,13 @@
     watch: {
       queryDisplay: function(newValue) {
       this.searchQuery = newValue
+    },
+    $route(to) {
+      //Make sure, when the route is updated in any way - that we update the displayQuery.
+      //This makes sure, that pressing the backbutton in the browser rightly updates the used query in the searchbox.
+      console.log(to.params)
+        to.params.query.indexOf("&d=") !== -1 && to.params.query.indexOf("&d=") < to.params.query.indexOf("&fq=") ? this.updateQueryDisplay(to.params.query.split("&d=")[0]) :
+        this.updateQueryDisplay((to.params.query.split("&fq=")[0]));
     }
   },
     methods: {
@@ -177,12 +184,12 @@
           //If we have more han one filter (that means, more than the query, we check them out)
           filters.length > 1 ? filters.forEach(item => {
               if(item.includes("ff_primaryobject_year_from_i")) {
-                console.log("1",parseInt(this.$_returnTimeFromQueryString(item)), this.timeFrom)
+                //console.log("1",parseInt(this.$_returnTimeFromQueryString(item)), this.timeFrom)
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
                 parseInt(this.$_returnTimeFromQueryString(item)) === this.timeFrom ? null : proceed = true;
               }
               if(item.includes("ff_primaryobject_year_to_i")) {
-                console.log("3", parseInt(this.$_returnTimeFromQueryString(item)), this.timeTo)
+                //console.log("3", parseInt(this.$_returnTimeFromQueryString(item)), this.timeTo)
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
                 parseInt(this.$_returnTimeFromQueryString(item)) === this.timeTo ? null : proceed = true;
               }
