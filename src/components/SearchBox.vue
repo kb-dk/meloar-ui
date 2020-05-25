@@ -100,11 +100,12 @@
       this.searchQuery = newValue
     },
     $route(to) {
-      //Make sure, when the route is updated in any way - that we update the displayQuery.
+      //Make sure, when the route is updated in any way - that we update the displayQuery and query.
       //This makes sure, that pressing the backbutton in the browser rightly updates the used query in the searchbox.
       console.log(to.params)
-        to.params.query.indexOf("&d=") !== -1 && to.params.query.indexOf("&d=") < to.params.query.indexOf("&fq=") ? this.updateQueryDisplay(to.params.query.split("&d=")[0]) :
-        this.updateQueryDisplay((to.params.query.split("&fq=")[0]));
+      this.updateQuery(to.params.query);
+      to.params.query.indexOf("&d=") !== -1 && to.params.query.indexOf("&d=") < to.params.query.indexOf("&fq=") ? this.updateQueryDisplay(to.params.query.split("&d=")[0]) :
+      this.updateQueryDisplay((to.params.query.split("&fq=")[0]));
     }
   },
     methods: {
