@@ -16,7 +16,7 @@
                  :start="timeFrom"
                  :end="timeTo"
                  :interval="searchOptions.timeOptions.interval" 
-                 @search-box-update="searchBoxUpdate"
+                 @search-box-update="updateTimeSliderValues"
                  @do-new-search="search" />
   </div>
   <applied-filters
@@ -69,12 +69,16 @@
     created() {
       //A fast check on weather we do have a query set - and if we dont, we check if the params hae a query, and we get that.
       //If all fails, fallback is "No query."
+      let paramQuery = this.$router.history.current.params.query;
       if(this.searchQuery == "") {
-        this.queryDisplay !== "" ? this.searchQuery = this.queryDisplay :
-        this.$router.history.current.params.query ? 
-        this.searchQuery = this.$router.history.current.params.query.substr(0, this.$router.history.current.params.query.indexOf('&')) ||
-        this.$router.history.current.params.query 
-        : "No query."
+        if(this.queryDisplay !== "") {
+          this.searchQuery = this.queryDisplay
+        }
+        else {
+          if(paramQuery) {
+            this.searchQuery = paramQuery.substr(0, paramQuery.indexOf('&')) || paramQuery 
+          }
+        }
       }
       //We need the search options, so we check if the key is present and identifiable in either the instance or the route
       //Then we get the search options from the meloarInstances opbject.
@@ -83,7 +87,7 @@
                                                                                   this.searchOptions = item.searchOptions) : null
       });
       //When creating, check if we already have the time for the slider in the params, and if so, put them into the slider
-      if(this.time === true) {
+      if(this.time) {
         if(this.$router.history.current.params.query) {
         this.$router.history.current.params.query.split("&fq=").filter(item => {
           item.includes("ff_primaryobject_year_from_i") ? this.timeFrom = parseInt(this.$_returnTimeFromQueryString(item)) : null
@@ -102,10 +106,27 @@
     $route(to) {
       //Make sure, when the route is updated in any way - that we update the displayQuery and query.
       //This makes sure, that pressing the backbutton in the browser rightly updates the used query in the searchbox.
-      console.log(to.params)
       this.updateQuery(to.params.query);
-      to.params.query.indexOf("&d=") !== -1 && to.params.query.indexOf("&d=") < to.params.query.indexOf("&fq=") ? this.updateQueryDisplay(to.params.query.split("&d=")[0]) :
-      this.updateQueryDisplay((to.params.query.split("&fq=")[0]));
+      let locParamPos = to.params.query.indexOf("&d=");
+      let filtParamPos = to.params.query.indexOf("&fq=");
+      //We do a series of checks to determine how we should split the string to get the query
+      //If  they're present the variables above gives their placement. Otherwise they get the value -1.
+      //If at &fq= or &d= depending on whether they're present and if so, what position they have.
+      //Otherwise we split on &fq=.
+      switch(true) {
+        case locParamPos === -1 && filtParamPos === -1: 
+          this.updateQueryDisplay(to.params.query);
+          break;
+        case locParamPos === -1 && filtParamPos !== -1:
+          this.updateQueryDisplay(to.params.query.split("&fq=")[0]);
+          break;
+        case locParamPos !== -1 && filtParamPos === -1: 
+          this.updateQueryDisplay(to.params.query.split("&d=")[0]);
+          break;
+        default: 
+          locParamPos < filtParamPos ? this.updateQueryDisplay(to.params.query.split("&d=")[0]) : this.updateQueryDisplay(to.params.query.split("&fq=")[0]);
+          break;
+      }
     }
   },
     methods: {
@@ -114,7 +135,7 @@
         updateQuery: "updateQuery",
       }),
       // Update the slider variables from he given params (that is given from the slider - so we can keep track of them inhere.)
-      searchBoxUpdate(variable) {
+      updateTimeSliderValues(variable) {
         this.timeTo = variable[1];
         this.timeFrom = variable[0];
       },
@@ -137,7 +158,7 @@
           let newCombinedFilter = "";
           let filterArray = [];
           // Make sure there actually are some filters to run manipulate.
-          if (filters !== undefined) {
+          if (filters != null) {
             // Check if the first filter is a normal filter or a location filter.
             let isLocationSet = filters.indexOf("&d=") > -1;
             // split the filter up accordingly - if location, we split on &d= first, then on &fq=.
@@ -146,7 +167,7 @@
             // If location is true, then we've alread done it with the [1] in the filter.split above.
             isLocationSet ? null : filterArray.shift();
             //Run through the array, and inset the new updated filters - but make sure we actually have an array to run through.
-            if(filterArray.length > 0 && Array.isArray(filterArray)) {
+            if(Array.isArray(filterArray) && filterArray.length > 0) {
                 filterArray.forEach((item, index) => {
                 //If it's the first - we check if location is set, and add that prefix - otherwise the fq prefix.
                 //We check if the items are timeSlider items - if not, we just return them and place them. Otherwise we alter the timeSlider filters.
@@ -180,21 +201,21 @@
         let proceed = false;
         // We make sure we're on a Search instance. 
         //if we're not we don't have to go though all this, because we'll always fire a search on the instance route no matter what.
-        if(this.time === true && this.$router.history.current.name === "Search") {
+        if(this.$router.history.current.name === "Search" && this.time === true) {
           let filters = this.$route.params.query ? this.$route.params.query.split("fq=") : ""
           //If we have more han one filter (that means, more than the query, we check them out)
-          filters.length > 1 ? filters.forEach(item => {
+          if(filters.length > 1) {
+            filters.forEach(item => {
               if(item.includes("ff_primaryobject_year_from_i")) {
-                //console.log("1",parseInt(this.$_returnTimeFromQueryString(item)), this.timeFrom)
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
                 parseInt(this.$_returnTimeFromQueryString(item)) === this.timeFrom ? null : proceed = true;
               }
               if(item.includes("ff_primaryobject_year_to_i")) {
-                //console.log("3", parseInt(this.$_returnTimeFromQueryString(item)), this.timeTo)
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
                 parseInt(this.$_returnTimeFromQueryString(item)) === this.timeTo ? null : proceed = true;
               }
-          }) : null;
+            })
+          }
         }
         //If no filters with time were present, we do a quick check if the values of the sliders have been moved from their initial positions.
         if(!this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
