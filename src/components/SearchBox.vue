@@ -155,10 +155,21 @@
           this.updateQueryDisplay(this.searchQuery || "*.*");
           //Rip out the filters from he params and set up variables for creating new filter.
           let filters = this.$router.history.current.params.query || '';
-          let newCombinedFilter = "";
-          let filterArray = [];
-          // Make sure there actually are some filters to run manipulate.
-          if (filters != null) {
+          //Create the new searchfilter
+          let newCombinedFilter = this.createSearchFilters(filters) || "";
+          //Check if timefilters are applied. If not, check if they should be, and if they should be, apply them.
+          //All in this fancy function!
+          newCombinedFilter = this.addTimeFiltersToSearchFilter(newCombinedFilter);
+          //Update the query variable in the store, and fire the search.
+          this.updateQuery(this.searchQuery + newCombinedFilter)
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance } });
+          e ? e.preventDefault() : null;
+        }
+      },
+      createSearchFilters(filters) {
+        let filterString = "";
+        let filterArray = [];
+        if (filters != null) {
             // Check if the first filter is a normal filter or a location filter.
             let isLocationSet = filters.indexOf("&d=") > -1;
             // split the filter up accordingly - if location, we split on &d= first, then on &fq=.
@@ -173,30 +184,27 @@
                 //We check if the items are timeSlider items - if not, we just return them and place them. Otherwise we alter the timeSlider filters.
                 if(index === 0) {
                   item = this.filterTimeSliderCreator(item)
-                  item !== "" ? newCombinedFilter += isLocationSet ? "&d=" + item : "&fq=" + item : null;
+                  item !== "" ? filterString += isLocationSet ? "&d=" + item : "&fq=" + item : null;
                 }
                 else {
                   item = this.filterTimeSliderCreator(item)
-                  item !== "" ? newCombinedFilter += "&fq=" + item : null;
+                  item !== "" ? filterString += "&fq=" + item : null;
                 }
                 })
             }
           }
-          //Check if timefilters are applied.
-          //If not, check if they should be.
-          //If they should be, apply them at the end.
-          if(this.time === true && newCombinedFilter.includes("ff_primaryobject_year_from_i") === false && this.timeFrom !== this.searchOptions.timeOptions.min) {
-            newCombinedFilter += "&fq=ff_primaryobject_year_from_i:[" + this.timeFrom + " TO *]";
-          }
-          if(this.time === true && newCombinedFilter.includes("ff_primaryobject_year_to_i") === false && this.timeTo !== this.searchOptions.timeOptions.max) {
-            newCombinedFilter += "&fq=ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]";
-          }
-          //Update the query variable in the store, and fire the search.
-          this.updateQuery(this.searchQuery + newCombinedFilter)
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance } });
-          e ? e.preventDefault() : null;
-        }
+          return filterString;
       },
+      //Check and apply (if needed), time filters to the querystring.
+      addTimeFiltersToSearchFilter(filterString) {
+        if(this.time === true && filterString.includes("ff_primaryobject_year_from_i") === false && this.timeFrom !== this.searchOptions.timeOptions.min) {
+          filterString += "&fq=ff_primaryobject_year_from_i:[" + this.timeFrom + " TO *]";
+          }
+          if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && this.timeTo !== this.searchOptions.timeOptions.max) {
+            filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]";
+          }
+        return filterString;
+      }, 
       queryTimeChanged() {
         let proceed = false;
         // We make sure we're on a Search instance. 
