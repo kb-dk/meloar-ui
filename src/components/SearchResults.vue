@@ -30,19 +30,15 @@
 </template>
 
 <script>
-// import SingleSearchResult from "./SingleSearchResult.vue";
-import SingleSearchResult_default from "./searchresult/SingleSearchResult_default";
-import SingleSearchResult_fof from "./searchresult/SingleSearchResult_fof";
-import SingleSearchResult_kirk from "./searchresult/SingleSearchResult_kirk";
 import AppliedFilters from "./AppliedFilters.vue";
 import { mapState, mapActions } from 'vuex'
 
 export default {
   name: "SearchResults",
   components: {
-    SingleSearchResult_default,
-    SingleSearchResult_fof,
-    SingleSearchResult_kirk,
+    SingleSearchResult_default: () => import("./searchresult/SingleSearchResult_default"),
+    SingleSearchResult_fof: () => import("./searchresult/SingleSearchResult_fof"),
+    SingleSearchResult_kirk: () => import("./searchresult/SingleSearchResult_kirk"),
     AppliedFilters
   },
   data: () => ({
