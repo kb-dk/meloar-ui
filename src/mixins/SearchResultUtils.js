@@ -35,10 +35,13 @@ export default {
     },
     $_deliverTimePeriodStamp(time) {
       let returnphase;
-      time.toString().charAt(0) === "-"
-        ? (returnphase = time.toString().slice(1) + " BC")
+      time.toString().trim().charAt(0) === "-"
+        ? (returnphase = time.toString().trim().slice(1) + " BC")
         : (returnphase = time + " AC");
       return returnphase;
+    },
+    $_returnTimeFromQueryString(time) {
+      return time.split('[').pop().split(']')[0].replace(/TO|FROM|\*/g, '')
     },
     $_returnACorDC(time) {
       return time.toString().charAt(0) === "-"

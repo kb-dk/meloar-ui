@@ -8,8 +8,8 @@
           <div class="resultDate">
             Rapport from approx <span>{{ this.$_transformDate(result.doclist.docs[0].ctime) }} </span>
             years ago, {{ this.$_deliverTimeBetween(result.doclist.docs[0].ctime) }}
-            <hr class="report-divider" align="left" />
             <div v-if="result.doclist.docs[0].ff_primaryobject_year_from_i && result.doclist.docs[0].ff_primaryobject_year_to_i">
+              <hr class="report-divider" align="left" />
               Rapport content from time period between
               <span :title="this.$_returnACorDC(result.doclist.docs[0].ff_primaryobject_year_from_i)">&nbsp; 
               {{ this.$_deliverTimePeriodStamp(result.doclist.docs[0].ff_primaryobject_year_from_i) }}</span> and 

@@ -1,9 +1,5 @@
 <template>
     <div class="searchResultContainer">
-      <applied-filters
-             :queryString="query || ''"
-             :route="this.$router.history.current.path"
-           />
       <div v-if="results && resultHits === 0" class="noResults">We weren't able to find any results for you.<br>
          <span class="emojiComponent">😥</span></div>
          <div v-if="loading === false && results" class="searchResults">
@@ -30,6 +26,10 @@
 </template>
 
 <script>
+// import SingleSearchResult from "./SingleSearchResult.vue";
+import SingleSearchResult_default from "./searchresult/SingleSearchResult_default";
+import SingleSearchResult_fof from "./searchresult/SingleSearchResult_fof";
+import SingleSearchResult_kirk from "./searchresult/SingleSearchResult_kirk";
 import AppliedFilters from "./AppliedFilters.vue";
 import { mapState, mapActions } from 'vuex'
 
@@ -97,7 +97,6 @@ export default {
       }
     },
     filterFromFacets(filter, value) {
-      console.log("filter search", filter, value)
       var getQuery = this.query;
       if (getQuery === "") {
         getQuery = this.$router.history.current.params.query;

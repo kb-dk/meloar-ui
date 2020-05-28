@@ -14,11 +14,13 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapState, mapActions } from 'vuex'
+import SearchResultUtils from "../mixins/SearchResultUtils"
+
 
 export default {
   name: "AppliedFilters",
-
+  mixins: [SearchResultUtils],
   props: {
     queryString: {
       type: String,
@@ -32,12 +34,16 @@ export default {
 
   data: () => ({ filters: [], orgQuery: "" }),
 
+  computed: {
+      ...mapState({
+        instance: state => state.searchStore.instance
+      })
+    },
   methods: {
     ...mapActions("searchStore", {
         updateQuery: "updateQuery",
     }),  
     findFilters(query) {
-      console.log("New filters!", query)
       if (query === "") {
         query = this.$route.params.query;
       }
@@ -86,8 +92,9 @@ export default {
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",
-        params: { query: mergedQuery }
+        params: { query: mergedQuery, instance: this.instance }
       });
+      this.$emit('timeSliderUpdate', filterString);
     },
     findCategory(filter) {
       let category;
@@ -96,12 +103,27 @@ export default {
       } else {
         let i = filter.indexOf(":");
         let stringSplit = [filter.slice(0, i), filter.slice(i + 1)];
-        category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"));
+        if(stringSplit[0].includes("ff_primaryobject_year") === false) {
+          category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"))
+        }
+        else {
+          switch(stringSplit[0]) {
+            case "ff_primaryobject_year_from_i":
+              category = "From year"
+              break;
+            case "ff_primaryobject_year_to_i":
+              category = "To year"
+              break;
+            default:
+            category = stringSplit[0]
+          }
+        }
       }
       return category;
     },
     findName(filter) {
       let name;
+      let time = false;
       if (filter.includes("&pt=") === true) {
         let location = filter.split("&pt=");
         name = "d=" + location[0] + "&pt=" + location[1];
@@ -109,8 +131,12 @@ export default {
         let i = filter.indexOf(":");
         let stringSplit = [filter.slice(0, i), filter.slice(i + 1)];
         name = stringSplit[1];
+        if(filter.includes("ff_primaryobject_year_from_i") || filter.includes("ff_primaryobject_year_to_i")) {
+          time = true;
+          name = name.replace(/[*[\]]/g,'').replace(/TO|FROM/g, '');
+        }
       }
-      return name;
+      return time === true ? this.$_deliverTimePeriodStamp(name) : name;
     }
   },
 

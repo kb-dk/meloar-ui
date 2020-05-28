@@ -8,6 +8,11 @@ export default {
      searchOptions: {
       map:true,
       time:true,
+      timeOptions: {
+        min:-3000,
+        max:2100,
+        interval:100
+      },
      }
     },
     {

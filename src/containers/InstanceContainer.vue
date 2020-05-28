@@ -1,13 +1,13 @@
 <template>
-  <div :class="'instanceContainer ' + instance">
+  <div v-if="instanceName" :class="'instanceContainer ' + instance">
     <div v-if="instanceName">
       <div class="titleContainer">
         <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
         <hr style="width:300px" />
         <span>{{ instanceName || 'Ukendt instans' }} v2</span>
       </div>
-      <search-box />
-      <search-map />
+      <search-box :time="searchOptions.time"/>
+      <search-map v-if="searchOptions.map === true" />
       <div class="simpleNavigation">
         <router-link class="menuLink" to="/About">
           About this
@@ -37,7 +37,7 @@ export default {
   },
   data: () => ({
     MeloarInstances:MeloarInstances,
-    instanceName:''
+    instanceName:'',
   }),
   computed: {
     ...mapState({
@@ -45,12 +45,12 @@ export default {
     })
   },
   created() {
-    this.updateInstance(this.$route.params.instance)
-    this.MeloarInstances.instances.filter(item => {
-      //console.log(item.key, "and", item['name'])
-      item.key === this.instance ? (this.updateInstance(item.key), this.instanceName = item.name) : null
-    })
-  },
+      this.updateInstance(this.$route.params.instance)
+      this.MeloarInstances.instances.filter(item => {
+        //console.log(item.key, "and", item['name'])
+        item.key === this.instance ? (this.instanceName = item.name, this.searchOptions = item.searchOptions) : null
+      })
+    },
   methods: {
     ...mapActions("searchStore", {
         updateInstance: "updateInstance",
