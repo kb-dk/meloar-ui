@@ -21,7 +21,7 @@
             <div class="chapterTitle">chapter </div>
             <highlighted-chapter :chapterString="snippets.chapter" :query="queryString" />
             <div class="pageTitle">page </div>
-            <div class="pageNumber">{{snippets.page == 0 ? 1 : snippets.page - 1}}</div>
+            <div class="pageNumber">{{snippets.page == 0 ? 1 : snippets.page}}</div>
             <ul>
             <highlighted-content :contentArray="snippets.highLightSnippets" :query="queryString" />
             </ul>
