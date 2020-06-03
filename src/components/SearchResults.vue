@@ -26,10 +26,6 @@
 </template>
 
 <script>
-// import SingleSearchResult from "./SingleSearchResult.vue";
-import SingleSearchResult_default from "./searchresult/SingleSearchResult_default";
-import SingleSearchResult_fof from "./searchresult/SingleSearchResult_fof";
-import SingleSearchResult_kirk from "./searchresult/SingleSearchResult_kirk";
 import AppliedFilters from "./AppliedFilters.vue";
 import { mapState, mapActions } from 'vuex'
 
