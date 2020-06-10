@@ -1,5 +1,8 @@
 <template>
     <div class="searchResult" :id="$_fixIdForSearchResultContainer(result.groupValue)">
+      <div class="rankNumberContainer">
+      <div :data-ranking-score="result.doclist.maxScore" class="rankNumber">{{ indexNumber + 1 }}</div>
+      </div>
       <div class="generalInfo">
         <div class="overallInfo">
              <single-search-result-info-base :result="result"  />
@@ -59,6 +62,10 @@
       queryString: {
         type: String,
         requred: true
+      },
+      indexNumber: {
+        type: Number,
+        required:true
       }
     }
   };
