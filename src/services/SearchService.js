@@ -1,7 +1,5 @@
 //import { storeSearchResult } from "../store/cacheStoreHelper.js";
 import axios from "axios";
-import { apiHelper } from '../helpFunctions/apiHelper'
-
 
 // Calls to search service
 export const searchService = {
@@ -18,7 +16,7 @@ function fireSearch(query, instance) {
       //searchStore.queryDisplay = query;
     }
     query === undefined ? query = '' : query = "&q=" + query;
-    const searchUrl = apiHelper.getApiString(instance, "searchApi") + "?group.field=loar_id&group.limit=50&group=true" + query;
+    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query;
     return axios
       .get(searchUrl)
       .then(response => {
