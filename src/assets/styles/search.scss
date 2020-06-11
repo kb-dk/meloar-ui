@@ -218,6 +218,37 @@
 	left: 6px;
 }
 
+@media screen and (max-width: 1300px) {
+  .rankNumber:after {
+    border-top: 0px solid transparent;
+	  border-bottom: 0px solid transparent;
+	  border-right: 0px solid transparent;
+  }
+  .rankNumberContainer:after {
+    border-top: 0px solid transparent;
+	  border-bottom: 0px solid transparent;
+	  border-right: 0px solid transparent;
+  }
+  .rankNumberContainer {
+    background-color: transparent;
+    margin-top: 7px !important;
+    margin-left: 10px;
+    padding:0px;
+    width:auto;
+    height:auto;
+  }
+  .rankNumber {
+    background-color: transparent;
+    height: auto;
+	  font-weight: bold;
+	  width: auto;
+	  font-size: 100%;
+    padding:0px;
+	  color: rgba(30, 30, 30, 0.5);
+  }
+}
+
+
 .overallInfo {
   padding-left: 1em;
   padding-top: 1em;
