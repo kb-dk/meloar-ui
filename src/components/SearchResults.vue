@@ -20,7 +20,7 @@
            </div>
            
 
-              <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :queryString="queryDisplay" :key="index"  ></component>
+              <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
         </div>
      </div>
 </template>
