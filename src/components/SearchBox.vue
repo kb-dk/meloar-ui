@@ -197,10 +197,10 @@
       },
       //Check and apply (if needed), time filters to the querystring.
       addTimeFiltersToSearchFilter(filterString) {
-        if(this.time === true && filterString.includes("ff_primaryobject_year_from_i") === false && this.timeFrom !== this.searchOptions.timeOptions.min) {
-          filterString += "&fq=ff_primaryobject_year_from_i:[" + this.timeFrom + " TO *]";
+        if(this.time === true && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
+          filterString += "&fq=ff_primaryobject_year_from_i:[* TO " + this.timeFrom + "]";
           }
-          if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && this.timeTo !== this.searchOptions.timeOptions.max) {
+          if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
             filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]";
           }
         return filterString;
@@ -226,10 +226,10 @@
           }
         }
         //If no filters with time were present, we do a quick check if the values of the sliders have been moved from their initial positions.
-        if(!this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
+        if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
           proceed = true
         }
-        if(!this.$route.params.query.includes("ff_primaryobject_year_to_i") && this.timeTo !== this.searchOptions.timeOptions.max) {
+        if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_to_i") && this.timeTo !== this.searchOptions.timeOptions.max) {
           proceed = true
         }
         //Yea, insance pages gets a free pass at searching.
@@ -243,10 +243,10 @@
       //Based on if it's year from/to, and whether it is needed (if filters are set at all)
       filterTimeSliderCreator(filterString) {
         if(filterString.includes("ff_primaryobject_year_from_i")) {
-          this.timeFrom !== this.searchOptions.timeOptions.min ? filterString = "ff_primaryobject_year_from_i:[" + this.timeFrom + " TO *]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_from_i:[* TO " + this.timeFrom + "]" : filterString = ""; 
         }
         if(filterString.includes("ff_primaryobject_year_to_i")) {
-          this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]" : filterString = ""; 
         }
         // Returns the altered filterString - which can be "" if no filter is needed.
         // This is taken care of in search where the filters are put back together.

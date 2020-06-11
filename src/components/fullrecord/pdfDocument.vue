@@ -12,8 +12,6 @@
 <script>
 
 import { mapState, mapActions } from "vuex";
-import { apiHelper } from '../../helpFunctions/apiHelper'
-
 
 export default {
     name: "PdfDocument",
@@ -44,8 +42,9 @@ export default {
       }),
       getUrl() {
         const proxyURL = encodeURIComponent(
-          apiHelper.getApiString(this.instance, "pdfApi") + "?url=" + this.record.external_resource[0]
+          "/api/resource/meloar?collection=" + this.instance + "&url=" + this.record.external_resource[0]
         );
+        console.log(decodeURIComponent(proxyURL));
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage
           ? "#search=" + this.query + "&page=" + this.getSinglePageNumber()

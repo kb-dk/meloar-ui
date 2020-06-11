@@ -34,7 +34,7 @@ export default {
   components: {
     SingleSearchResult_default: () => import("./searchresult/SingleSearchResult_default"),
     SingleSearchResult_fof: () => import("./searchresult/SingleSearchResult_fof"),
-    SingleSearchResult_kirk: () => import("./searchresult/SingleSearchResult_kirk"),
+    SingleSearchResult_kirker: () => import("./searchresult/SingleSearchResult_kirker"),
     AppliedFilters
   },
   data: () => ({
