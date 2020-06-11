@@ -166,6 +166,89 @@
   text-transform: uppercase;
 }
 
+.rankNumberContainer {
+  background-color: rgba(255, 255, 255, 0.3);
+	position: absolute;
+	margin-top: -1px !important;
+	width: 30px;
+	height: 30px;
+	padding: 5px;
+	margin-left: -40px;
+}
+
+.rankNumberContainer:after {
+	-webkit-transform: rotate(-225deg);
+	transform: rotate(-225deg);
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	position: relative;
+	border-top: 28px solid transparent;
+	border-bottom: 28px solid transparent;
+  border-right: 28px solid rgba(238, 238, 238, 1);
+	top: -26px;
+	left: 13px;
+}
+
+.rankNumber {
+  height: 100%;
+  font-weight: bold;
+	width: 140%;
+	font-size: 150%;
+	margin-top: 1px !important;
+	background-color: #e9e9e9;
+	padding-left: 10px;
+	color: rgba(30, 30, 30, 0.5);
+}
+
+.rankNumber:after {
+  -webkit-transform: rotate(-225deg);
+	transform: rotate(-225deg);
+	content: '';
+	display: block;
+	width: 0;
+	height: 0;
+	position: relative;
+	border-top: 28px solid transparent;
+	border-bottom: 28px solid transparent;
+	border-right: 28px solid #e9e9e9;
+	z-index: 2;
+	top: -18px;
+	left: 6px;
+}
+
+@media screen and (max-width: 1300px) {
+  .rankNumber:after {
+    border-top: 0px solid transparent;
+	  border-bottom: 0px solid transparent;
+	  border-right: 0px solid transparent;
+  }
+  .rankNumberContainer:after {
+    border-top: 0px solid transparent;
+	  border-bottom: 0px solid transparent;
+	  border-right: 0px solid transparent;
+  }
+  .rankNumberContainer {
+    background-color: transparent;
+    margin-top: 7px !important;
+    margin-left: 10px;
+    padding:0px;
+    width:auto;
+    height:auto;
+  }
+  .rankNumber {
+    background-color: transparent;
+    height: auto;
+	  font-weight: bold;
+	  width: auto;
+	  font-size: 100%;
+    padding:0px;
+	  color: rgba(30, 30, 30, 0.5);
+  }
+}
+
+
 .overallInfo {
   padding-left: 1em;
   padding-top: 1em;
