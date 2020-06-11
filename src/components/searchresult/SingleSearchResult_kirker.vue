@@ -1,9 +1,7 @@
 <template>
     <div class="searchResult" :id="this.$_fixIdForSearchResultContainer(result.groupValue)">
-        <div class="rankNumberContainer">
-            <div :data-ranking-score="result.doclist.maxScore" class="rankNumber">{{ indexNumber + 1 }}</div>
-            </div>
-      <div class="generalInfo">
+    <search-result-rank-number :indexNumber="indexNumber"/>
+        <div class="generalInfo">
         <div class="overallInfo">
              <single-search-result-info-base :result="result"  />
           <div class="resultInfo">Time</div>
