@@ -1,5 +1,7 @@
 <template>
     <div class="searchResult" :id="$_fixIdForSearchResultContainer(result.groupValue)">
+      
+      <search-result-rank-number :indexNumber="indexNumber"/>
       <div class="generalInfo">
         <div class="overallInfo">
              <single-search-result-info-base :result="result"  />
@@ -37,6 +39,7 @@
   
    import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
   import PDFSearchResult from "./common/PDFSearchResult"
+  import SearchResultRankNumber from "./common/SearchResultRankNumber"
   import ResultMap from "./addons/ResultMap.vue";
   import SearchResultUtils from "../../mixins/SearchResultUtils"
   
@@ -47,7 +50,8 @@
     components: {
       ResultMap,
       SingleSearchResultInfoBase,
-      PDFSearchResult
+      PDFSearchResult,
+      SearchResultRankNumber
     
     },
       mixins: [SearchResultUtils],
@@ -59,6 +63,10 @@
       queryString: {
         type: String,
         requred: true
+      },
+      indexNumber: {
+        type: Number,
+        required:true
       }
     }
   };

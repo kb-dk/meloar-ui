@@ -1,6 +1,7 @@
 <template>
     <div class="searchResult" :id="this.$_fixIdForSearchResultContainer(result.groupValue)">
-      <div class="generalInfo">
+    <search-result-rank-number :indexNumber="indexNumber"/>
+        <div class="generalInfo">
         <div class="overallInfo">
              <single-search-result-info-base :result="result"  />
           <div class="resultInfo">Time</div>
@@ -59,6 +60,10 @@
       queryString: {
         type: String,
         requred: true
+      },
+      indexNumber: {
+        type: Number,
+        required:true
       }
     }
   };
