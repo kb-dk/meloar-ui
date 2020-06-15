@@ -63,7 +63,10 @@
         queryDisplay: state => state.searchStore.queryDisplay,
         query: state => state.searchStore.query,
         loading: state => state.searchStore.loading,
-        instance: state => state.searchStore.instance
+        instance: state => state.searchStore.instance,
+        searchSort: state => state.searchStore.searchSort,
+        shownResultsNumber: state => state.searchStore.shownResultsNumber,
+        currentOffset: state => state.searchStore.currentOffset,
       })
     },
     created() {
@@ -133,6 +136,7 @@
       ...mapActions("searchStore", {
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
+        updateSearchSort: "updateSearchSort",
       }),
       // Update the slider variables from he given params (that is given from the slider - so we can keep track of them inhere.)
       updateTimeSliderValues(variable) {
@@ -160,10 +164,19 @@
           //Check if timefilters are applied. If not, check if they should be, and if they should be, apply them.
           //All in this fancy function!
           newCombinedFilter = this.addTimeFiltersToSearchFilter(newCombinedFilter);
+          this.updateSortOptionForTimeSearch(newCombinedFilter);
           //Update the query variable in the store, and fire the search.
           this.updateQuery(this.searchQuery + newCombinedFilter)
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance, options:'&row=' + this.shownResultsNumber + '&start=' + this.currentOffset, sort: this.searchSort } });
           e ? e.preventDefault() : null;
+        }
+      },
+      updateSortOptionForTimeSearch(searchString) {
+        if((searchString.includes("f_primaryobject_year_from_i") || searchString.includes("ff_primaryobject_year_to_i")) && !searchString.includes("&sort")) {
+          this.updateSearchSort('&sort=dist(2,ff_primaryobject_year_from_i,ff_primaryobject_year_to_i,' + this.timeFrom +',' + this.timeTo + ')+asc,score+desc');
+        }
+        else {
+          this.updateSearchSort("");
         }
       },
       createSearchFilters(filters) {
@@ -198,11 +211,11 @@
       //Check and apply (if needed), time filters to the querystring.
       addTimeFiltersToSearchFilter(filterString) {
         if(this.time === true && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
-          filterString += "&fq=ff_primaryobject_year_from_i:[* TO " + this.timeFrom + "]";
-          }
-          if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
-            filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]";
-          }
+          filterString += "&fq=ff_primaryobject_year_from_i:[* TO " + this.timeTo + "]";
+        }
+        if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
+            filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeFrom + " TO *]";
+        }
         return filterString;
       }, 
       queryTimeChanged() {
@@ -243,10 +256,10 @@
       //Based on if it's year from/to, and whether it is needed (if filters are set at all)
       filterTimeSliderCreator(filterString) {
         if(filterString.includes("ff_primaryobject_year_from_i")) {
-          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_from_i:[* TO " + this.timeFrom + "]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_from_i:[* TO " + this.timeTo + "]" : filterString = ""; 
         }
         if(filterString.includes("ff_primaryobject_year_to_i")) {
-          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:[" + this.timeTo + " TO *]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:[" + this.timeFrom + " TO *]" : filterString = ""; 
         }
         // Returns the altered filterString - which can be "" if no filter is needed.
         // This is taken care of in search where the filters are put back together.
@@ -258,7 +271,7 @@
         this.updateQuery("")
         this.$router.history.current.name === "Instance"
           ? null
-          : this.$router.push({ name: "Instance", params: {instance: this.instance} });
+          : this.$router.push({ name: "Instance", params: {instance: this.instance } });
       }
     }
   };

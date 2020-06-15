@@ -9,7 +9,10 @@ const state = {
   facets: {},
   error: "",
   instance:"",
-  loading:false
+  loading:false,
+  shownResultsNumber:10,
+  currentOffset:0,
+  searchSort:""
 }
 
 const actions = {
@@ -22,15 +25,23 @@ const actions = {
   setLoadingStatus( {commit}, param) {
     commit('setLoadingStatus', param)
   },
-
   updateQuery ( {commit}, param ) {
     commit('updateQuerySuccess', param)
   },
-
+  updateShownResultsNumber( {commit}, param ) {
+    commit('updateShownResultsNumberSuccess', param)
+  },
+  updateSearchSort( {commit}, param ) {
+    commit('updateSearchSortSuccess', param)
+  },
+  updateCurrentPage ( {commit}, param ) {
+    commit('updateCurrentPageSuccess', param)
+  },
   doSearch ({ commit }, params) {
+    console.log("here with ", params)
     commit('setLoadingStatus',true)
     searchService
-      .fireSearch(params.query, params.instance)
+      .fireSearch(params.query, params.instance, params.options, params.sort)
       .then(result => commit('doSearchSuccess', result), error =>
         commit('doSearchError', error))
   },
@@ -46,6 +57,15 @@ const mutations = {
   },
   updateQuerySuccess(state, param) {
     state.query = param
+  },
+  updateShownResultsNumberSuccess(state, param) {
+    state.shownResultsNumber = param
+  },
+  updateCurrentPageSuccess(state, param) {
+    state.currentPage = param
+  },
+  updateSearchSortSuccess(state, param) {
+    state.searchSort = param
   },
   updateInstance(state, param) {
     state.instance = param

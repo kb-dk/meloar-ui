@@ -110,8 +110,7 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    //console.log("NO ID MATCH")
-    vm.doSearch({query:to.query.loarId, instance:to.params.instance})
+    vm.doSearch({query:to.query.loarId, instance:to.params.instance, options:'&row=10&start=0'})
     .then(() => {
       vm.updateInstance(to.params.instance)
       vm.updateQuery(to.query.query)

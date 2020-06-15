@@ -36,7 +36,10 @@ export default {
 
   computed: {
       ...mapState({
-        instance: state => state.searchStore.instance
+        instance: state => state.searchStore.instance,
+        searchSort: state => state.searchStore.searchSort,
+        shownResultsNumber: state => state.searchStore.shownResultsNumber,
+        currentOffset: state => state.searchStore.currentOffset,
       })
     },
   methods: {
@@ -92,7 +95,7 @@ export default {
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",
-        params: { query: mergedQuery, instance: this.instance }
+        params: { query: mergedQuery, instance: this.instance, options:'&row=' + this.shownResultsNumber + '&start=' + this.currentOffset, sort: this.searchSort }
       });
       this.$emit('timeSliderUpdate', filterString);
     },
@@ -103,21 +106,7 @@ export default {
       } else {
         let i = filter.indexOf(":");
         let stringSplit = [filter.slice(0, i), filter.slice(i + 1)];
-        if(stringSplit[0].includes("ff_primaryobject_year") === false) {
           category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"))
-        }
-        else {
-          switch(stringSplit[0]) {
-            case "ff_primaryobject_year_from_i":
-              category = "From year"
-              break;
-            case "ff_primaryobject_year_to_i":
-              category = "To year"
-              break;
-            default:
-            category = stringSplit[0]
-          }
-        }
       }
       return category;
     },
@@ -135,6 +124,7 @@ export default {
           time = true;
           name = name.replace(/[*[\]]/g,'').replace(/TO|FROM/g, '');
         }
+        name.includes("&sort") ? name = name.substring(0, name.indexOf('&sort')) : null
       }
       return time === true ? this.$_deliverTimePeriodStamp(name) : name;
     }

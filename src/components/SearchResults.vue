@@ -66,8 +66,10 @@ export default {
       results: state => state.searchStore.results,
       facets: state => state.searchStore.facets,
       loading: state => state.searchStore.loading,
-      instance: state => state.searchStore.instance
-
+      instance: state => state.searchStore.instance,
+      searchSort: state => state.searchStore.searchSort,
+      shownResultsNumber: state => state.searchStore.shownResultsNumber,
+      currentOffset: state => state.searchStore.currentOffset,
     }),
      searchResultComponentName() {
           //Remember to handle default instance
@@ -100,7 +102,7 @@ export default {
       this.updateQuery(getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"')
       this.$router.push({
         name: "Search",
-        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"' }
+        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"', options:'&row=' + this.shownResultsNumber + '&start=' + this.currentOffset, sort: this.searchSort }
       })
     }
   },

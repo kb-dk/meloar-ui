@@ -7,7 +7,7 @@ export const searchService = {
   structureSearchResult,
 }
 
-function fireSearch(query, instance) {
+function fireSearch(query, instance, options, sort) {
     if (query != undefined && query.includes("&d=")) {
       //searchStore.queryDisplay = query.substring(0, query.indexOf("&d="));
     } else if (query != undefined && query.includes("&fq=")) {
@@ -16,7 +16,7 @@ function fireSearch(query, instance) {
       //searchStore.queryDisplay = query;
     }
     query === undefined ? query = '' : query = "&q=" + query;
-    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query;
+    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query + options + sort;
     return axios
       .get(searchUrl)
       .then(response => {
