@@ -10,9 +10,11 @@ const state = {
   error: "",
   instance:"",
   loading:false,
-  shownResultsNumber:10,
-  currentOffset:0,
-  searchSort:""
+  solrOptions: {
+    shownResultsNumber:10,
+    currentOffset:0,
+    searchSort:""
+  }
 }
 
 const actions = {
@@ -34,8 +36,8 @@ const actions = {
   updateSearchSort( {commit}, param ) {
     commit('updateSearchSortSuccess', param)
   },
-  updateCurrentPage ( {commit}, param ) {
-    commit('updateCurrentPageSuccess', param)
+  updateCurrentOffset ( {commit}, param ) {
+    commit('updateCurrentOffsetSuccess', param)
   },
   doSearch ({ commit }, params) {
     console.log("here with ", params)
@@ -59,13 +61,13 @@ const mutations = {
     state.query = param
   },
   updateShownResultsNumberSuccess(state, param) {
-    state.shownResultsNumber = param
+    state.solrOptions.shownResultsNumber = param
   },
-  updateCurrentPageSuccess(state, param) {
-    state.currentPage = param
+  updateCurrentOffsetSuccess(state, param) {
+    state.solrOptions.currentOffset = param
   },
   updateSearchSortSuccess(state, param) {
-    state.searchSort = param
+    state.solrOptions.searchSort = param
   },
   updateInstance(state, param) {
     state.instance = param

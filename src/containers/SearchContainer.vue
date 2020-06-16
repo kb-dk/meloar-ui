@@ -32,9 +32,7 @@ export default {
       query: state => state.searchStore.query,
       results: state => state.searchStore.results,
       instance: state => state.searchStore.instance,
-      searchSort: state => state.searchStore.searchSort,
-      shownResultsNumber: state => state.searchStore.shownResultsNumber,
-      currentOffset: state => state.searchStore.currentOffset,
+      solrOptions: state => state.searchStore.solrOptions,
     })
   },
   created() {
@@ -75,7 +73,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     const query = to.params.query;
         next(vm => {
-          vm.doSearch({query:query, instance:vm.instance, options:'&row=' + vm.shownResultsNumber + '&start=' + vm.currentOffset, sort: vm.searchSort});
+          vm.doSearch({query:query, instance:vm.instance, options:'&row=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
           //console.log(vm, query);
         })
   },

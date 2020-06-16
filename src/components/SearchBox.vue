@@ -64,12 +64,11 @@
         query: state => state.searchStore.query,
         loading: state => state.searchStore.loading,
         instance: state => state.searchStore.instance,
-        searchSort: state => state.searchStore.searchSort,
-        shownResultsNumber: state => state.searchStore.shownResultsNumber,
-        currentOffset: state => state.searchStore.currentOffset,
+        solrOptions: state => state.searchStore.solrOptions,
       })
     },
     created() {
+      this.query == "" ? this.updateQuery(this.$router.history.current.params.query) : null
       //A fast check on weather we do have a query set - and if we dont, we check if the params hae a query, and we get that.
       //If all fails, fallback is "No query."
       let paramQuery = this.$router.history.current.params.query;
@@ -137,6 +136,7 @@
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
         updateSearchSort: "updateSearchSort",
+        updateCurrentOffset:"updateCurrentOffset"
       }),
       // Update the slider variables from he given params (that is given from the slider - so we can keep track of them inhere.)
       updateTimeSliderValues(variable) {
@@ -153,6 +153,7 @@
       search(e) {
         // We check if anything has changed. Either the query or any time related business.
         if (this.searchQuery !== this.queryDisplay || this.queryTimeChanged()) {
+          this.updateCurrentOffset(0)
           // If we're satisfied, we check if the searchQuery is set. If it isn't, we set it to all
           // This is if you're only searching based on time.
           this.searchQuery === '' ? this.searchQuery = "*.*" : null;
@@ -167,7 +168,7 @@
           this.updateSortOptionForTimeSearch(newCombinedFilter);
           //Update the query variable in the store, and fire the search.
           this.updateQuery(this.searchQuery + newCombinedFilter)
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance, options:'&row=' + this.shownResultsNumber + '&start=' + this.currentOffset, sort: this.searchSort } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance, options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort } });
           e ? e.preventDefault() : null;
         }
       },

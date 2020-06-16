@@ -37,9 +37,7 @@ export default {
   computed: {
       ...mapState({
         instance: state => state.searchStore.instance,
-        searchSort: state => state.searchStore.searchSort,
-        shownResultsNumber: state => state.searchStore.shownResultsNumber,
-        currentOffset: state => state.searchStore.currentOffset,
+        solrOptions: state => state.searchStore.solrOptions,
       })
     },
   methods: {
@@ -95,7 +93,7 @@ export default {
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",
-        params: { query: mergedQuery, instance: this.instance, options:'&row=' + this.shownResultsNumber + '&start=' + this.currentOffset, sort: this.searchSort }
+        params: { query: mergedQuery, instance: this.instance, options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       });
       this.$emit('timeSliderUpdate', filterString);
     },
