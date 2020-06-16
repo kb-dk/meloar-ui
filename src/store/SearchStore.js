@@ -40,7 +40,6 @@ const actions = {
     commit('updateCurrentOffsetSuccess', param)
   },
   doSearch ({ commit }, params) {
-    console.log("here with ", params)
     commit('setLoadingStatus',true)
     searchService
       .fireSearch(params.query, params.instance, params.options, params.sort)
