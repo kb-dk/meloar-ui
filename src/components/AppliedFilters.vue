@@ -93,7 +93,7 @@ export default {
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",
-        params: { query: mergedQuery, instance: this.instance, options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
+        params: { query: mergedQuery, instance: this.instance, options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       });
       this.$emit('timeSliderUpdate', filterString);
     },

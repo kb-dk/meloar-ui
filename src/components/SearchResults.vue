@@ -105,11 +105,10 @@ export default {
         {
         query:this.query,
         instance:this.instance,
-        options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
         sort:this.solrOptions.searchSort
         }
       );
-      console.log("next 10")
     },
     previousResults() {
       this.updateCurrentOffset(this.solrOptions.currentOffset - this.solrOptions.shownResultsNumber);
@@ -117,11 +116,10 @@ export default {
         {
         query:this.query,
         instance:this.instance,
-        options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
         sort:this.solrOptions.searchSort
         }
       );
-      console.log("last 10")
     },
     filterFromFacets(filter, value) {
       var getQuery = this.query;
@@ -131,7 +129,7 @@ export default {
       this.updateQuery(getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"')
       this.$router.push({
         name: "Search",
-        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"', options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
+        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"', options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       })
     }
   },

@@ -168,7 +168,7 @@
           this.updateSortOptionForTimeSearch(newCombinedFilter);
           //Update the query variable in the store, and fire the search.
           this.updateQuery(this.searchQuery + newCombinedFilter)
-          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance, options:'&row=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort } });
+          this.$router.push({ name: "Search", params: { query: this.searchQuery + newCombinedFilter, instance: this.instance, options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort } });
           e ? e.preventDefault() : null;
         }
       },

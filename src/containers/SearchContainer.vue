@@ -73,7 +73,7 @@ export default {
   beforeRouteEnter(to, from, next) {
     const query = to.params.query;
         next(vm => {
-          vm.doSearch({query:query, instance:vm.instance, options:'&row=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
+          vm.doSearch({query:query, instance:vm.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
           //console.log(vm, query);
         })
   },

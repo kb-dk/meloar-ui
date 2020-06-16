@@ -29,6 +29,7 @@ export default {
       query: state => state.searchStore.query,
       results: state => state.searchStore.results,
       instance: state => state.searchStore.instance,
+      solrOptions: state => state.searchStore.solrOptions
     })
   },
   watch: {
@@ -110,7 +111,7 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    vm.doSearch({query:to.query.loarId, instance:to.params.instance, options:'&row=10&start=0'})
+    vm.doSearch({query:to.query.loarId, instance:to.params.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset})
     .then(() => {
       vm.updateInstance(to.params.instance)
       vm.updateQuery(to.query.query)
