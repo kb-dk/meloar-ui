@@ -16,7 +16,7 @@ function fireSearch(query, instance, options, sort) {
       //searchStore.queryDisplay = query;
     }
     query === undefined ? query = '' : query = "&q=" + query;
-    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&group.ngroups=true&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query + options + sort;
+    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&group.facet=true&group.ngroups=true&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query + options + sort;
     return axios
       .get(searchUrl)
       .then(response => {
