@@ -15,12 +15,16 @@
            <div class="headline">
              <span class="numbersFound">{{ resultHits || "0" }}</span> matches was found. Showing hit 
               <span class="numbersFound"> {{ this.solrOptions.currentOffset + 1 }} - {{ this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber > resultHits ? resultHits : this.solrOptions.shownResultsNumber + this.solrOptions.currentOffset }}</span>.
-              <div>
-                <button :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">last 10</button>
-                <button :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
-              </div>
-           </div>
-           <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
+          </div>
+          <div class="pagingButtonContainer">
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+          </div>
+          <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
+          <div class="pagingButtonContainer pageEnd">
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+          </div>
         </div>
      </div>
 </template>
