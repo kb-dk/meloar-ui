@@ -44,7 +44,7 @@
 
   export default {
     name: "PDFSearchResult",
-    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
+    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:2 }),
     components: {
     //  ResultMap,
      HighlightedChapter,
@@ -69,6 +69,9 @@
         else {
           return true;
         }
+      },
+      toggleMoreSnippetsVisibility() {
+        this.showingAllSnippets = !this.showingAllSnippets;
       }
     },
     };
