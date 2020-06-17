@@ -44,7 +44,7 @@ export default {
         const proxyURL = encodeURIComponent(
           "/api/resource/meloar?collection=" + this.instance + "&url=" + this.record.external_resource[0]
         );
-        console.log(decodeURIComponent(proxyURL));
+        //console.log(decodeURIComponent(proxyURL));
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage
           ? "#search=" + this.query + "&page=" + this.getSinglePageNumber()
