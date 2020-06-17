@@ -63,12 +63,7 @@
     },
     methods: {
       checkForSnippetAvailability(query) {
-        if(query === '*.*' || query === '*:*' || query.includes('&pt=')) {
-          return false;
-        }
-        else {
-          return true;
-        }
+        return query === '*.*' || query === '*:*' || query.includes('&pt=') ? false : true;
       },
       toggleMoreSnippetsVisibility() {
         this.showingAllSnippets = !this.showingAllSnippets;

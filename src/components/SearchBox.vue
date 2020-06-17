@@ -211,10 +211,10 @@
       },
       //Check and apply (if needed), time filters to the querystring.
       addTimeFiltersToSearchFilter(filterString) {
-        if(this.time === true && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
+        if(this.time && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
           filterString += "&fq=ff_primaryobject_year_from_i:[* TO " + this.timeTo + "]";
         }
-        if(this.time === true && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
+        if(this.time && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
             filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeFrom + " TO *]";
         }
         return filterString;
@@ -223,7 +223,7 @@
         let proceed = false;
         // We make sure we're on a Search instance. 
         //if we're not we don't have to go though all this, because we'll always fire a search on the instance route no matter what.
-        if(this.$router.history.current.name === "Search" && this.time === true) {
+        if(this.$router.history.current.name === "Search" && this.time) {
           let filters = this.$route.params.query ? this.$route.params.query.split("fq=") : ""
           //If we have more han one filter (that means, more than the query, we check them out)
           if(filters.length > 1) {

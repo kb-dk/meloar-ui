@@ -120,11 +120,12 @@ export default {
         name = stringSplit[1];
         if(filter.includes("ff_primaryobject_year_from_i") || filter.includes("ff_primaryobject_year_to_i")) {
           time = true;
+          // 2 simple regexes to remove to and from in the string, aswell as alle [, ] and * occurences.
           name = name.replace(/[*[\]]/g,'').replace(/TO|FROM/g, '');
         }
         name.includes("&sort") ? name = name.substring(0, name.indexOf('&sort')) : null
       }
-      return time === true ? this.$_deliverTimePeriodStamp(name) : name;
+      return time ? this.$_deliverTimePeriodStamp(name) : name;
     }
   },
 
