@@ -129,7 +129,6 @@ export default {
           instance:this.instance
         }
       });
-      console.log();
     }
   },
 

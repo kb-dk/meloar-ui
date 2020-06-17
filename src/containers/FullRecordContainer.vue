@@ -41,7 +41,7 @@ export default {
         }
         else {
           this.foundData = false
-          console.log("oh snap, we got no result!")
+          //console.log("oh snap, we got no result!")
         }
       }
     }
