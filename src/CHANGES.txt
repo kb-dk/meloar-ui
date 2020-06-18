@@ -1,0 +1,2 @@
+1.0.0
+Brand new MeLOAR with complete reworked core ready to adopt many new LOAR targets
