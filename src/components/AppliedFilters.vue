@@ -82,7 +82,7 @@ export default {
 
       let mergedQuery = this.orgQuery;
       if (this.filters.length > 0) {
-        if (this.filters[0].includes("&pt=") === true) {
+        if (this.filters[0].includes("&pt=")) {
           mergedQuery = mergedQuery + "&d=";
         } else {
           mergedQuery = mergedQuery + "&fq=";
@@ -99,7 +99,7 @@ export default {
     },
     findCategory(filter) {
       let category;
-      if (filter.includes("&pt=") === true) {
+      if (filter.includes("&pt=")) {
         category = "location";
       } else {
         let i = filter.indexOf(":");
@@ -111,7 +111,7 @@ export default {
     findName(filter) {
       let name;
       let time = false;
-      if (filter.includes("&pt=") === true) {
+      if (filter.includes("&pt=")) {
         let location = filter.split("&pt=");
         name = "d=" + location[0] + "&pt=" + location[1];
       } else {
