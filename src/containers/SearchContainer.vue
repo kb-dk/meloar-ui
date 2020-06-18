@@ -31,7 +31,8 @@ export default {
     ...mapState({
       query: state => state.searchStore.query,
       results: state => state.searchStore.results,
-      instance: state => state.searchStore.instance
+      instance: state => state.searchStore.instance,
+      solrOptions: state => state.searchStore.solrOptions,
     })
   },
   created() {
@@ -72,15 +73,16 @@ export default {
   beforeRouteEnter(to, from, next) {
     const query = to.params.query;
         next(vm => {
-          vm.doSearch({query:query, instance:vm.instance});
+          vm.doSearch({query:query, instance:vm.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
           //console.log(vm, query);
         })
   },
 
  beforeRouteUpdate(to, from, next) {
+   //console.log("we at the beforeRouteUpdate")
     const query = to.params.query;
     if(this.checkForSearchChange(to, from)) {
-      this.doSearch({query:query, instance:to.params.instance})
+      this.doSearch({query:query, instance:to.params.instance, options:to.params.options, sort: to.params.sort})
       next();
     }
   },

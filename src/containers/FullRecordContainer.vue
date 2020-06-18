@@ -29,6 +29,7 @@ export default {
       query: state => state.searchStore.query,
       results: state => state.searchStore.results,
       instance: state => state.searchStore.instance,
+      solrOptions: state => state.searchStore.solrOptions
     })
   },
   watch: {
@@ -41,7 +42,7 @@ export default {
         }
         else {
           this.foundData = false
-          console.log("oh snap, we got no result!")
+          //console.log("oh snap, we got no result!")
         }
       }
     }
@@ -110,8 +111,7 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    //console.log("NO ID MATCH")
-    vm.doSearch({query:to.query.loarId, instance:to.params.instance})
+    vm.doSearch({query:to.query.loarId, instance:to.params.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset})
     .then(() => {
       vm.updateInstance(to.params.instance)
       vm.updateQuery(to.query.query)

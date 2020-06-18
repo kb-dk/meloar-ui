@@ -7,16 +7,9 @@ export const searchService = {
   structureSearchResult,
 }
 
-function fireSearch(query, instance) {
-    if (query != undefined && query.includes("&d=")) {
-      //searchStore.queryDisplay = query.substring(0, query.indexOf("&d="));
-    } else if (query != undefined && query.includes("&fq=")) {
-      //searchStore.queryDisplay = query.substring(0, query.indexOf("&fq="));
-    } else {
-      //searchStore.queryDisplay = query;
-    }
+function fireSearch(query, instance, options, sort) {
     query === undefined ? query = '' : query = "&q=" + query;
-    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query;
+    const searchUrl = "/api/discovery/meloar/collection?collection=" + instance + "&group.facet=true&group.ngroups=true&facet=true&hl=true&group.field=loar_id&group.limit=50&group=true" + query + options + sort;
     return axios
       .get(searchUrl)
       .then(response => {
@@ -35,7 +28,7 @@ function fireSearch(query, instance) {
     for (let i = 0; i < searchResults.grouped.loar_id.groups.length; i++) {
       searchResults.grouped.loar_id.groups[i].query = searchResults.responseHeader.params.q;
       searchResults.grouped.loar_id.groups[i].allHits =
-        searchResults.stats.stats_fields.loar_id.cardinality;
+        searchResults.grouped.loar_id.ngroups;
       for (let o = 0; o < searchResults.grouped.loar_id.groups[i].doclist.docs.length; o++) {
         const highLightsBlock =
           searchResults.highlighting[searchResults.grouped.loar_id.groups[i].doclist.docs[o].id]

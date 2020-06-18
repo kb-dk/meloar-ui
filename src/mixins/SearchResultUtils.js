@@ -41,7 +41,8 @@ export default {
       return returnphase;
     },
     $_returnTimeFromQueryString(time) {
-      return time.split('[').pop().split(']')[0].replace(/TO|FROM|\*/g, '')
+      time = time.split('[').pop().split(']')[0].replace(/TO|FROM|\*/g, '').trim()
+      return time
     },
     $_returnACorDC(time) {
       return time.toString().charAt(0) === "-"

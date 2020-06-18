@@ -1,7 +1,7 @@
 <template>
-<div>
+<div v-if="this.checkForSnippetAvailability(this.queryString)"> 
     <!--PDF Search result handling-->
-        <div :v-if="!queryString.includes('&pt=')" class="matches">
+        <div class="matches">
           <span class="numbersFound">{{ result.doclist.numFound }}</span>
           <span v-if="result.doclist.numFound > 1"> matches </span>
           <span v-if="result.doclist.numFound === 1"> match </span>
@@ -13,7 +13,7 @@
           <span v-if="showingAllSnippets === false">See more hits</span>
           </span>
         </div>
-        <div v-if="this.queryString.includes('&pt=') !== true">
+        <div>
           <div v-for="(snippets, index) in result.doclist.docs"
             class="snippet"
             v-bind:key="index"
@@ -21,7 +21,7 @@
             <div class="chapterTitle">chapter </div>
             <highlighted-chapter :chapterString="snippets.chapter" :query="queryString" />
             <div class="pageTitle">page </div>
-            <div class="pageNumber">{{ snippets.page[0] == 0 ? 1 : snippets.page[0] }}</div>
+            <div class="pageNumber">{{ snippets.page ? snippets.page[0] == 0 ? 1 : snippets.page[0] : 'No pagenumber' }}</div>
             <ul>
             <highlighted-content :contentArray="snippets.highLightSnippets" :query="queryString" />
             </ul>
@@ -44,7 +44,7 @@
 
   export default {
     name: "PDFSearchResult",
-    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
+    data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:2 }),
     components: {
     //  ResultMap,
      HighlightedChapter,
@@ -60,6 +60,14 @@
         type: String,
         requred: true
       }
-    }
+    },
+    methods: {
+      checkForSnippetAvailability(query) {
+        return query === '*.*' || query === '*:*' || query.includes('&pt=') ? false : true;
+      },
+      toggleMoreSnippetsVisibility() {
+        this.showingAllSnippets = !this.showingAllSnippets;
+      }
+    },
     };
 </script>

@@ -24,7 +24,7 @@
       <a href="mailto:fof@cas.au.dk">fof@cas.au.dk</a>.
     </p>
     <div class="router">
-      <router-link to="/">Back to searching</router-link>
+      <router-link to="/">Back to MeLOAR</router-link>
     </div>
   </div>
 </template>

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="instanceName" :class="'instanceContainer ' + instance">
+  <div :class="'instanceContainer ' + instance">
     <div v-if="instanceName">
       <div class="titleContainer">
         <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
@@ -17,7 +17,7 @@
         <a href="http://labs.kb.dk/">Back to labs.kb.dk</a>
       </div>
     </div>
-    <not-found v-if="!instanceName"></not-found>
+    <not-found v-if='!instanceName'></not-found>
   </div>
 </template>
 <script>
@@ -51,9 +51,17 @@ export default {
         item.key === this.instance ? (this.instanceName = item.name, this.searchOptions = item.searchOptions) : null
       })
     },
+  mounted() {
+    this.updateQuery("")
+    this.updateQueryDisplay("")
+
+  },
   methods: {
     ...mapActions("searchStore", {
         updateInstance: "updateInstance",
+        updateQuery: "updateQuery",
+        updateQueryDisplay: "updateQueryDisplay",
+
       }),
 
   }

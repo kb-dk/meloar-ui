@@ -17,7 +17,7 @@
     export default {
       name: "NotFound",
       created() {
-        console.log(this.$route)
+        //console.log(this.$route)
       },
       methods: {
       }
