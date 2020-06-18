@@ -5,7 +5,7 @@
          <div v-if="loading === false && results" class="searchResults">
            <div class="headline">Filter by:</div>
            <div v-if="this.facets" class="facets">
-                  <div v-bind:key="index" v-for="(item, index) in this.facets.facet_fields" class="facet">                    
+                  <div v-bind:key="index" v-for="(item, index) in trimFacetArray(this.facets.facet_fields)" class="facet">                    
                     <div class="facetName">{{ index.split("_")[0] }}</div>
                     <div v-on:click="number % 2 === 0 ? filterFromFacets(index, facet) : null" v-bind:key="number" v-for="(facet, number) in item" :class="number % 2 === 0 ? 'facetItem' : 'facetHitNumber'">
                       {{ number % 2 === 0 ? facet || "Unknown" : "(" + facet + ")" }}
@@ -90,6 +90,14 @@ export default {
       }
       else {
         return Object.keys(results).length > 0 && results.constructor === Array
+      }
+    },
+    trimFacetArray(filters) {
+      if(filters) {
+        Object.keys(filters).filter((item) => {
+          filters[item].length <= 0 ? delete filters[item] : null
+        })
+      return filters
       }
     },
     filterFromFacets(filter, value) {
