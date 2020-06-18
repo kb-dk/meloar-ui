@@ -1,6 +1,7 @@
 {
-  "name": "meloar-ui",
+  "name": "meloar",
   "version": "1.0.0",
+  "author": "Jesper Lauridsen <jla@kb.dk> and Jørn Thøgersen <jt@kb.dk>",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
