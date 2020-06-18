@@ -13,14 +13,19 @@
                 </div>
               </div>
            <div class="headline">
-             <span class="numbersFound">{{ resultHits || "0" }}</span> matches was found in
-               <span class="numbersFound"> {{ resultMatches || "0" }}</span>
-               <span v-if="resultHits > 1 || resultHits === null || resultHits === 0"> pdfs</span>
-               <span v-if="resultHits === 1"> pdf</span>
-           </div>
-           
-
-              <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
+             <span class="numbersFound">{{ resultHits || "0" }}</span> matches was found.
+             <span v-if="!loading && this.results.length > 0">Showing hit 
+              <span class="numbersFound"> {{ this.solrOptions.currentOffset + 1 }} - {{ this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber > resultHits ? resultHits : this.solrOptions.shownResultsNumber + this.solrOptions.currentOffset }}</span>.</span>
+          </div>
+          <div v-if="!loading && this.results.length > 0" class="pagingButtonContainer">
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+          </div>
+          <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
+          <div v-if="!loading && this.results.length > 0" class="pagingButtonContainer pageEnd">
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+          </div>
         </div>
      </div>
 </template>
@@ -66,8 +71,8 @@ export default {
       results: state => state.searchStore.results,
       facets: state => state.searchStore.facets,
       loading: state => state.searchStore.loading,
-      instance: state => state.searchStore.instance
-
+      instance: state => state.searchStore.instance,
+      solrOptions: state => state.searchStore.solrOptions,
     }),
      searchResultComponentName() {
           //Remember to handle default instance
@@ -82,7 +87,10 @@ export default {
         updateQueryDisplay: "updateQueryDisplay",
         updateQuery: "updateQuery",
         setLoadingStatus:"setLoadingStatus",
-        updateInstance: "updateInstance"
+        updateInstance: "updateInstance",
+        updateShownResultsNumber: "updateShownResultsNumber",
+        updateCurrentOffset: "updateCurrentOffset",
+        doSearch:"doSearch"
       }),
     checkForResults(results) {
       if (results === undefined) {
@@ -92,6 +100,28 @@ export default {
         return Object.keys(results).length > 0 && results.constructor === Array
       }
     },
+    nextResults() {
+      this.updateCurrentOffset(this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber);
+      this.doSearch(
+        {
+        query:this.query,
+        instance:this.instance,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        sort:this.solrOptions.searchSort
+        }
+      );
+    },
+    previousResults() {
+      this.updateCurrentOffset(this.solrOptions.currentOffset - this.solrOptions.shownResultsNumber);
+      this.doSearch(
+        {
+        query:this.query,
+        instance:this.instance,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        sort:this.solrOptions.searchSort
+        }
+      );
+    },
     filterFromFacets(filter, value) {
       var getQuery = this.query;
       if (getQuery === "") {
@@ -100,7 +130,7 @@ export default {
       this.updateQuery(getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"')
       this.$router.push({
         name: "Search",
-        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"' }
+        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"', options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       })
     }
   },

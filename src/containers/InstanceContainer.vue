@@ -51,9 +51,17 @@ export default {
         item.key === this.instance ? (this.instanceName = item.name, this.searchOptions = item.searchOptions) : null
       })
     },
+  mounted() {
+    this.updateQuery("")
+    this.updateQueryDisplay("")
+
+  },
   methods: {
     ...mapActions("searchStore", {
         updateInstance: "updateInstance",
+        updateQuery: "updateQuery",
+        updateQueryDisplay: "updateQueryDisplay",
+
       }),
 
   }
