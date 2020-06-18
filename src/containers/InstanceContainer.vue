@@ -1,5 +1,5 @@
 <template>
-  <div v-if="instanceName" :class="'instanceContainer ' + instance">
+  <div :class="'instanceContainer ' + instance">
     <div v-if="instanceName">
       <div class="titleContainer">
         <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
@@ -17,7 +17,7 @@
         <a href="http://labs.kb.dk/">Back to labs.kb.dk</a>
       </div>
     </div>
-    <not-found v-if="!instanceName"></not-found>
+    <not-found v-if='!instanceName'></not-found>
   </div>
 </template>
 <script>
