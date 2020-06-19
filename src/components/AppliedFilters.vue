@@ -36,7 +36,8 @@ export default {
 
   computed: {
       ...mapState({
-        instance: state => state.searchStore.instance
+        instance: state => state.searchStore.instance,
+        solrOptions: state => state.searchStore.solrOptions,
       })
     },
   methods: {
@@ -81,7 +82,7 @@ export default {
 
       let mergedQuery = this.orgQuery;
       if (this.filters.length > 0) {
-        if (this.filters[0].includes("&pt=") === true) {
+        if (this.filters[0].includes("&pt=")) {
           mergedQuery = mergedQuery + "&d=";
         } else {
           mergedQuery = mergedQuery + "&fq=";
@@ -92,39 +93,25 @@ export default {
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",
-        params: { query: mergedQuery, instance: this.instance }
+        params: { query: mergedQuery, instance: this.instance, options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       });
       this.$emit('timeSliderUpdate', filterString);
     },
     findCategory(filter) {
       let category;
-      if (filter.includes("&pt=") === true) {
+      if (filter.includes("&pt=")) {
         category = "location";
       } else {
         let i = filter.indexOf(":");
         let stringSplit = [filter.slice(0, i), filter.slice(i + 1)];
-        if(stringSplit[0].includes("ff_primaryobject_year") === false) {
           category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"))
-        }
-        else {
-          switch(stringSplit[0]) {
-            case "ff_primaryobject_year_from_i":
-              category = "From year"
-              break;
-            case "ff_primaryobject_year_to_i":
-              category = "To year"
-              break;
-            default:
-            category = stringSplit[0]
-          }
-        }
       }
       return category;
     },
     findName(filter) {
       let name;
       let time = false;
-      if (filter.includes("&pt=") === true) {
+      if (filter.includes("&pt=")) {
         let location = filter.split("&pt=");
         name = "d=" + location[0] + "&pt=" + location[1];
       } else {
@@ -133,10 +120,12 @@ export default {
         name = stringSplit[1];
         if(filter.includes("ff_primaryobject_year_from_i") || filter.includes("ff_primaryobject_year_to_i")) {
           time = true;
+          // 2 simple regexes to remove to and from in the string, aswell as alle [, ] and * occurences.
           name = name.replace(/[*[\]]/g,'').replace(/TO|FROM/g, '');
         }
+        name.includes("&sort") ? name = name.substring(0, name.indexOf('&sort')) : null
       }
-      return time === true ? this.$_deliverTimePeriodStamp(name) : name;
+      return time ? this.$_deliverTimePeriodStamp(name) : name;
     }
   },
 

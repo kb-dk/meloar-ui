@@ -21,7 +21,7 @@ export default {
         return "Unknown";
       }
       if (query === "*.*" || query === "*:*") {
-        return arg;
+        return 'Unknown';
       }
       return arg.replace(new RegExp(query, "ig"), match => {
         return '<span class="highlightText">' + match + "</span>";

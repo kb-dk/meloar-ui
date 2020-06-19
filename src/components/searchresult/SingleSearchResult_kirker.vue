@@ -41,8 +41,8 @@
   import PDFSearchResult from "./common/PDFSearchResult"
   import ResultMap from "./addons/ResultMap.vue";
   import SearchResultUtils from "../../mixins/SearchResultUtils"
+  import SearchResultRankNumber from "./common/SearchResultRankNumber"
   
-
   export default {
     name: "SingleSearchResult_kirk",
     data: () => ({ showingAllSnippets: false, defaultVisibleSnippets:4 }),
@@ -50,8 +50,7 @@
       ResultMap,
       SingleSearchResultInfoBase,
       PDFSearchResult,
-      SearchResultRankNumber
-    
+      SearchResultRankNumber  
     },
      mixins: [SearchResultUtils],
     props: {
