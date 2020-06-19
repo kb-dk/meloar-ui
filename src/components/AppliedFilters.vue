@@ -111,10 +111,10 @@ export default {
         else {
           switch(stringSplit[0]) {
             case "ff_primaryobject_year_from_i":
-              category = "from year"
+              category = "to year"
               break;
             case "ff_primaryobject_year_to_i":
-              category = "to year"
+              category = "from year"
               break;
             default:
             category = stringSplit[0]
