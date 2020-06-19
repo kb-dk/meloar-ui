@@ -338,3 +338,8 @@ body {
   animation-duration: 4s;
   animation-iteration-count: infinite;
 }
+
+//Highjacking vue slider to fit out needs
+.vue-slider-process {
+  background-color: #d5f6f0 !important
+}

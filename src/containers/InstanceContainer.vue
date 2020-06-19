@@ -2,9 +2,9 @@
   <div :class="'instanceContainer ' + instance">
     <div v-if="instanceName">
       <div class="titleContainer">
-        <router-link :to="{name: 'Home'}"><h2>Meloar</h2></router-link>
+        <h2>{{ instanceName || 'Ukendt instans' }}</h2>
         <hr style="width:300px" />
-        <span>{{ instanceName || 'Ukendt instans' }} v2</span>
+        <router-link :to="{name: 'Home'}"><span>back to MELOAR v2</span></router-link>
       </div>
       <search-box :time="searchOptions.time"/>
       <search-map v-if="searchOptions.map === true" />
@@ -14,7 +14,7 @@
         </router-link>
         <br />
         <br />
-        <a href="http://labs.kb.dk/">Back to labs.kb.dk</a>
+        <div class="labsContainer"> <a href="http://labs.kb.dk/">Back to labs.kb.dk</a></div>
       </div>
     </div>
     <not-found v-if='!instanceName'></not-found>
