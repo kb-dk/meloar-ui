@@ -45,7 +45,6 @@ export default {
   watch: {
     results: function(newValue) {
       if(typeof newValue === 'object' && newValue !== null ) {
-        //console.log(Object.keys(this.results).length, "LEEEENGTH")
         if(Object.keys(this.results).length >= 1) {
           this.queryDisplay === "" ? this.updateQueryDisplay(this.results[0].query) : null
           this.resultHits = this.results[0].allHits
@@ -70,8 +69,12 @@ export default {
 
     }),
      searchResultComponentName() {
+       let instanceComponent = false
+       Object.keys(this.$options.components).forEach(item => {
+        item.includes(this.instance) && item.includes("SingleSearchResult") ? instanceComponent = true : null
+       })
           //Remember to handle default instance
-         return this.instance ? 'SingleSearchResult_' + this.instance : 'SingleSearchResult_default'
+         return instanceComponent === false ? 'SingleSearchResult_default' : 'SingleSearchResult_' + this.instance
         }
   },
   created() {

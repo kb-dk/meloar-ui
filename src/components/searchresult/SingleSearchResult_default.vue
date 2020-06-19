@@ -15,13 +15,16 @@
 <script>
   import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
   import PDFSearchResult from "./common/PDFSearchResult"
-   import SearchResultUtils from "../../mixins/SearchResultUtils"
+  import SearchResultUtils from "../../mixins/SearchResultUtils"
+  import SearchResultRankNumber from "./common/SearchResultRankNumber"
+
  
   export default {
     name: "SingleSearchResult_default",
     components: {
      PDFSearchResult,
-     SingleSearchResultInfoBase
+     SingleSearchResultInfoBase,
+     SearchResultRankNumber
     },
      mixins: [SearchResultUtils],
     props: {
