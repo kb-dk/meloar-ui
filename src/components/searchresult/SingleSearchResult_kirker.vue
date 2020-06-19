@@ -37,7 +37,6 @@
 <script>
   
   import SingleSearchResultInfoBase from "./common/SingleSearchResultInfoBase"
-  import SearchResultRankNumber from "./common/SearchResultRankNumber"
   import PDFSearchResult from "./common/PDFSearchResult"
   import ResultMap from "./addons/ResultMap.vue";
   import SearchResultUtils from "../../mixins/SearchResultUtils"
