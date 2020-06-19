@@ -71,7 +71,9 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    const query = to.params.query;
+    //Apparently full encoding breaks solr, so we just want to escape the brackets [], since that's what needed for the tomcat to accept the query.
+    const query = to.params.query.replace(/\[/g,'%5B').replace(/]/g,'%5D');
+    //const query = encodeURIComponent(to.params.query);
         next(vm => {
           vm.doSearch({query:query, instance:vm.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
           //console.log(vm, query);

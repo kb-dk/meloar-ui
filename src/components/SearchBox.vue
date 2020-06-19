@@ -210,12 +210,13 @@
           return filterString;
       },
       //Check and apply (if needed), time filters to the querystring.
+      // We encode just the bracket part to make sure we get past the tomcat.
       addTimeFiltersToSearchFilter(filterString) {
         if(this.time && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
-          filterString += "&fq=ff_primaryobject_year_from_i:[* TO " + this.timeTo + "]";
+          filterString += "&fq=ff_primaryobject_year_from_i:" + encodeURIComponent("[* TO " + this.timeTo + "]");
         }
         if(this.time && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
-            filterString += "&fq=ff_primaryobject_year_to_i:[" + this.timeFrom + " TO *]";
+            filterString += "&fq=ff_primaryobject_year_to_i:" + encodeURIComponent("[" + this.timeFrom + " TO *]");
         }
         return filterString;
       }, 
@@ -255,12 +256,14 @@
       },
       //Function to take a timeSlider filter, and update it accordingly.
       //Based on if it's year from/to, and whether it is needed (if filters are set at all)
+      // We encode just the bracket part to make sure we get past the tomcat.
+
       filterTimeSliderCreator(filterString) {
         if(filterString.includes("ff_primaryobject_year_from_i")) {
-          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_from_i:[* TO " + this.timeTo + "]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_from_i:" + encodeURIComponent("[* TO " + this.timeTo + "]") : filterString = ""; 
         }
         if(filterString.includes("ff_primaryobject_year_to_i")) {
-          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:[" + this.timeFrom + " TO *]" : filterString = ""; 
+          this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max ? filterString = "ff_primaryobject_year_to_i:" + encodeURIComponent("[" + this.timeFrom + " TO *]") : filterString = ""; 
         }
         // Returns the altered filterString - which can be "" if no filter is needed.
         // This is taken care of in search where the filters are put back together.
