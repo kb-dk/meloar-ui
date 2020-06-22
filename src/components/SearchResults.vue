@@ -105,8 +105,8 @@ export default {
     },
     trimFacetArray(filters) {
       if(filters) {
-        Object.keys(filters).filter((item) => {
-          filters[item].length <= 0 ? delete filters[item] : null
+        Object.keys(filters).filter((item, index) => {
+          filters[item].length <= 0 || index >= 4 ? delete filters[item] : null
         })
       return filters
       }
