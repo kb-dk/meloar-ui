@@ -99,7 +99,7 @@ export default {
     },
     findCategory(filter) {
       let category;
-      if (filter.includes("&pt=") === true) {
+      if (filter.includes("&pt=")) {
         category = "location";
       } else {
         let i = filter.indexOf(":");
