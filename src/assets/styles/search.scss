@@ -261,7 +261,7 @@
   flex: 1;
 }
 
-.mapContainer {
+.mapContainer, .imgContainer {
   max-height: 285px;
   margin: 0px !important;
   padding: 0px !important;
@@ -271,6 +271,32 @@
   -ms-flex: 1;
   flex: 1;
   overflow: hidden;
+}
+
+.imgContainer img {
+  height:100%;
+  width:auto;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imgContainer.unfolded {
+  width: 100vw;
+  height: calc(100vh - 20px) !important;
+  padding-top:10px !important;
+  padding-bottom:10px !important;
+	max-height: 100vh;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 1010;
+  background-color: rgba(30, 30, 30, 0.9);
+}
+
+.imgContainer.unfolded:after {
+  display:none;
 }
 
 .titleContainer {
@@ -307,7 +333,7 @@
   height: 100%;
 }
 
-.mapContainer:after {
+.mapContainer:after, .imgContainer:after {
   z-index: 1000;
   display: block;
   height: 150%;
@@ -757,7 +783,8 @@
 .pdfTitle,
 .resultInfo,
 .authorTitle,
-.placeTitle {
+.placeTitle,
+.releaseDate {
   display: block !important;
   color: rgba(30, 30, 30, 0.5);
   text-transform: uppercase;
@@ -772,7 +799,8 @@
 .pdfName,
 .resultDate,
 .resultPlace,
-.authorName {
+.authorName,
+.releaseDateInfo {
   display: block;
   margin-bottom: 0px !important;
   margin-top: 0px !important;

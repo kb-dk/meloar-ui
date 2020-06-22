@@ -40,6 +40,7 @@ export default {
     SingleSearchResult_default: () => import("./searchresult/SingleSearchResult_default"),
     SingleSearchResult_fof: () => import("./searchresult/SingleSearchResult_fof"),
     SingleSearchResult_kirker: () => import("./searchresult/SingleSearchResult_kirker"),
+    SingleSearchResult_partiprogrammer: () => import("./searchresult/SingleSearchResult_partiprogrammer"),
     AppliedFilters
   },
   data: () => ({
