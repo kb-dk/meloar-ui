@@ -92,8 +92,8 @@
       if(this.time) {
         if(this.$router.history.current.params.query) {
         this.$router.history.current.params.query.split("&fq=").filter(item => {
-          item.includes("ff_primaryobject_year_from_i") ? this.timeFrom = parseInt(this.$_returnTimeFromQueryString(item)) : null
-          item.includes("ff_primaryobject_year_to_i") ? this.timeTo = parseInt(this.$_returnTimeFromQueryString(item)) : null
+          item.includes("ff_primaryobject_year_from_i") ? this.timeTo = parseInt(this.$_returnTimeFromQueryString(decodeURIComponent(item))) : null
+          item.includes("ff_primaryobject_year_to_i") ? this.timeFrom = parseInt(this.$_returnTimeFromQueryString(decodeURIComponent(item))) : null
           })
         }
         //Double check - if we didn't get anything from the params, we set them ourselves from the options.
@@ -173,7 +173,7 @@
         }
       },
       updateSortOptionForTimeSearch(searchString) {
-        if((searchString.includes("f_primaryobject_year_from_i") || searchString.includes("ff_primaryobject_year_to_i")) && !searchString.includes("&sort")) {
+        if((searchString.includes("ff_primaryobject_year_from_i") || searchString.includes("ff_primaryobject_year_to_i")) && !searchString.includes("&sort")) {
           this.updateSearchSort('&sort=dist(2,ff_primaryobject_year_from_i,ff_primaryobject_year_to_i,' + this.timeFrom +',' + this.timeTo + ')+asc,score+desc');
         }
         else {
@@ -212,11 +212,11 @@
       //Check and apply (if needed), time filters to the querystring.
       // We encode just the bracket part to make sure we get past the tomcat.
       addTimeFiltersToSearchFilter(filterString) {
-        if(this.time && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
-          filterString += "&fq=ff_primaryobject_year_from_i:" + encodeURIComponent("[* TO " + this.timeTo + "]");
-        }
         if(this.time && filterString.includes("ff_primaryobject_year_to_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
             filterString += "&fq=ff_primaryobject_year_to_i:" + encodeURIComponent("[" + this.timeFrom + " TO *]");
+        }
+        if(this.time && filterString.includes("ff_primaryobject_year_from_i") === false && (this.timeFrom !== this.searchOptions.timeOptions.min || this.timeTo !== this.searchOptions.timeOptions.max)) {
+          filterString += "&fq=ff_primaryobject_year_from_i:" + encodeURIComponent("[* TO " + this.timeTo + "]");
         }
         return filterString;
       }, 
@@ -231,11 +231,11 @@
             filters.forEach(item => {
               if(item.includes("ff_primaryobject_year_from_i")) {
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
-                parseInt(this.$_returnTimeFromQueryString(item)) === this.timeFrom ? null : proceed = true;
+                parseInt(this.$_returnTimeFromQueryString(decodeURIComponent(item))) === this.timeTo ? null : proceed = true;
               }
               if(item.includes("ff_primaryobject_year_to_i")) {
                 //We check if the value matches the current set value in the slider. If so, we don't grant a search. Other wise, we do.
-                parseInt(this.$_returnTimeFromQueryString(item)) === this.timeTo ? null : proceed = true;
+                parseInt(this.$_returnTimeFromQueryString(decodeURIComponent(item))) === this.timeFrom ? null : proceed = true;
               }
             })
           }
