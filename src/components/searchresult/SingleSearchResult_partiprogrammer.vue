@@ -7,7 +7,7 @@
         <div class="releaseDate">Release year</div>
         <div class="releaseDateInfo">{{ this.result.doclist.docs[0].ctime.substring(0,4) }}</div>
       </div>
-      <result-image :imgsrc="this.result.doclist.docs[0].image_full[0]" />      
+      <result-image :imgsrc="this.result.doclist.docs[0].image_full[0] || 'No image'" />      
   </div>
   <PDF-search-result :result="result" :queryString="queryString" />
   </div>

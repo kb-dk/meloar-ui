@@ -1,6 +1,7 @@
 <template>
   <div :class="fullPicture ? 'imgContainer unfolded' : 'imgContainer'">
-        <img v-on:click="showFullPicture()" :src="imgsrc" />
+        <img v-if="imgsrc !== 'No image'" v-on:click="showFullPicture()" :src="imgsrc" />
+        <div class="noImgContainer" v-if="imgsrc === 'No image'">No image</div>
     </div>
 </template>
 <script>
