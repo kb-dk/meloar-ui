@@ -998,6 +998,15 @@
   display:block;
 }
 
+@media screen and (max-width: 600px) {
+  .headCube {
+    left:calc(300px - 25px) !important
+  }
+  .headCubeReversed {
+    left:calc(300px - 25px) !important
+  }
+}
+
 .frontpageTitleContainer {
   display: block;
   margin-left: auto;
