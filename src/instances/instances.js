@@ -1,8 +1,9 @@
 export default {
   instances: [
     {
-      key:'fof',
+     key:'fof',
      name: 'Fund og fortidsminder', 
+     pdfHighlight:true,
      searchOptions: {
       map:true,
       time:true,
@@ -15,7 +16,8 @@ export default {
     },
     {
       key:'kirker', 
-      name: 'Kirker', 
+      name: 'Kirker',
+      pdfHighlight:true, 
       searchOptions: {
         map:true,
         time:false,
@@ -24,6 +26,7 @@ export default {
     {
       key:'partiprogrammer', 
       name: 'Partiprogrammer', 
+      pdfHighlight:false,
       searchOptions: {
         map:false,
         time:false,
@@ -32,6 +35,7 @@ export default {
     {
       key:'folkeskole', 
       name: 'Folkeskole love', 
+      pdfHighlight:true,
       searchOptions: {
         map:false,
         time:false,
