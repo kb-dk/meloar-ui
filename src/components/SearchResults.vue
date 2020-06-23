@@ -80,7 +80,7 @@ export default {
         item.includes(this.instance) && item.includes("SingleSearchResult") ? instanceComponent = true : null
        })
           //Remember to handle default instance
-         return instanceComponent === false ? 'SingleSearchResult_default' : 'SingleSearchResult_' + this.instance
+         return !instanceComponent ? 'SingleSearchResult_default' : 'SingleSearchResult_' + this.instance
         }
   },
   created() {
