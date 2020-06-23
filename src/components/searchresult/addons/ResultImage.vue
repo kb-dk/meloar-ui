@@ -25,9 +25,5 @@ methods: {
     this.fullPicture = !this.fullPicture
   }
 },
-
-mounted() {
-},
-
 };
 </script>
