@@ -5,7 +5,7 @@
       <div class="overallInfo">
         <single-search-result-info-base :result="result"  />
         <div class="releaseDate">Release year</div>
-        <div class="releaseDateInfo">{{ this.result.doclist.docs[0].ctime.substring(0,4) }}</div>
+        <div class="releaseDateInfo">{{ getReleaseYear(this.result.doclist.docs[0].ctime) }}</div>
       </div>
       <result-image :imgsrc="this.result.doclist.docs[0].image_full[0] || 'No image'" />      
   </div>
@@ -45,5 +45,10 @@ export default {
       required:true
     }
   },
+  methods: {
+    getReleaseYear(string) {
+     return string ? string.substring(0,4) : 'Unknown';
+    }
+  }
  };
 </script>
