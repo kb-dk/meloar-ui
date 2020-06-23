@@ -7,7 +7,7 @@
         <router-link :to="{name: 'Home'}"><span>back to MELOAR v2</span></router-link>
       </div>
       <search-box :time="searchOptions.time"/>
-      <search-map v-if="searchOptions.map === true" />
+      <search-map v-if="searchOptions.map" />
       <div class="simpleNavigation">
         <router-link class="menuLink" to="/About">
           About this

@@ -261,7 +261,7 @@
   flex: 1;
 }
 
-.mapContainer {
+.mapContainer, .imgContainer {
   max-height: 285px;
   margin: 0px !important;
   padding: 0px !important;
@@ -271,6 +271,40 @@
   -ms-flex: 1;
   flex: 1;
   overflow: hidden;
+}
+
+.noImgContainer {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+  line-height:195px;
+  overflow:hidden;
+}
+
+.imgContainer img {
+  height:100%;
+  width:auto;
+  cursor: pointer;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.imgContainer.unfolded {
+  width: 100vw;
+  height: calc(100vh - 20px) !important;
+  padding-top:10px !important;
+  padding-bottom:10px !important;
+	max-height: 100vh;
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	z-index: 1010;
+  background-color: rgba(30, 30, 30, 0.9);
+}
+
+.imgContainer.unfolded:after {
+  display:none;
 }
 
 .titleContainer {
@@ -307,7 +341,7 @@
   height: 100%;
 }
 
-.mapContainer:after {
+.mapContainer:after, .imgContainer:after {
   z-index: 1000;
   display: block;
   height: 150%;
@@ -565,10 +599,10 @@
 }
 
 .facet {
-  width: 25%;
   display: inline-block;
   vertical-align: top;
-  //flex: 1;
+  flex: 1 1 0;
+	width: 0;
 }
 
 .facets {
@@ -757,7 +791,8 @@
 .pdfTitle,
 .resultInfo,
 .authorTitle,
-.placeTitle {
+.placeTitle,
+.releaseDate {
   display: block !important;
   color: rgba(30, 30, 30, 0.5);
   text-transform: uppercase;
@@ -772,7 +807,8 @@
 .pdfName,
 .resultDate,
 .resultPlace,
-.authorName {
+.authorName,
+.releaseDateInfo {
   display: block;
   margin-bottom: 0px !important;
   margin-top: 0px !important;
@@ -962,6 +998,15 @@
   display:block;
 }
 
+@media screen and (max-width: 600px) {
+  .headCube {
+    left:calc(300px - 25px) !important
+  }
+  .headCubeReversed {
+    left:calc(300px - 25px) !important
+  }
+}
+
 .frontpageTitleContainer {
   display: block;
   margin-left: auto;
@@ -1015,7 +1060,7 @@ text-transform:uppercase;
   background: linear-gradient(135deg, #d5f6f0 0%, #e6e6e6 33%, #f0f0f0 66%, whitesmoke 100%);
 	color: #1e1e1e;
   background-attachment: fixed;
-  min-height:calc(70vh - 120px);
+  min-height:calc(70vh - 150px);
   padding-bottom: 30px;
 }
 

@@ -21,5 +21,21 @@ export default {
         time:false,
        }
     },
+    {
+      key:'partiprogrammer', 
+      name: 'Partiprogrammer', 
+      searchOptions: {
+        map:false,
+        time:false,
+       }
+    },
+    {
+      key:'folkeskole', 
+      name: 'Folkeskole love', 
+      searchOptions: {
+        map:false,
+        time:false,
+       }
+    },
   ]
 }
