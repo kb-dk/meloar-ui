@@ -1,2 +1,8 @@
+2.0.0
+New targets - Folkeskole love and Partiprogrammer
+Brand new front page
+Fixed encoding of params so upgraded Tomcat is happy
+Other minor bugfixes
+
 1.0.0
 Brand new MeLOAR with complete reworked core ready to adopt many new LOAR targets
