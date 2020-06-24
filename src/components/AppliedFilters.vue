@@ -104,7 +104,22 @@ export default {
       } else {
         let i = filter.indexOf(":");
         let stringSplit = [filter.slice(0, i), filter.slice(i + 1)];
+        category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"));
+        if(stringSplit[0].includes("ff_primaryobject_year") === false) {
           category = stringSplit[0].substring(0, stringSplit[0].indexOf("_"))
+        }
+        else {
+          switch(stringSplit[0]) {
+            case "ff_primaryobject_year_from_i":
+              category = "to year"
+              break;
+            case "ff_primaryobject_year_to_i":
+              category = "from year"
+              break;
+            default:
+            category = stringSplit[0]
+          }
+        }
       }
       return category;
     },

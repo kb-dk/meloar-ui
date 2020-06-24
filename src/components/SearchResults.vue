@@ -5,7 +5,7 @@
          <div v-if="loading === false && results" class="searchResults">
            <div class="headline">Filter by:</div>
            <div v-if="this.facets" class="facets">
-                  <div v-bind:key="index" v-for="(item, index) in this.facets.facet_fields" class="facet">                    
+                  <div v-bind:key="index" v-for="(item, index) in trimFacetArray(this.facets.facet_fields)" class="facet">                    
                     <div class="facetName">{{ index.split("_")[0] }}</div>
                     <div v-on:click="number % 2 === 0 ? filterFromFacets(index, facet) : null" v-bind:key="number" v-for="(facet, number) in item" :class="number % 2 === 0 ? 'facetItem' : 'facetHitNumber'">
                       {{ number % 2 === 0 ? facet || "Unknown" : "(" + facet + ")" }}
@@ -40,6 +40,7 @@ export default {
     SingleSearchResult_default: () => import("./searchresult/SingleSearchResult_default"),
     SingleSearchResult_fof: () => import("./searchresult/SingleSearchResult_fof"),
     SingleSearchResult_kirker: () => import("./searchresult/SingleSearchResult_kirker"),
+    SingleSearchResult_partiprogrammer: () => import("./searchresult/SingleSearchResult_partiprogrammer"),
     AppliedFilters
   },
   data: () => ({
@@ -50,7 +51,6 @@ export default {
   watch: {
     results: function(newValue) {
       if(typeof newValue === 'object' && newValue !== null ) {
-        //console.log(Object.keys(this.results).length, "LEEEENGTH")
         if(Object.keys(this.results).length >= 1) {
           this.queryDisplay === "" ? this.updateQueryDisplay(this.results[0].query) : null
           this.resultHits = this.results[0].allHits
@@ -75,8 +75,12 @@ export default {
       solrOptions: state => state.searchStore.solrOptions,
     }),
      searchResultComponentName() {
+       let instanceComponent = false
+       Object.keys(this.$options.components).forEach(item => {
+        item.includes(this.instance) && item.includes("SingleSearchResult") ? instanceComponent = true : null
+       })
           //Remember to handle default instance
-         return this.instance ? 'SingleSearchResult_' + this.instance : 'SingleSearchResult_default'
+         return !instanceComponent ? 'SingleSearchResult_default' : 'SingleSearchResult_' + this.instance
         }
   },
   created() {
@@ -98,6 +102,14 @@ export default {
       }
       else {
         return Object.keys(results).length > 0 && results.constructor === Array
+      }
+    },
+    trimFacetArray(filters) {
+      if(filters) {
+        Object.keys(filters).filter((item, index) => {
+          filters[item].length <= 0 || index >= 4 ? delete filters[item] : null
+        })
+      return filters
       }
     },
     nextResults() {

@@ -12,13 +12,15 @@
 <script>
 
 import { mapState, mapActions } from "vuex";
+import MeloarInstances from '../../instances/instances';
 
 export default {
     name: "PdfDocument",
 
     data: () => ({
       iframeUrl:'',
-      publicPath: process.env.BASE_URL
+      publicPath: process.env.BASE_URL,
+      MeloarInstances:MeloarInstances,
     }),
     computed: {
       ...mapState({
@@ -41,13 +43,19 @@ export default {
         updateInstance: "updateInstance"
       }),
       getUrl() {
+        let highlightAllowed = false;
+        this.MeloarInstances.instances.filter(item => {
+        item.key === this.instance ? highlightAllowed = item.pdfHighlight : null
+      })
         const proxyURL = encodeURIComponent(
           "/api/resource/meloar?collection=" + this.instance + "&url=" + this.record.external_resource[0]
         );
         //console.log(decodeURIComponent(proxyURL));
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
         const pageParams = this.singlePage
-          ? "#search=" + this.query + "&page=" + this.getSinglePageNumber()
+          ? highlightAllowed
+            ? "#search=" + this.query + "&page=" + this.getSinglePageNumber()
+            : "#page=" + this.getSinglePageNumber()
           : "";
         return viewerURL + proxyURL + pageParams;
       },

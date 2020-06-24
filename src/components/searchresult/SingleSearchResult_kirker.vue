@@ -49,8 +49,7 @@
       ResultMap,
       SingleSearchResultInfoBase,
       PDFSearchResult,
-      SearchResultRankNumber
-  
+      SearchResultRankNumber  
     },
      mixins: [SearchResultUtils],
     props: {

@@ -12,6 +12,7 @@
 import SearchResults from "../components/SearchResults.vue";
 import MeloarInstances from '../instances/instances';
 import SearchBox from "../components/SearchBox.vue";
+import SearchResultUtils from "../mixins/SearchResultUtils"
 import { mapState, mapActions } from 'vuex'
 
 export default {
@@ -27,6 +28,7 @@ export default {
     searchError: false,
     time: false,
   }),
+  mixins: [SearchResultUtils],
   computed: {
     ...mapState({
       query: state => state.searchStore.query,
@@ -43,7 +45,8 @@ export default {
   methods: {
     ...mapActions('searchStore', {
       doSearch: 'doSearch',
-      structureSearchResult: 'structureSearchResult'
+      structureSearchResult: 'structureSearchResult',
+      updateSearchSort:'updateSearchSort'
     }),
     setFacets(facets) {
       this.facets = facets;
@@ -71,8 +74,19 @@ export default {
   },
 
   beforeRouteEnter(to, from, next) {
-    const query = to.params.query;
+    //Apparently full encoding breaks solr, so we just want to escape the brackets [], since that's what needed for the tomcat to accept the query.
+    const query = to.params.query.replace(/\[/g,'%5B').replace(/]/g,'%5D');
+    //const query = encodeURIComponent(to.params.query);
         next(vm => {
+          if(query.includes("ff_primaryobject_year_from_i") || query.includes("ff_primaryobject_year_from_i")) {
+            let timeFrom;
+            let timeTo;
+            query.split("&fq=").filter(item => {
+             item.includes("ff_primaryobject_year_from_i") ? timeTo = parseInt(vm.$_returnTimeFromQueryString(decodeURIComponent(item))) : null
+             item.includes("ff_primaryobject_year_to_i") ? timeFrom = parseInt(vm.$_returnTimeFromQueryString(decodeURIComponent(item))) : null
+            })
+            vm.updateSearchSort('&sort=dist(2,ff_primaryobject_year_from_i,ff_primaryobject_year_to_i,' + timeFrom +',' + timeTo + ')+asc,score+desc')
+          }
           vm.doSearch({query:query, instance:vm.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort: vm.solrOptions.searchSort});
           //console.log(vm, query);
         })
