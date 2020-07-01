@@ -1,5 +1,14 @@
 <template>
     <div class="searchContainer">
+      <transition name="loading-overlay">
+        <div v-if="loading === true" class="loading-overlay">
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+          <div class="bubble"></div>
+        </div>
+      </transition>
         <!--<div class="searchError">Something went terribly wrong with your search. Please try again.</div>-->
         <search-box :time="time"/>
         <div class="labsContainer">
@@ -33,6 +42,7 @@ export default {
     ...mapState({
       query: state => state.searchStore.query,
       results: state => state.searchStore.results,
+      loading: state => state.searchStore.loading,
       instance: state => state.searchStore.instance,
       solrOptions: state => state.searchStore.solrOptions,
     })
