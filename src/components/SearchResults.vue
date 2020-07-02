@@ -139,10 +139,10 @@ export default {
       if (getQuery === "") {
         getQuery = this.$router.history.current.params.query;
       }
-      this.updateQuery(getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"')
+      this.updateQuery(getQuery + '&fq=' + filter + ':"' + value + '"')
       this.$router.push({
         name: "Search",
-        params: { query: getQuery + '&fq=' + filter + ':"' + encodeURIComponent(value) + '"', options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
+        params: { query: getQuery + '&fq=' + filter + ':"' + value + '"', options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset, sort: this.solrOptions.searchSort }
       })
     }
   },
