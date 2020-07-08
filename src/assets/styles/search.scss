@@ -821,6 +821,8 @@
   visibility: visible;
 }
 
+//Minor leaflet changes to fit our app better.
+
 .leaflet-control-container {
   opacity: 0;
 }
@@ -829,6 +831,14 @@
   margin-left: 25px;
 }
 
+.leaflet-popup-content-wrapper {
+  box-shadow: 0 8px 10px rgba(0,0,0,0.4) !important;
+  border-radius:0px !important
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+	padding: 3px 0px 0 0 !important;
+}
 .searchMapContainer .leaflet-control-container {
   -webkit-transition: all 0ms ease-out 0s;
   -moz-transition: all 0ms ease-out 0s;

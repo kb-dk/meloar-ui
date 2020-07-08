@@ -68,7 +68,7 @@ methods: {
           if(results[y].doclist.docs[0].place_coordinates) {
           mapNode.marker(results[y].doclist.docs[0].place_coordinates.split(',').reverse())
           .addTo(resultmap)
-          .bindPopup("<a href=" + this.createLink(results[y]) + ">" + Number(this.solrOptions.currentOffset + y + 1) + ": " + results[y].doclist.docs[0].title + "</a>");
+          .bindPopup(Number(this.solrOptions.currentOffset + y + 1) + ": <a href=" + this.createLink(results[y]) + ">" + results[y].doclist.docs[0].title + "</a>");
           }
         }
         this.map = resultmap;
