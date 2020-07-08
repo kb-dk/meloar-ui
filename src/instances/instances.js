@@ -41,5 +41,14 @@ export default {
         time:false,
        }
     },
+    {
+      key:'aviser', 
+      name: 'Aviser i MeLOAR', 
+      pdfHighlight:true,
+      searchOptions: {
+        map:false,
+        time:false,
+       }
+    },
   ]
 }

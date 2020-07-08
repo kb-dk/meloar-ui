@@ -239,7 +239,7 @@
               }
             })
           }
-        }
+        
         //If no filters with time were present, we do a quick check if the values of the sliders have been moved from their initial positions.
         if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
           proceed = true
@@ -251,6 +251,7 @@
         else if(this.$router.history.current.name === "Instance") {
           proceed = true;
         }
+      }
         //console.log(proceed, "road taken")
         return proceed
       },

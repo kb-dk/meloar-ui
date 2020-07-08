@@ -9,6 +9,7 @@ export default {
   },
   methods: {
     $_getRecordLink(id, page, loarId) {
+      if(this.instance !== 'aviser') {
       return page
         ? {
             name: "Record",
@@ -19,6 +20,13 @@ export default {
             query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId },
             params: {instance: this.instance } 
           };
+        }
+      else {
+      return { name: "Record", 
+               query: { id: encodeURIComponent(id), query: this.queryString, loarId: loarId },
+               params: {instance: this.instance } 
+             };
+    }
     },
     $_transformDate(date) {
       const convertedDate = new Date(date);

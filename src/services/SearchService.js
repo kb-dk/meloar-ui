@@ -14,7 +14,7 @@ function fireSearch(query, instance, options, sort) {
       .get(searchUrl)
       .then(response => {
         //storeSearchResult(response.data);
-        return structureSearchResult(response.data);
+        return instance === 'aviser' ? structureAviserResult(response.data) : structureSearchResult(response.data);
       })
       .catch(error => {
         return Promise.reject(error);
@@ -40,5 +40,35 @@ function fireSearch(query, instance, options, sort) {
     }
     result.results = results
     result.facets = searchResults.facet_counts
+    return result; 
+  }
+
+  function structureAviserResult(searchResults) {
+    let result = {};
+    let highLights = [];
+    let results = [];
+    for (let i = 0; i < searchResults.grouped.loar_id.groups[0].doclist.docs.length; i++) {
+      let object = {
+        query:searchResults.responseHeader.params.q,
+        allHits:searchResults.grouped.loar_id.matches,
+        groupValue: searchResults.grouped.loar_id.groups[0].doclist.docs[i].id,
+        doclist: {
+          docs: [
+            searchResults.grouped.loar_id.groups[0].doclist.docs[i],
+          ]
+        }
+      }
+      for (let o = 0; o < searchResults.grouped.loar_id.groups[0].doclist.docs.length; o++) {
+        const highLightsBlock =
+          searchResults.highlighting[searchResults.grouped.loar_id.groups[0].doclist.docs[o].id]
+            .content;
+        highLights = highLightsBlock ? highLightsBlock : [];
+        object.doclist.docs[0].highLightSnippets = highLights;
+      }
+      results.push(object)
+    }
+    result.results = results
+    result.facets = searchResults.facet_counts
+    console.log(result)
     return result; 
   }

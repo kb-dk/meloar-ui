@@ -47,6 +47,7 @@ export default {
         this.MeloarInstances.instances.filter(item => {
         item.key === this.instance ? highlightAllowed = item.pdfHighlight : null
       })
+      if(this.instance !== 'aviser') {
         const proxyURL = encodeURIComponent(
           "/api/resource/meloar?collection=" + this.instance + "&url=" + this.record.external_resource[0]
         );
@@ -58,6 +59,10 @@ export default {
             : "#page=" + this.getSinglePageNumber()
           : "";
         return viewerURL + proxyURL + pageParams;
+      }
+      else {
+        console.log("we here!", this.record)
+      }
       },
 
       createSearchLink() {

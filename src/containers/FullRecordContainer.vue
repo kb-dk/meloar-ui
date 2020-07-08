@@ -111,7 +111,9 @@ beforeRouteEnter(to, from, next) {
       vm.scrollToTop();
     }
     else {
-    vm.doSearch({query:to.query.loarId, instance:to.params.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset})
+      console.log("yezz", to)
+    let newQ = to.params.instance === 'aviser' ? to.query.id : to.query.loarId;
+    vm.doSearch({query:newQ, instance:to.params.instance, options:'&rows=' + vm.solrOptions.shownResultsNumber + '&start=' + vm.solrOptions.currentOffset, sort:''})
     .then(() => {
       vm.updateInstance(to.params.instance)
       vm.updateQuery(to.query.query)
