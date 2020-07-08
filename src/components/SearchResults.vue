@@ -2,7 +2,7 @@
     <div class="searchResultContainer">
       <div v-if="results && resultHits === 0" class="noResults">We weren't able to find any results for you.<br>
          <span class="emojiComponent">😥</span></div>
-         <div v-if="loading === false && results" class="searchResults">
+         <div v-if="loading === false && results.length > 0" class="searchResults">
            <div class="headline">Filter by:</div>
            <div v-if="this.facets" class="facets">
                   <div v-bind:key="index" v-for="(item, index) in trimFacetArray(this.facets.facet_fields)" class="facet">                    
@@ -17,14 +17,15 @@
              <span v-if="!loading && this.results.length > 0">Showing hit 
               <span class="numbersFound"> {{ this.solrOptions.currentOffset + 1 }} - {{ this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber > resultHits ? resultHits : this.solrOptions.shownResultsNumber + this.solrOptions.currentOffset }}</span>.</span>
           </div>
+          <all-results-map @toggleMapUpdated="toggleMapUpdateForResults" :openOnReset="resultMapOpen" v-if="mapAllowed" />
           <div v-if="!loading && this.results.length > 0" class="pagingButtonContainer">
-            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
-            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="$_previousResults">previous {{ this.solrOptions.shownResultsNumber }}</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="$_nextResults">next {{ this.solrOptions.shownResultsNumber }}</button>
           </div>
           <component :is="searchResultComponentName"  v-for="(item, index) in this.results" :result="item" :indexNumber="index" :queryString="queryDisplay" :key="index"  ></component>
           <div v-if="!loading && this.results.length > 0" class="pagingButtonContainer pageEnd">
-            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="previousResults">previous 10</button>
-            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="nextResults">next 10</button>
+            <button class="pagingButton back" :disabled="this.solrOptions.currentOffset <= 0" v-on:click="$_previousResults">previous {{ this.solrOptions.shownResultsNumber }}</button>
+            <button class="pagingButton forward" :disabled="this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber >= this.resultHits" v-on:click="$_nextResults">next {{ this.solrOptions.shownResultsNumber }}</button>
           </div>
         </div>
      </div>
@@ -32,7 +33,9 @@
 
 <script>
 import AppliedFilters from "./AppliedFilters.vue";
+import AllResultsMap from "./AllResultsMap.vue";
 import { mapState, mapActions } from 'vuex'
+import SearchResultUtils from "../mixins/SearchResultUtils"
 
 export default {
   name: "SearchResults",
@@ -41,13 +44,21 @@ export default {
     SingleSearchResult_fof: () => import("./searchresult/SingleSearchResult_fof"),
     SingleSearchResult_kirker: () => import("./searchresult/SingleSearchResult_kirker"),
     SingleSearchResult_partiprogrammer: () => import("./searchresult/SingleSearchResult_partiprogrammer"),
-    AppliedFilters
+    AppliedFilters,
+    AllResultsMap
   },
+  props: {
+    mapAllowed: {
+      type: Boolean,
+      required: true
+    },
+  },
+  mixins: [SearchResultUtils],
   data: () => ({
     resultHits: null,
     resultMatches: null,
+    resultMapOpen:false,
   }),
-
   watch: {
     results: function(newValue) {
       if(typeof newValue === 'object' && newValue !== null ) {
@@ -104,6 +115,9 @@ export default {
         return Object.keys(results).length > 0 && results.constructor === Array
       }
     },
+    toggleMapUpdateForResults(value) {
+      this.resultMapOpen = value;
+    },
     trimFacetArray(filters) {
       if(filters) {
         Object.keys(filters).filter((item, index) => {
@@ -111,28 +125,6 @@ export default {
         })
       return filters
       }
-    },
-    nextResults() {
-      this.updateCurrentOffset(this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber);
-      this.doSearch(
-        {
-        query:this.query,
-        instance:this.instance,
-        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
-        sort:this.solrOptions.searchSort
-        }
-      );
-    },
-    previousResults() {
-      this.updateCurrentOffset(this.solrOptions.currentOffset - this.solrOptions.shownResultsNumber);
-      this.doSearch(
-        {
-        query:this.query,
-        instance:this.instance,
-        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
-        sort:this.solrOptions.searchSort
-        }
-      );
     },
     filterFromFacets(filter, value) {
       var getQuery = this.query;

@@ -11,7 +11,7 @@ const state = {
   instance:"",
   loading:false,
   solrOptions: {
-    shownResultsNumber:10,
+    shownResultsNumber:50,
     currentOffset:0,
     searchSort:""
   }

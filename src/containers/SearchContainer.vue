@@ -14,7 +14,10 @@
         <div class="labsContainer">
           <a href="http://labs.kb.dk/">Back to labs.kb.dk</a>
         </div>
-        <search-results />
+        <search-results :mapAllowed="this.map" />
+        <transition name="loading-overlay">
+        <div v-if="scrolledFromTop" class="topTopArrow" v-on:click="backToTop">↑</div>
+        </transition>
       </div>
 </template>
 <script>
@@ -36,6 +39,8 @@ export default {
     hits: "",
     searchError: false,
     time: false,
+    map:false,
+    scrolledFromTop:false
   }),
   mixins: [SearchResultUtils],
   computed: {
@@ -49,8 +54,11 @@ export default {
   },
   created() {
     this.MeloarInstances.instances.filter(item => {
-        item.key === this.instance || item.key === this.$route.params.instance ? this.time = item.searchOptions.time : null
+        item.key === this.instance || item.key === this.$route.params.instance ? (this.time = item.searchOptions.time, this.map = item.searchOptions.map) : null
       })
+  },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll)
   },
   methods: {
     ...mapActions('searchStore', {
@@ -58,6 +66,12 @@ export default {
       structureSearchResult: 'structureSearchResult',
       updateSearchSort:'updateSearchSort'
     }),
+    onScroll(e) {
+      e.target.documentElement.scrollTop > 0 ? this.scrolledFromTop = true : this.scrolledFromTop = false
+    },
+    backToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    },
     setFacets(facets) {
       this.facets = facets;
     },

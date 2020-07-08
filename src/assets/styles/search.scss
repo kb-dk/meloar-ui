@@ -161,9 +161,27 @@
   box-shadow: 0px 10px 25px -5px rgba(0, 0, 0, 0.2);
 }
 
+.topTopArrow {
+  -webkit-box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+	cursor: pointer;
+	width: 40px;
+	height: 40px;
+	background-color: rgba(30, 30, 30, 0.5);
+	position: fixed;
+	bottom: 3vh;
+	border-radius: 180%;
+	border: 2px solid white;
+	color: white;
+	left: calc(50vw + 615px);
+	line-height: 30px;
+	text-align: center;
+	font-size: 200%;
+}
+
 .searchResult a {
   text-decoration: none;
-  color: rgba(30, 30, 30, 0.5);
+  color: rgba(30, 30, 30, 0.7);
   text-transform: uppercase;
 }
 
@@ -448,7 +466,7 @@
   background-color: rgba(30, 30, 30, 0.5);
   padding: 5px;
   padding-right: 10px;
-  border: 1px solid white;
+  border: 2px solid white;
   font-size: 80%;
   box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
   font-weight:bold;
@@ -689,25 +707,63 @@
   display: block;
 }
 
-.searchMapContainer {
-  position: absolute;
+.searchMapContainer, .showResultsMap {
+  position: fixed;
   display: block;
   top: 0px;
   width: auto;
   left: 0px;
   height: auto;
-  height: 80vh;
-  width: 80vw;
+  height: 100vh;
+  width: 100vw;
+  z-index: 10000;
+  background-color:rgba(60,60,60,0.99);
+}
+
+#mapInfo {
+  position: absolute;
+	width: 100vw;
+	color: white;
+	font-weight: bold;
+	top: 5vh;
+	text-align: center;
+	text-transform: uppercase;
+}
+
+#allResultsMap, #searchMap {
   margin-left: 10vw;
   margin-right: 10vw;
   margin-top: 10vh;
   margin-bottom: 10vh;
+  height: 80vh;
+  width: 80vw;
 }
 
 .locationSearch {
   text-align: center;
   margin-top: 30px;
   margin-bottom: 15px;
+}
+
+.locationShown {
+  height: 0px;
+}
+
+.locationShown button {
+  text-decoration: none;
+  color: white;
+  text-transform: uppercase;
+  background-color: rgba(30, 30, 30, 0.5);
+  padding: 5px;
+  padding-right: 10px;
+  border: 2px solid white;
+  font-size: 80%;
+  box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+  font-weight:bold;
+  cursor:pointer;
+  position: relative;
+  width:170px;
+  left:calc(100% - 170px);
 }
 
 .locationSearch span {
@@ -730,8 +786,8 @@
   z-index: 1000;
   position: absolute;
   float: right;
-  left: calc(80vw + 2px);
-  top: calc(0vh - 20px);
+	left: calc(90vw + 2px);
+	top: calc(10vh - 20px);
 }
 
 .mapClose:before {
@@ -741,7 +797,7 @@
   display: block;
   height: 20px;
   width: 3px;
-  background-color: rgba(30, 30, 30, 0.5);
+  background-color: rgba(230, 230, 230, 1);
   transform: rotate(45deg);
 }
 
@@ -751,7 +807,7 @@
   position: relative;
   height: 20px;
   width: 3px;
-  background-color: rgba(30, 30, 30, 0.5);
+  background-color: rgba(230, 230, 230, 1);
   transform: rotate(-45deg);
   top: -20px;
   left: 7px;
@@ -796,7 +852,7 @@
 .placeTitle,
 .releaseDate {
   display: block !important;
-  color: rgba(30, 30, 30, 0.5);
+  color: rgba(30, 30, 30, 0.7);
   text-transform: uppercase;
   margin-top: 25px !important;
   font-size: 80%;
@@ -847,25 +903,30 @@
 }
 
 .mapSearch {
-  display: block;
-  height: 25px;
-  width: 70px;
-  text-align: center;
-  z-index: 1000;
-  position: absolute;
-  bottom: -40px;
-  margin-left: calc(50% - 35px);
-  cursor: pointer;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  border: 0px solid grey;
-  border-radius: 5px;
-  padding: 8px 8px 8px 8px;
-  font-size: 100%;
-  background-color: rgba(30, 30, 30, 0.3);
-  color: white;
-  line-height: 8px;
-}
+  border-radius: 0px;
+	padding-left: 5px;
+	padding-right: 5px;
+	border: 2px solid white;
+	width: 140px;
+	line-height: 23px;
+	font-weight: bold;
+	color: white;
+	background-color: rgba(30, 30, 30, 0.8);
+	display: block;
+	height: 30px;
+	text-align: center;
+	z-index: 1000;
+	position: absolute;
+	bottom: 65px;
+	margin-left: calc(50% - 35px);
+	cursor: pointer;
+	-webkit-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 80%;
+	text-transform: uppercase;
+	-webkit-box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.2);
+	box-shadow: 0px 5px 10px 1px rgba(0, 0, 0, 0.7);
+	cursor: pointer;}
 
 .filterEntity div {
   display: inline-block;
@@ -1007,6 +1068,20 @@
   .headCubeReversed {
     left:calc(300px - 25px) !important
   }
+  .locationShown {
+    height: 40px;
+	  margin-top: 10px;
+  }
+  .locationShown button {
+    left: calc(50% - 85px);
+
+  }
+}
+
+@media screen and (max-width: 1400px) {
+ .topTopArrow {
+   left:calc(100vw - 60px);
+ }
 }
 
 .frontpageTitleContainer {
@@ -1288,6 +1363,15 @@ text-transform:uppercase;
   margin-bottom: -10px;
 }
 
+.mapPagingButtonContainer {
+  width: 100vw;
+	position: absolute;
+	text-align: center;
+	top: 11vh;
+	z-index: 401;
+}
+
 .pagingButtonContainer.pageEnd {
   margin-bottom:40px;
+  margin-top: 20px;
 }

@@ -90,6 +90,8 @@ export default {
       }
       mergedQuery = mergedQuery + this.filters.join("&fq=")
       this.updateQuery(mergedQuery)
+      //Apparently full encoding breaks solr, so we just want to escape the brackets [], since that's what needed for the tomcat to accept the query.
+      mergedQuery = mergedQuery.replace(/\[/g,'%5B').replace(/]/g,'%5D');
       //mergedQuery = encodeURIComponent(mergedQuery);
       this.$router.push({
         name: "Search",

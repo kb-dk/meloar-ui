@@ -1,13 +1,42 @@
-import { mapState } from 'vuex'
+import { mapState, mapActions } from 'vuex'
 
 export default {
   computed: {
     ...mapState({
-      instance: state => state.searchStore.instance
+      instance: state => state.searchStore.instance,
+      query: state => state.searchStore.query,
+      solrOptions: state => state.searchStore.solrOptions
+
     })
 
   },
   methods: {
+      ...mapActions("searchStore", {
+          updateCurrentOffset: "updateCurrentOffset",
+          doSearch:"doSearch"
+    }),
+    $_nextResults() {
+      this.updateCurrentOffset(this.solrOptions.currentOffset + this.solrOptions.shownResultsNumber);
+      this.doSearch(
+        {
+        query:this.query,
+        instance:this.instance,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        sort:this.solrOptions.searchSort
+        }
+      );
+    },
+    $_previousResults() {
+      this.updateCurrentOffset(this.solrOptions.currentOffset - this.solrOptions.shownResultsNumber);
+      this.doSearch(
+        {
+        query:this.query,
+        instance:this.instance,
+        options:'&rows=' + this.solrOptions.shownResultsNumber + '&start=' + this.solrOptions.currentOffset,
+        sort:this.solrOptions.searchSort
+        }
+      );
+    },
     $_getRecordLink(id, page, loarId) {
       return page
         ? {
