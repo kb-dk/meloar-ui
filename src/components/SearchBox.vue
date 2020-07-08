@@ -239,17 +239,17 @@
               }
             })
           }
-        }
-        //If no filters with time were present, we do a quick check if the values of the sliders have been moved from their initial positions.
-        if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
-          proceed = true
-        }
-        if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_to_i") && this.timeTo !== this.searchOptions.timeOptions.max) {
-          proceed = true
-        }
-        //Yea, insance pages gets a free pass at searching.
-        else if(this.$router.history.current.name === "Instance") {
-          proceed = true;
+          //If no filters with time were present, we do a quick check if the values of the sliders have been moved from their initial positions.
+          if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_from_i") && this.timeFrom !== this.searchOptions.timeOptions.min) {
+            proceed = true
+          }
+          if(this.$route.params.query && !this.$route.params.query.includes("ff_primaryobject_year_to_i") && this.timeTo !== this.searchOptions.timeOptions.max) {
+            proceed = true
+          }
+          //Yea, insance pages gets a free pass at searching.
+          else if(this.$router.history.current.name === "Instance") {
+            proceed = true;
+          }
         }
         //console.log(proceed, "road taken")
         return proceed
