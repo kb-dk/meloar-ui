@@ -1,13 +1,13 @@
 {
   "name": "meloar",
   "version": "2.0.0",
-  "author": "Jesper Lauridsen <jla@kb.dk> and Jørn Thøgersen <jt@kb.dk>",
   "private": true,
+  "author": "Jesper Lauridsen <jla@kb.dk> and Jørn Thøgersen <jt@kb.dk>",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "staging": "vue-cli-service build --mode test",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "staging": "vue-cli-service build --mode test"
   },
   "dependencies": {
     "axios": "^0.19.2",
@@ -20,11 +20,11 @@
     "vuex": "^3.1.2"
   },
   "devDependencies": {
-    "@vue/cli-plugin-babel": "~4.2.0",
-    "@vue/cli-plugin-eslint": "~4.2.0",
-    "@vue/cli-plugin-router": "~4.2.0",
-    "@vue/cli-plugin-vuex": "~4.2.0",
-    "@vue/cli-service": "~4.2.0",
+    "@vue/cli-plugin-babel": "^4.4.6",
+    "@vue/cli-plugin-eslint": "^4.4.6",
+    "@vue/cli-plugin-router": "^4.4.6",
+    "@vue/cli-plugin-vuex": "^4.4.6",
+    "@vue/cli-service": "^4.4.6",
     "babel-eslint": "^10.0.3",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.1.2",

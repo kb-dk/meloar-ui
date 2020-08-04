@@ -35,6 +35,7 @@ export default {
         let DefaultIcon = mapNode.icon({
           iconSize: [25, 41],
           iconAnchor: [12.5, 25],
+          //popupAnchor: [0, -30],
           iconUrl: icon,
           shadowUrl: iconShadow
         });
