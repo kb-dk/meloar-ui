@@ -48,7 +48,7 @@ export default {
         item.key === this.instance ? highlightAllowed = item.pdfHighlight : null
       })
         const proxyURL = encodeURIComponent(
-          "/api/resource/meloar?collection=" + this.instance + "&url=" + this.record.external_resource[0]
+          "/api/resource/meloar/?collection=" + this.instance + "&url=" + this.record.external_resource[0]
         );
         //console.log(decodeURIComponent(proxyURL));
         const viewerURL = this.publicPath + "static/pdfviewer/web/viewer.html?file=";
