@@ -46,15 +46,15 @@ mixins: [SearchResultUtils],
 methods: {
   createMap(results) {
       let mapNode = require("leaflet");
-      let coordinates = [56.1572, 10.2107];
-      let DefaultIcon = mapNode.icon({
+      const coordinates = [56.1572, 10.2107];
+      const defaultIcon = mapNode.icon({
         iconSize: [25, 41],
         iconAnchor: [12.5, 25],
         //popupAnchor: [0, -30],
         iconUrl: icon,
         shadowUrl: iconShadow
       });
-      mapNode.Marker.prototype.options.icon = DefaultIcon;
+      mapNode.Marker.prototype.options.icon = defaultIcon;
       let resultmap = mapNode.map("allResultsMap");
       resultmap.setView(coordinates, 7);
       //If https problems occur, try https://a.tile.openstreetmap.org/{z}/{x}/{y}.png instead.
