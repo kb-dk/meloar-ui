@@ -1,7 +1,7 @@
 <template>
-<div v-if="this.checkForSnippetAvailability(this.queryString)"> 
+<div> 
     <!--PDF Search result handling-->
-        <div class="matches">
+        <div v-if="this.checkForSnippetAvailability(this.queryString)" class="matches">
           <span class="numbersFound">{{ result.doclist.numFound }}</span>
           <span v-if="result.doclist.numFound > 1"> matches </span>
           <span v-if="result.doclist.numFound === 1"> match </span>
@@ -13,7 +13,7 @@
           <span v-if="showingAllSnippets === false">See more hits</span>
           </span>
         </div>
-        <div>
+        <div v-if="this.checkForSnippetAvailability(this.queryString)">
           <div v-for="(snippets, index) in result.doclist.docs"
             class="snippet"
             v-bind:key="index"
