@@ -10,7 +10,7 @@
     "staging": "vue-cli-service build --mode test"
   },
   "dependencies": {
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "leaflet": "^1.6.0",
     "pdfjs-dist-viewer-min": "2.4.456",
